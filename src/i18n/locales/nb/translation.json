@@ -1,0 +1,34 @@
+{
+  "tabs": {
+    "home": "Hjem",
+    "map": "Kart",
+    "trails": "Stier",
+    "settings": "Innstillinger"
+  },
+  "screens": {
+    "home": {
+      "title": "Velkommen til EchoTrail",
+      "subtitle": "Oppdag og registrer dine utendørs eventyr"
+    },
+    "map": {
+      "title": "Kart",
+      "description": "Interaktiv kartvisning"
+    },
+    "trails": {
+      "title": "Mine Stier",
+      "description": "Se og administrer dine registrerte stier"
+    },
+    "settings": {
+      "title": "Innstillinger",
+      "description": "App-konfigurasjon og preferanser"
+    }
+  },
+  "settings": {
+    "title": "Innstillinger",
+    "language": "Språk",
+    "privacy": "Personvern og Tillatelser",
+    "backgroundRecording": "Bakgrunns Posisjonssporing",
+    "offlineMaps": "Last ned Offline Kart",
+    "analytics": "Del Analysedata"
+  }
+}

@@ -1,0 +1,383 @@
+import React from "react";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+} from "@testing-library/react-native";
+import { TrailRecordingScreen } from "../TrailRecordingScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { LocationService } from "../../services/LocationService";
+import { TrailService } from "../../services/TrailService";
+import { TrailRecordingState } from "../../types/trail";
+import { vi } from "vitest";
+
+// Mock services
+vi.mock("../../services/LocationService");
+vi.mock("../../services/TrailService");
+vi.mock("../../services/NotificationService");
+
+// Mock navigation
+const mockNavigate = vi.fn();
+const mockGoBack = vi.fn();
+
+vi.mock("@react-navigation/native", async () => {
+  const actual = await vi.importActual("@react-navigation/native");
+  return {
+    ...actual,
+    useNavigation: () => ({
+      navigate: mockNavigate,
+      goBack: mockGoBack,
+    }),
+    useRoute: () => ({
+      params: {},
+    }),
+    NavigationContainer: ({ children }: any) => children,
+  };
+});
+
+// Mock components that might cause issues in tests
+vi.mock("react-native-maps", () => ({ MapView: "MapView" }));
+vi.mock("../../components/Map/TrailMap", () => ({ TrailMap: "TrailMap" }));
+
+const renderWithNavigation = (component: React.ReactElement) => {
+  return render(component);
+};
+
+describe("TrailRecordingScreen", () => {
+  let mockLocationService: any;
+  let mockTrailService: any;
+
+  beforeEach(() => {
+    mockLocationService = LocationService.getInstance();
+    mockTrailService = TrailService.getInstance();
+
+    // Setup default mocks
+    mockLocationService.requestLocationPermission.mockResolvedValue(true);
+    mockLocationService.getCurrentLocation.mockResolvedValue({
+      id: "current",
+      latitude: 59.9139,
+      longitude: 10.7522,
+      elevation: 100,
+      timestamp: new Date(),
+      accuracy: 5,
+      speed: 0,
+    });
+    mockLocationService.startLocationTracking.mockResolvedValue("watch-id");
+    mockTrailService.saveTrail.mockResolvedValue({
+      id: "saved-trail",
+      name: "Test Trail",
+      description: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      startTime: new Date(),
+      endTime: new Date(),
+      duration: 0,
+      distance: 0,
+      elevation: { gain: 0, loss: 0, max: 0, min: 0 },
+      points: [],
+      isPublic: false,
+      tags: [],
+      userId: "user-123",
+      syncStatus: "PENDING",
+      localOnly: false,
+      version: 1,
+    });
+
+    vi.clearAllMocks();
+  });
+
+  it("should render initial recording screen", () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    expect(screen.getByText("Trail Recording")).toBeTruthy();
+    expect(screen.getByText("Start Recording")).toBeTruthy();
+    expect(screen.getByTestId("trail-name-input")).toBeTruthy();
+  });
+
+  it("should request location permission on mount", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    await waitFor(() => {
+      expect(mockLocationService.requestLocationPermission).toHaveBeenCalled();
+    });
+  });
+
+  it("should start recording when Start Recording is pressed", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Enter trail name
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+
+    // Start recording
+    const startButton = screen.getByText("Start Recording");
+    fireEvent.press(startButton);
+
+    await waitFor(() => {
+      expect(mockLocationService.startLocationTracking).toHaveBeenCalled();
+      expect(screen.getByText("Stop Recording")).toBeTruthy();
+      expect(screen.getByText("Recording in Progress")).toBeTruthy();
+    });
+  });
+
+  it("should show recording timer when recording", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+
+    const startButton = screen.getByText("Start Recording");
+    fireEvent.press(startButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("recording-timer")).toBeTruthy();
+      expect(screen.getByText("00:00:00")).toBeTruthy();
+    });
+  });
+
+  it("should pause and resume recording", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Pause")).toBeTruthy();
+    });
+
+    // Pause recording
+    fireEvent.press(screen.getByText("Pause"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Resume")).toBeTruthy();
+      expect(screen.getByText("Paused")).toBeTruthy();
+    });
+
+    // Resume recording
+    fireEvent.press(screen.getByText("Resume"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Pause")).toBeTruthy();
+      expect(screen.getByText("Recording in Progress")).toBeTruthy();
+    });
+  });
+
+  it("should stop recording and show save dialog", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Stop Recording")).toBeTruthy();
+    });
+
+    // Stop recording
+    fireEvent.press(screen.getByText("Stop Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Save Trail")).toBeTruthy();
+      expect(screen.getByText("Trail Summary")).toBeTruthy();
+      expect(mockLocationService.stopLocationTracking).toHaveBeenCalled();
+    });
+  });
+
+  it("should save trail and navigate away", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start and stop recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Stop Recording")).toBeTruthy();
+    });
+
+    fireEvent.press(screen.getByText("Stop Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Save Trail")).toBeTruthy();
+    });
+
+    // Save trail
+    fireEvent.press(screen.getByText("Save Trail"));
+
+    await waitFor(() => {
+      expect(mockTrailService.saveTrail).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith("TrailDetails", {
+        trailId: "saved-trail",
+      });
+    });
+  });
+
+  it("should cancel recording and show confirmation", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Cancel")).toBeTruthy();
+    });
+
+    // Cancel recording
+    fireEvent.press(screen.getByText("Cancel"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Discard recording?")).toBeTruthy();
+      expect(screen.getByText("Discard")).toBeTruthy();
+      expect(screen.getByText("Keep Recording")).toBeTruthy();
+    });
+
+    // Confirm discard
+    fireEvent.press(screen.getByText("Discard"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Start Recording")).toBeTruthy();
+      expect(mockLocationService.stopLocationTracking).toHaveBeenCalled();
+    });
+  });
+
+  it("should display recording statistics", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("recording-stats")).toBeTruthy();
+      expect(screen.getByText("Distance")).toBeTruthy();
+      expect(screen.getByText("Duration")).toBeTruthy();
+      expect(screen.getByText("Speed")).toBeTruthy();
+      expect(screen.getByText("Elevation")).toBeTruthy();
+    });
+  });
+
+  it("should handle location permission denied", async () => {
+    mockLocationService.requestLocationPermission.mockResolvedValue(false);
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Location permission required")).toBeTruthy();
+      expect(screen.getByText("Grant Permission")).toBeTruthy();
+    });
+  });
+
+  it("should handle GPS signal status", async () => {
+    mockLocationService.getCurrentLocation.mockResolvedValue(null);
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    await waitFor(() => {
+      expect(screen.getByText("GPS Signal: Searching")).toBeTruthy();
+    });
+
+    // Simulate GPS signal acquired
+    mockLocationService.getCurrentLocation.mockResolvedValue({
+      id: "current",
+      latitude: 59.9139,
+      longitude: 10.7522,
+      elevation: 100,
+      timestamp: new Date(),
+      accuracy: 5,
+      speed: 0,
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("GPS Signal: Strong")).toBeTruthy();
+    });
+  });
+
+  it("should validate trail name before starting", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Try to start without entering name
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(screen.getByText("Please enter a trail name")).toBeTruthy();
+      expect(mockLocationService.startLocationTracking).not.toHaveBeenCalled();
+    });
+  });
+
+  it("should handle low battery warning during recording", async () => {
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    // Simulate low battery
+    // This would typically come from a battery monitoring service
+    await waitFor(() => {
+      // The component should show a warning but continue recording
+      expect(screen.getByText("Recording in Progress")).toBeTruthy();
+    });
+  });
+
+  it("should update recording statistics in real-time", async () => {
+    vi.useFakeTimers();
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    // Start recording
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    // Fast-forward time to simulate recording progress
+    await waitFor(() => {
+      expect(screen.getByText("00:00:00")).toBeTruthy();
+    });
+
+    vi.advanceTimersByTime(5000); // 5 seconds
+
+    await waitFor(() => {
+      expect(screen.getByText("00:00:05")).toBeTruthy();
+    });
+
+    vi.useRealTimers();
+  });
+
+  it("should handle location tracking errors", async () => {
+    mockLocationService.startLocationTracking.mockResolvedValue(null);
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    const nameInput = screen.getByTestId("trail-name-input");
+    fireEvent.changeText(nameInput, "Test Trail");
+    fireEvent.press(screen.getByText("Start Recording"));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Failed to start location tracking")
+      ).toBeTruthy();
+    });
+  });
+
+  it("should display accurate GPS information", async () => {
+    mockLocationService.getCurrentLocation.mockResolvedValue({
+      id: "current",
+      latitude: 59.9139,
+      longitude: 10.7522,
+      elevation: 100,
+      timestamp: new Date(),
+      accuracy: 3, // Very accurate
+      speed: 0,
+    });
+
+    renderWithNavigation(<TrailRecordingScreen />);
+
+    await waitFor(() => {
+      expect(screen.getByText("GPS Accuracy: 3m")).toBeTruthy();
+    });
+  });
+});

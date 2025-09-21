@@ -1,0 +1,130 @@
+{
+  "expo": {
+    "name": "EchoTrail",
+    "slug": "echotrail",
+    "version": "1.0.0-beta.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2563eb"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.echotrail.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "EchoTrail bruker GPS for å fortelle stedsspesifikke historier basert på hvor du befinner deg.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "EchoTrail trenger tilgang til posisjon for å levere personlige AI-guidede historier.",
+        "NSCameraUsageDescription": "EchoTrail bruker kameraet for å ta bilder til ditt personlige minnealbum.",
+        "NSMicrophoneUsageDescription": "EchoTrail kan bruke mikrofonen for stemmekommandoer til AI-guiden.",
+        "NSPhotoLibraryUsageDescription": "EchoTrail lagrer bilder i fotobiblioteket ditt som del av minnealbumet.",
+        "NSPhotoLibraryAddUsageDescription": "EchoTrail lagrer minner og bilder i fotobiblioteket ditt."
+      },
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#2563eb"
+      },
+      "package": "com.echotrail.app",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
+        "android.permission.WAKE_LOCK",
+        "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+      ],
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "${GOOGLE_MAPS_API_KEY}"
+        }
+      },
+      "runtimeVersion": "1.0.0"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0",
+            "usesCleartextTraffic": false,
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "proguardDebugVariant": "release",
+            "buildArchs": [
+              "arm64-v8a",
+              "x86_64"
+            ]
+          }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "EchoTrail trenger tilgang til posisjon for å levere personlige AI-guidede historier basert på hvor du befinner deg.",
+          "locationAlwaysPermission": "EchoTrail bruker bakgrunnsposisjon for å oppdage når du nærmer deg interessante steder og kan fortelle relevante historier.",
+          "locationWhenInUsePermission": "EchoTrail bruker GPS for å fortelle stedsspesifikke historier basert på hvor du befinner deg.",
+          "isBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ],
+      "expo-secure-store",
+      "expo-image-picker",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "EchoTrail lagrer bilder i fotobiblioteket ditt som del av minnealbumet.",
+          "savePhotosPermission": "EchoTrail lagrer minner og bilder i fotobiblioteket ditt.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      "expo-file-system",
+      "expo-notifications",
+      "expo-updates",
+      "expo-font"
+    ],
+    "scheme": "echotrail",
+    "extra": {
+      "eas": {
+        "projectId": "4316c644-dca0-4625-a0b5-68e75d6aa870"
+      },
+      "echotrail": {
+        "note": "All sensitive API keys are managed via environment variables and EAS secrets"
+      }
+    },
+    "owner": "zentric",
+    "updates": {
+      "url": "https://u.expo.dev/4316c644-dca0-4625-a0b5-68e75d6aa870"
+    }
+  }
+}

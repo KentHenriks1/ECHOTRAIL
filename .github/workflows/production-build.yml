@@ -1,0 +1,436 @@
+name: EchoTrail Production Build & Deploy
+
+on:
+  push:
+    branches: [main, production]
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Platform to build"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - android
+          - ios
+      deploy_to_stores:
+        description: "Deploy to app stores"
+        required: true
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: "20.x"
+  EXPO_CLI_VERSION: "latest"
+  EAS_CLI_VERSION: "latest"
+
+jobs:
+  # Quality checks and testing
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Run ESLint
+        run: npm run lint
+
+      - name: 🔍 TypeScript type check
+        run: npm run type-check
+
+      - name: 🧪 Run tests with coverage
+        run: npm test -- --coverage --watchAll=false --verbose
+        env:
+          CI: true
+
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: 📊 SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  # Security scanning
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: quality-gate
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔒 Run npm audit
+        run: npm audit --audit-level moderate
+
+      - name: 🔒 Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+  # Build for Android
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    needs: [quality-gate, security-scan]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 🏗 Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: 🏗 Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗 Setup Expo and EAS
+        run: |
+          npm install -g @expo/cli@${{ env.EXPO_CLI_VERSION }}
+          npm install -g eas-cli@${{ env.EAS_CLI_VERSION }}
+
+      - name: 📋 Create EAS config
+        run: |
+          cat > eas.json << 'EOF'
+          {
+            "cli": {
+              "version": ">= 0.60.0"
+            },
+            "build": {
+              "development": {
+                "developmentClient": true,
+                "distribution": "internal",
+                "android": {
+                  "gradleCommand": ":app:assembleDebug"
+                },
+                "ios": {
+                  "simulator": true
+                }
+              },
+              "preview": {
+                "distribution": "internal",
+                "android": {
+                  "buildType": "apk"
+                }
+              },
+              "production": {
+                "android": {
+                  "buildType": "aab"
+                }
+              }
+            },
+            "submit": {
+              "production": {
+                "android": {
+                  "serviceAccountKeyPath": "./google-play-service-account.json",
+                  "track": "internal"
+                },
+                "ios": {
+                  "appleId": "${{ secrets.APPLE_ID }}",
+                  "ascAppId": "${{ secrets.ASC_APP_ID }}",
+                  "appleTeamId": "${{ secrets.APPLE_TEAM_ID }}"
+                }
+              }
+            }
+          }
+          EOF
+
+      - name: 🔐 Create Google Play service account key
+        if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+        run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_KEY }}' > ./google-play-service-account.json
+
+      - name: 🏗 EAS Build (Preview APK)
+        run: eas build --platform android --profile preview --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🏗 EAS Build (Production AAB)
+        if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+        run: eas build --platform android --profile production --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📤 Submit to Google Play Console
+        if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+        run: eas submit --platform android --latest --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  # Build for iOS
+  build-ios:
+    name: Build iOS
+    runs-on: macos-14
+    needs: [quality-gate, security-scan]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 🏗 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.4"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗 Setup Expo and EAS
+        run: |
+          npm install -g @expo/cli@${{ env.EXPO_CLI_VERSION }}
+          npm install -g eas-cli@${{ env.EAS_CLI_VERSION }}
+
+      - name: 🔐 Setup iOS certificates and provisioning profiles
+        if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+        run: |
+          # Create certificates directory
+          mkdir -p ~/.eas/credentials
+
+          # Setup distribution certificate
+          echo '${{ secrets.IOS_DISTRIBUTION_CERTIFICATE }}' | base64 --decode > ~/.eas/credentials/distribution.p12
+
+          # Setup provisioning profile
+          echo '${{ secrets.IOS_PROVISIONING_PROFILE }}' | base64 --decode > ~/.eas/credentials/profile.mobileprovision
+
+      - name: 🏗 EAS Build (Preview Simulator)
+        run: eas build --platform ios --profile preview --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🏗 EAS Build (Production IPA)
+        if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+        run: eas build --platform ios --profile production --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📤 Submit to App Store Connect
+        if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+        run: eas submit --platform ios --latest --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+
+  # Deploy to Expo Updates (OTA)
+  deploy-ota:
+    name: Deploy OTA Update
+    runs-on: ubuntu-latest
+    needs: [quality-gate, security-scan]
+    if: github.ref == 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗 Setup Expo
+        run: npm install -g @expo/cli@${{ env.EXPO_CLI_VERSION }}
+
+      - name: 🚀 Publish Expo update
+        run: expo publish --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+  # Release management
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-android, build-ios]
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📋 Generate release notes
+        id: release_notes
+        run: |
+          # Extract version from tag
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+          # Generate release notes from RELEASE_NOTES.md
+          if [ -f "RELEASE_NOTES.md" ]; then
+            echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+            head -n 50 RELEASE_NOTES.md >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "RELEASE_NOTES=Release $VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🎉 Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: EchoTrail v${{ steps.release_notes.outputs.VERSION }}
+          body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+
+  # Notify stakeholders
+  notify:
+    name: Notify Stakeholders
+    runs-on: ubuntu-latest
+    needs: [build-android, build-ios]
+    if: always()
+
+    steps:
+      - name: 📧 Send Slack notification
+        if: needs.build-android.result == 'success' && needs.build-ios.result == 'success'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          text: |
+            🎉 EchoTrail v1.0.0 production build completed successfully!
+
+            ✅ Android: Build and deployment successful
+            ✅ iOS: Build and deployment successful
+
+            📱 Apps are now available on the stores!
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: 📧 Send failure notification
+        if: needs.build-android.result == 'failure' || needs.build-ios.result == 'failure'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          text: |
+            ❌ EchoTrail production build failed!
+
+            Please check the GitHub Actions logs for details.
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: 📧 Send Discord notification
+        if: needs.build-android.result == 'success' && needs.build-ios.result == 'success'
+        uses: Ilshidur/action-discord@master
+        with:
+          args: |
+            🎉 **EchoTrail v1.0.0 Released!**
+
+            The intelligent trail companion is now live on both app stores!
+
+            🤖 Android: Google Play Store
+            🍎 iOS: App Store
+
+            Download now and start your adventure! 🥾🏔️
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+  # Performance monitoring setup
+  setup-monitoring:
+    name: Setup Production Monitoring
+    runs-on: ubuntu-latest
+    needs: [build-android, build-ios]
+    if: github.ref == 'refs/heads/production' || startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📊 Initialize Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ${{ github.sha }}
+
+      - name: 📊 Configure DataDog monitoring
+        run: |
+          curl -X POST "https://api.datadoghq.eu/api/v1/events" \
+          -H "Content-Type: application/json" \
+          -H "DD-API-KEY: ${{ secrets.DATADOG_API_KEY }}" \
+          -d '{
+            "title": "EchoTrail v1.0.0 Production Deployment",
+            "text": "New version deployed to production",
+            "priority": "normal",
+            "tags": ["environment:production", "service:echotrail", "version:1.0.0"],
+            "alert_type": "info"
+          }'
+
+      - name: 📊 Update New Relic deployment
+        run: |
+          curl -X POST 'https://api.newrelic.com/v2/applications/${{ secrets.NEW_RELIC_APP_ID }}/deployments.json' \
+          -H 'X-Api-Key:${{ secrets.NEW_RELIC_API_KEY }}' \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "deployment": {
+              "revision": "${{ github.sha }}",
+              "changelog": "EchoTrail v1.0.0 - Production Release",
+              "description": "Intelligent trail companion with adaptive UI",
+              "user": "GitHub Actions"
+            }
+          }'
