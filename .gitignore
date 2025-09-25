@@ -12,11 +12,12 @@ build/
 coverage/
 *.lcov
 
-# Environment
+# Environment files
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env
 
 # Editor
 .vscode/
@@ -41,27 +42,44 @@ Thumbs.db
 # Testing
 test-results/
 playwright-report/
+.jest-cache/
 
-# Logs
+# Logs and temporary files
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+crash_logs.txt
+tsc_output.txt
+*.tmp
+*.temp
 
-# APK files (comment out if you want to track them)  
-# *.apk
-# *.aab
-# *.ipa
-*.apk
-# APK files over 50MB
-*.apk
 # Large binary files
+*.apk
 *.aab
 *.ipa
-# Build directories
-dist/
-build/
+
 # Cache directories
 .turbo/
 .vercel/
-.env*
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Backup and temporary files
+*.backup
+*.backup.*
+*-backup.*
+*.old
+*.bak
+*.copy
+*-copy.*
+*-old.*
+*-temp.*
+*.disabled
+
+# ESLint configs (keep only main ones)
+eslint.config.backup.*
+eslint.config.improved.*
+eslint.config.proper.*
+eslint.config.final.*
