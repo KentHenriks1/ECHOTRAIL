@@ -1,0 +1,34 @@
+{
+  "tabs": {
+    "home": "Home",
+    "map": "Map",
+    "trails": "Trails",
+    "settings": "Settings"
+  },
+  "screens": {
+    "home": {
+      "title": "Welcome to EchoTrail",
+      "subtitle": "Discover and record your outdoor adventures"
+    },
+    "map": {
+      "title": "Map",
+      "description": "Interactive map view"
+    },
+    "trails": {
+      "title": "My Trails",
+      "description": "View and manage your recorded trails"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "App configuration and preferences"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "privacy": "Privacy & Permissions",
+    "backgroundRecording": "Background Location Recording",
+    "offlineMaps": "Download Offline Maps",
+    "analytics": "Share Analytics Data"
+  }
+}

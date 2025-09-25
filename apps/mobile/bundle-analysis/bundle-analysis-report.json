@@ -1,0 +1,338 @@
+{
+  "timestamp": "2025-09-19T03:38:31.740Z",
+  "bundleSizes": {
+    "android_index-dabce24d81ac6cd79b74fb8cb3c788df.hbc": {
+      "size": 1683584,
+      "sizeFormatted": "1.61 MB",
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\dist\\_expo\\static\\js\\android\\index-dabce24d81ac6cd79b74fb8cb3c788df.hbc"
+    },
+    "ios_index-f8920f767454aec86fee80774f1d3440.hbc": {
+      "size": 1679720,
+      "sizeFormatted": "1.6 MB",
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\dist\\_expo\\static\\js\\ios\\index-f8920f767454aec86fee80774f1d3440.hbc"
+    }
+  },
+  "dependencies": {
+    "@react-navigation/bottom-tabs": {
+      "version": "^7.0.0",
+      "description": "Bottom tab navigator following iOS design guidelines",
+      "dependencies": [
+        "@react-navigation/elements",
+        "color"
+      ],
+      "size": 193693
+    },
+    "@types/node": {
+      "version": "^24.5.2",
+      "description": "TypeScript definitions for node",
+      "dependencies": [
+        "undici-types"
+      ],
+      "size": 2531280
+    },
+    "eslint": {
+      "version": "^9.35.0",
+      "description": "An AST-based pattern checker for JavaScript.",
+      "dependencies": [
+        "@eslint-community/eslint-utils",
+        "@eslint-community/regexpp",
+        "@eslint/config-array",
+        "@eslint/config-helpers",
+        "@eslint/core",
+        "@eslint/eslintrc",
+        "@eslint/js",
+        "@eslint/plugin-kit",
+        "@humanfs/node",
+        "@humanwhocodes/module-importer",
+        "@humanwhocodes/retry",
+        "@types/estree",
+        "@types/json-schema",
+        "ajv",
+        "chalk",
+        "cross-spawn",
+        "debug",
+        "escape-string-regexp",
+        "eslint-scope",
+        "eslint-visitor-keys",
+        "espree",
+        "esquery",
+        "esutils",
+        "fast-deep-equal",
+        "file-entry-cache",
+        "find-up",
+        "glob-parent",
+        "ignore",
+        "imurmurhash",
+        "is-glob",
+        "json-stable-stringify-without-jsonify",
+        "lodash.merge",
+        "minimatch",
+        "natural-compare",
+        "optionator"
+      ],
+      "size": 3003017
+    },
+    "eslint-config-prettier": {
+      "version": "^10.1.8",
+      "description": "Turns off all rules that are unnecessary or might conflict with Prettier.",
+      "dependencies": [],
+      "size": 59021
+    },
+    "jest": {
+      "version": "^29.7.0",
+      "description": "Delightful JavaScript Testing.",
+      "dependencies": [
+        "@jest/core",
+        "@jest/types",
+        "import-local",
+        "jest-cli"
+      ],
+      "size": 2433809
+    },
+    "node-fetch": {
+      "version": "^3.3.2",
+      "description": "A light-weight module that brings Fetch API to node.js",
+      "dependencies": [
+        "data-uri-to-buffer",
+        "fetch-blob",
+        "formdata-polyfill"
+      ],
+      "size": 107319
+    },
+    "ts-jest": {
+      "version": "^29.4.3",
+      "description": "A Jest transformer with source map support that lets you use Jest to test projects written in TypeScript",
+      "dependencies": [
+        "bs-logger",
+        "fast-json-stable-stringify",
+        "handlebars",
+        "json5",
+        "lodash.memoize",
+        "make-error",
+        "semver",
+        "type-fest",
+        "yargs-parser"
+      ],
+      "size": 303004
+    },
+    "vitest": {
+      "version": "^2.1.9",
+      "description": "Next generation testing framework powered by Vite",
+      "dependencies": [
+        "@types/chai",
+        "chai",
+        "debug",
+        "expect-type",
+        "magic-string",
+        "pathe",
+        "picomatch",
+        "std-env",
+        "tinybench",
+        "tinyexec",
+        "tinyglobby",
+        "tinypool",
+        "tinyrainbow",
+        "vite",
+        "why-is-node-running",
+        "@vitest/expect",
+        "@vitest/mocker",
+        "@vitest/snapshot",
+        "@vitest/runner",
+        "@vitest/pretty-format",
+        "@vitest/spy",
+        "vite-node",
+        "@vitest/utils"
+      ],
+      "size": 1422325
+    }
+  },
+  "duplicates": [
+    {
+      "package": "src",
+      "occurrences": 42,
+      "paths": [
+        "src/App.tsx",
+        "src/components/errors/GlobalErrorBoundary.tsx",
+        "src/components/loading/LoadingScreen.tsx",
+        "src/components/performance/PerformanceTracker.tsx",
+        "src/core/config/index.ts",
+        "src/core/utils/Logger.ts",
+        "src/core/utils/index.ts",
+        "src/core/utils/ErrorHandler.ts",
+        "src/core/utils/PerformanceMonitor.ts",
+        "src/navigation/AppNavigator.tsx",
+        "src/providers/AuthProvider.tsx",
+        "src/services/api/index.ts",
+        "src/services/api/ApiClient.ts",
+        "src/services/api/AuthService.ts",
+        "src/services/api/TrailService.ts",
+        "src/screens/lazy/index.tsx",
+        "src/screens/HomeScreen.tsx",
+        "src/core/theme/utils.ts",
+        "src/screens/LoginScreen.tsx",
+        "src/screens/MapsScreen.tsx",
+        "src/screens/ProfileScreen.tsx",
+        "src/screens/TrailRecordingScreen.tsx",
+        "src/screens/TrailsScreen.tsx",
+        "src/providers/AnalyticsProvider.tsx",
+        "src/providers/AppProvider.tsx",
+        "src/providers/DatabaseProvider.tsx",
+        "src/providers/LocalizationProvider.tsx",
+        "src/providers/NavigationProvider.tsx",
+        "src/providers/NotificationProvider.tsx",
+        "src/providers/ThemeProvider.tsx",
+        "src/__tests__/integration/auth.integration.test.ts",
+        "src/__tests__/performance/performance.test.ts",
+        "src/services/database/DatabaseSyncService.ts",
+        "src/__tests__/quality/QualityValidator.ts",
+        "src/__tests__/services/api/AuthService.test.ts",
+        "src/__tests__/services/api/TrailService.test.ts",
+        "src/__tests__/setup.ts",
+        "src/__tests__/setup/testSetup.config.ts",
+        "src/components/common/LazyScreen.tsx",
+        "src/core/config/types.ts",
+        "src/index.ts",
+        "src/types/global.d.ts"
+      ]
+    },
+    {
+      "package": "..",
+      "occurrences": 15,
+      "paths": [
+        "../../node_modules/expo-status-bar/build/StatusBar.d.ts",
+        "../../node_modules/react/index.js",
+        "../../node_modules/react-native/types/index.d.ts",
+        "../../node_modules/react-native-gesture-handler/lib/commonjs/index.js",
+        "../../node_modules/react-native-safe-area-context/lib/commonjs/index.js",
+        "../../node_modules/expo-constants/build/Constants.d.ts",
+        "../../node_modules/@react-navigation/native/lib/typescript/src/index.d.ts",
+        "../../node_modules/@react-navigation/stack/lib/typescript/src/index.d.ts",
+        "../../node_modules/react-error-boundary/dist/react-error-boundary.js",
+        "../../node_modules/@react-native-async-storage/async-storage/lib/commonjs/index.js",
+        "../../node_modules/expo-location/build/index.js",
+        "../../node_modules/react-native-maps/src/index.ts",
+        "../../node_modules/@react-native-async-storage/async-storage/jest/async-storage-mock.js",
+        "../../node_modules/@testing-library/react-hooks/lib/index.js",
+        "../../node_modules/react-native-gesture-handler/jestSetup.js"
+      ]
+    }
+  ],
+  "unusedDependencies": [],
+  "largestFiles": [],
+  "recommendations": [
+    {
+      "type": "large-dependencies",
+      "priority": "medium",
+      "title": "Large dependencies detected",
+      "description": "Found 4 dependencies over 500KB: eslint, @types/node, jest, vitest",
+      "impact": "Medium - consider lighter alternatives or selective imports",
+      "details": [
+        {
+          "package": "eslint",
+          "size": "2.86 MB",
+          "description": "An AST-based pattern checker for JavaScript."
+        },
+        {
+          "package": "@types/node",
+          "size": "2.41 MB",
+          "description": "TypeScript definitions for node"
+        },
+        {
+          "package": "jest",
+          "size": "2.32 MB",
+          "description": "Delightful JavaScript Testing."
+        },
+        {
+          "package": "vitest",
+          "size": "1.36 MB",
+          "description": "Next generation testing framework powered by Vite"
+        }
+      ]
+    },
+    {
+      "type": "duplicates",
+      "priority": "high",
+      "title": "Duplicate dependencies found",
+      "description": "Found 2 potential duplicate dependencies",
+      "impact": "High - unnecessary bundle size increase",
+      "details": [
+        {
+          "package": "src",
+          "occurrences": 42,
+          "paths": [
+            "src/App.tsx",
+            "src/components/errors/GlobalErrorBoundary.tsx",
+            "src/components/loading/LoadingScreen.tsx",
+            "src/components/performance/PerformanceTracker.tsx",
+            "src/core/config/index.ts",
+            "src/core/utils/Logger.ts",
+            "src/core/utils/index.ts",
+            "src/core/utils/ErrorHandler.ts",
+            "src/core/utils/PerformanceMonitor.ts",
+            "src/navigation/AppNavigator.tsx",
+            "src/providers/AuthProvider.tsx",
+            "src/services/api/index.ts",
+            "src/services/api/ApiClient.ts",
+            "src/services/api/AuthService.ts",
+            "src/services/api/TrailService.ts",
+            "src/screens/lazy/index.tsx",
+            "src/screens/HomeScreen.tsx",
+            "src/core/theme/utils.ts",
+            "src/screens/LoginScreen.tsx",
+            "src/screens/MapsScreen.tsx",
+            "src/screens/ProfileScreen.tsx",
+            "src/screens/TrailRecordingScreen.tsx",
+            "src/screens/TrailsScreen.tsx",
+            "src/providers/AnalyticsProvider.tsx",
+            "src/providers/AppProvider.tsx",
+            "src/providers/DatabaseProvider.tsx",
+            "src/providers/LocalizationProvider.tsx",
+            "src/providers/NavigationProvider.tsx",
+            "src/providers/NotificationProvider.tsx",
+            "src/providers/ThemeProvider.tsx",
+            "src/__tests__/integration/auth.integration.test.ts",
+            "src/__tests__/performance/performance.test.ts",
+            "src/services/database/DatabaseSyncService.ts",
+            "src/__tests__/quality/QualityValidator.ts",
+            "src/__tests__/services/api/AuthService.test.ts",
+            "src/__tests__/services/api/TrailService.test.ts",
+            "src/__tests__/setup.ts",
+            "src/__tests__/setup/testSetup.config.ts",
+            "src/components/common/LazyScreen.tsx",
+            "src/core/config/types.ts",
+            "src/index.ts",
+            "src/types/global.d.ts"
+          ]
+        },
+        {
+          "package": "..",
+          "occurrences": 15,
+          "paths": [
+            "../../node_modules/expo-status-bar/build/StatusBar.d.ts",
+            "../../node_modules/react/index.js",
+            "../../node_modules/react-native/types/index.d.ts",
+            "../../node_modules/react-native-gesture-handler/lib/commonjs/index.js",
+            "../../node_modules/react-native-safe-area-context/lib/commonjs/index.js",
+            "../../node_modules/expo-constants/build/Constants.d.ts",
+            "../../node_modules/@react-navigation/native/lib/typescript/src/index.d.ts",
+            "../../node_modules/@react-navigation/stack/lib/typescript/src/index.d.ts",
+            "../../node_modules/react-error-boundary/dist/react-error-boundary.js",
+            "../../node_modules/@react-native-async-storage/async-storage/lib/commonjs/index.js",
+            "../../node_modules/expo-location/build/index.js",
+            "../../node_modules/react-native-maps/src/index.ts",
+            "../../node_modules/@react-native-async-storage/async-storage/jest/async-storage-mock.js",
+            "../../node_modules/@testing-library/react-hooks/lib/index.js",
+            "../../node_modules/react-native-gesture-handler/jestSetup.js"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "metro-optimization",
+      "priority": "medium",
+      "title": "Metro bundler optimization opportunities",
+      "description": "Consider implementing advanced Metro configurations for better tree shaking",
+      "impact": "Medium - improved dead code elimination"
+    }
+  ]
+}

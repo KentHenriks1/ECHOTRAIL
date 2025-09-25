@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Suppress experimental API warnings from react-native-maps -->
+    <issue id="ExperimentalPropertyAnnotation" severity="ignore">
+        <ignore path="**/react-native-maps/**" />
+    </issue>
+    
+    <issue id="NewApi" severity="ignore">
+        <ignore path="**/react-native-maps/**" />
+    </issue>
+    
+    <issue id="UnstableApiUsage" severity="ignore">
+        <ignore path="**/react-native-maps/**" />
+    </issue>
+    
+    <issue id="ExperimentalGetter" severity="ignore">
+        <ignore path="**/react-native-maps/**" />
+    </issue>
+    
+    <issue id="ExperimentalSetter" severity="ignore">
+        <ignore path="**/react-native-maps/**" />
+    </issue>
+    
+    <!-- Suppress common React Native lint warnings -->
+    <issue id="GradleCompatible" severity="ignore" />
+    <issue id="GradleDependency" severity="ignore" />
+    <issue id="OldTargetApi" severity="ignore" />
+    
+    <!-- Allow missing launcher icons during development -->
+    <issue id="MissingApplicationIcon" severity="ignore" />
+    
+    <!-- Suppress warnings about using HTTP in development -->
+    <issue id="InsecureBaseConfiguration" severity="ignore" />
+</lint>

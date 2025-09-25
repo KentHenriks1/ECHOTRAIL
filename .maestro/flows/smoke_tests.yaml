@@ -1,0 +1,106 @@
+appId: com.echotrail.app
+tags:
+  - smoke
+  - basic-functionality
+  - navigation
+name: Smoke Test Suite
+---
+# Test: App Launch and Navigation
+- launchApp
+- assertVisible: "Welcome to EchoTrail"
+- assertVisible: "Sign In"
+- assertVisible: "Sign Up"
+- tapOn: "Sign In"
+- assertVisible: "Email"
+- assertVisible: "Password"
+- goBack
+- assertVisible: "Welcome to EchoTrail"
+
+---
+# Test: Bottom Navigation
+- launchApp
+- runFlow: auth_flow.yaml:login
+- assertVisible: "Trails"
+- assertVisible: "Recording"
+- assertVisible: "Discover"
+- assertVisible: "Settings"
+- tapOn: "Recording"
+- assertVisible: "Start Recording"
+- tapOn: "Discover"
+- assertVisible: "Popular Trails"
+- tapOn: "Settings"
+- assertVisible: "Profile"
+- tapOn: "Trails"
+- assertVisible: "My Trails"
+
+---
+# Test: Settings Screen Accessibility
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Settings"
+- assertVisible: "Profile"
+- assertVisible: "Privacy"
+- assertVisible: "Notifications"
+- assertVisible: "Recording Settings"
+- assertVisible: "Data & Storage"
+- assertVisible: "About"
+
+---
+# Test: Profile Information Display
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Settings"
+- tapOn: "Profile"
+- assertVisible: "Name"
+- assertVisible: "Email"
+- assertVisible: "Member Since"
+- assertVisible: "Total Trails"
+- assertVisible: "Total Distance"
+
+---
+# Test: Trail List Display
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- assertVisible: "My Trails"
+- assertVisible: "Recent"
+- assertVisible: "All Time"
+-  # Check if trails exist or show empty state
+- assertVisible: "No trails yet|My Trail"
+
+---
+# Test: Search Functionality
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Discover"
+- assertVisible: "Search"
+- tapOn: "Search"
+- inputText: "hiking"
+- assertVisible: "Search Results"
+
+---
+# Test: Offline Indicator
+- launchApp
+- runFlow: auth_flow.yaml:login
+-  # Simulate network disconnection
+- assertVisible: "Offline Mode"
+- assertVisible: "Some features unavailable"
+
+---
+# Test: App Version and Info
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Settings"
+- tapOn: "About"
+- assertVisible: "Version"
+- assertVisible: "Build"
+- assertVisible: "Privacy Policy"
+- assertVisible: "Terms of Service"
+
+---
+# Test: Quick Actions
+- launchApp
+- runFlow: auth_flow.yaml:login
+- longPressOn: "EchoTrail" # App icon for quick actions
+- assertVisible: "Start Recording"
+- assertVisible: "View Trails"

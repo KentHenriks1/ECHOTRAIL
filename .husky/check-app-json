@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+# Sjekk om app.json er blitt endret og hvis native mapper ikke ble endret
+# Gi en advarsel om at synkronisering kan være nødvendig
+
+if git diff --name-only --cached | grep -q "^app\.json$"; then
+  # app.json er blitt endret i denne committen
+  
+  if ! git diff --name-only --cached | grep -qE "^(android/|ios/)"; then
+    # Men ingen native mapper er endret
+    
+    echo "⚠️  ADVARSEL: Du har endret app.json men ikke native mapper."
+    echo ""
+    echo "Hvis du endret noen av disse feltene:"
+    echo "  - orientation, icon, userInterfaceStyle, splash"
+    echo "  - ios, android, plugins, scheme"
+    echo ""
+    echo "Må du synkronisere til native mapper:"
+    echo "  npm run sync-native"
+    echo ""
+    echo "Eller fortsett hvis du bare endret andre felter."
+    echo "Se README_NATIVE_SYNC.md for mer info."
+    echo ""
+  fi
+fi
+
+exit 0

@@ -1,0 +1,139 @@
+{
+  "cli": {
+    "appVersionSource": "remote",
+    "version": ">= 16.19.0",
+    "promptToConfigurePushNotifications": false
+  },
+  "build": {
+    "development": {
+      "channel": "development",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug",
+        "simulator": true
+      },
+      "env": {
+        "ENVIRONMENT": "development",
+        "EXPO_PUBLIC_API_BASE_URL": "http://localhost:3001",
+        "EXPO_PUBLIC_ENABLE_MICROSOFT_AUTH": "false",
+        "EXPO_DEBUG": "true",
+        "NEON_DATABASE_URL": "postgresql://echotrail_dev_user:password@localhost:5432/echotrail_dev",
+        "EXPO_PUBLIC_AI_STORIES_ENABLED": "true",
+        "EXPO_PUBLIC_VECTOR_SEARCH_ENABLED": "true",
+        "EXPO_PUBLIC_TTS_CACHE_ENABLED": "true",
+        "OPENAI_API_KEY": "sk-dev-key",
+        "NEON_AI_AGENT_ENABLED": "true"
+      }
+    },
+    "preview": {
+      "channel": "preview", 
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "env": {
+        "ENVIRONMENT": "preview",
+        "EXPO_PUBLIC_API_BASE_URL": "https://echotrail-api-preview.vercel.app",
+        "EXPO_PUBLIC_ENABLE_MICROSOFT_AUTH": "true",
+        "NEON_DATABASE_URL": "EAS_SECRET:DATABASE_URL",
+        "EXPO_PUBLIC_AI_STORIES_ENABLED": "true",
+        "EXPO_PUBLIC_VECTOR_SEARCH_ENABLED": "true",
+        "EXPO_PUBLIC_TTS_CACHE_ENABLED": "true",
+        "OPENAI_API_KEY": "EAS_SECRET:OPENAI_API_KEY",
+        "NEON_AI_AGENT_ENABLED": "true",
+        "NEON_AI_AGENT_API_KEY": "EAS_SECRET:NEON_AI_AGENT_API_KEY"
+      }
+    },
+    "staging": {
+      "channel": "staging",
+      "distribution": "internal", 
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "env": {
+        "ENVIRONMENT": "staging",
+        "EXPO_PUBLIC_API_BASE_URL": "https://echotrail-api-staging.vercel.app", 
+        "EXPO_PUBLIC_ENABLE_MICROSOFT_AUTH": "true"
+      }
+    },
+    "beta": {
+      "channel": "beta",
+      "distribution": "internal",
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "autoIncrement": true,
+      "env": {
+        "ENVIRONMENT": "beta",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api-beta.echotrail.com",
+        "EXPO_PUBLIC_ENABLE_MICROSOFT_AUTH": "true"
+      }
+    },
+    "production": {
+      "channel": "production",
+      "distribution": "store",
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "autoIncrement": true,
+      "env": {
+        "ENVIRONMENT": "production",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api.echotrail.com",
+        "EXPO_PUBLIC_ENABLE_MICROSOFT_AUTH": "true",
+        "NEON_DATABASE_URL": "EAS_SECRET:DATABASE_URL",
+        "EXPO_PUBLIC_AI_STORIES_ENABLED": "true",
+        "EXPO_PUBLIC_VECTOR_SEARCH_ENABLED": "true",
+        "EXPO_PUBLIC_TTS_CACHE_ENABLED": "true",
+        "OPENAI_API_KEY": "EAS_SECRET:OPENAI_API_KEY",
+        "NEON_AI_AGENT_ENABLED": "true",
+        "NEON_AI_AGENT_API_KEY": "EAS_SECRET:NEON_AI_AGENT_API_KEY"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./android-service-account.json",
+        "track": "internal",
+        "releaseStatus": "inProgress",
+        "rollout": 0.1
+      },
+      "ios": {
+        "appleId": "kent@zentric.no",
+        "ascAppId": "TBD",
+        "appleTeamId": "TBD"
+      }
+    },
+    "beta": {
+      "android": {
+        "serviceAccountKeyPath": "./android-service-account.json",
+        "track": "beta"
+      },
+      "ios": {
+        "appleId": "kent@zentric.no",
+        "ascAppId": "TBD", 
+        "appleTeamId": "TBD"
+      }
+    }
+  }
+}

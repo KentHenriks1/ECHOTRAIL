@@ -1,0 +1,96 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with EchoTrail
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees:
+  - KentHenriks1
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+        Thank you for helping improve EchoTrail! Please provide as much detail as possible.
+
+  - type: input
+    id: app_version
+    attributes:
+      label: App Version
+      description: What version of EchoTrail are you using?
+      placeholder: "1.0.0-beta.1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Which platform are you experiencing this issue on?
+      options:
+        - iOS
+        - Android
+        - Both
+        - Web (Expo Go)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug
+      placeholder: "The app crashes when I try to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: device_info
+    attributes:
+      label: Device Information
+      description: Device details (model, OS version, etc.)
+      placeholder: |
+        - Device: iPhone 15 Pro
+        - OS: iOS 17.1
+        - EchoTrail version: 1.0.0-beta.1
+        - Expo SDK: 49.0.0
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs
+      description: Any relevant error messages or logs
+      render: text
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem

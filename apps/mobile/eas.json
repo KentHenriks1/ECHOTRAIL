@@ -1,0 +1,129 @@
+{
+  "cli": {
+    "appVersionSource": "remote",
+    "version": ">= 16.0.0",
+    "promptToConfigurePushNotifications": false
+  },
+  "build": {
+    "development": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug",
+        "developmentClient": true,
+        "resourceClass": "medium"
+      },
+      "ios": {
+        "buildConfiguration": "Debug",
+        "developmentClient": true,
+        "resourceClass": "medium"
+      },
+      "channel": "development",
+      "env": {
+        "API_BASE_URL": "https://echotrail-api-zentric-as.vercel.app",
+        "ENVIRONMENT": "development",
+        "NODE_ENV": "development"
+      },
+      "cache": {
+        "disabled": false
+      }
+    },
+    "preview": {
+      "node": "22.8.0",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease",
+        "resourceClass": "medium"
+      },
+      "ios": {
+        "buildConfiguration": "Release",
+        "resourceClass": "medium"
+      },
+      "channel": "preview",
+      "env": {
+        "API_BASE_URL": "https://echotrail-api-zentric-as.vercel.app",
+        "ENVIRONMENT": "production",
+        "NODE_ENV": "production"
+      },
+      "cache": {
+        "disabled": true
+      }
+    },
+    "beta": {
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease",
+        "resourceClass": "medium"
+      },
+      "ios": {
+        "buildConfiguration": "Release",
+        "resourceClass": "medium"
+      },
+      "autoIncrement": true,
+      "channel": "beta",
+      "env": {
+        "API_BASE_URL": "https://echotrail-api-zentric-as.vercel.app",
+        "ENVIRONMENT": "production",
+        "NODE_ENV": "production"
+      },
+      "cache": {
+        "disabled": false
+      }
+    },
+    "apk": {
+      "android": {
+        "buildType": "apk",
+        "distribution": "internal"
+      },
+      "env": {
+        "API_BASE_URL": "https://echotrail-api-zentric-as.vercel.app",
+        "ENVIRONMENT": "production",
+        "NODE_ENV": "production"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease",
+        "resourceClass": "medium"
+      },
+      "ios": {
+        "buildConfiguration": "Release",
+        "resourceClass": "medium"
+      },
+      "autoIncrement": true,
+      "channel": "production",
+      "env": {
+        "API_BASE_URL": "https://echotrail-api-zentric-as.vercel.app",
+        "ENVIRONMENT": "production",
+        "NODE_ENV": "production"
+      },
+      "cache": {
+        "disabled": false
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      },
+      "ios": {
+        "appleId": "kent@zentric.no",
+        "ascAppId": "1234567890",
+        "appleTeamId": "ABCDEFGHIJ"
+      }
+    },
+    "beta": {
+      "android": {
+        "track": "beta",
+        "releaseStatus": "draft"
+      },
+      "ios": {
+        "appleId": "kent@zentric.no",
+        "ascAppId": "1234567890",
+        "appleTeamId": "ABCDEFGHIJ"
+      }
+    }
+  }
+}

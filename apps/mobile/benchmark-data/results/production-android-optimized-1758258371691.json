@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-09-19T05:06:11.691Z",
+  "buildId": "production-android-optimized-1758258371691",
+  "configuration": {
+    "name": "production-android-optimized",
+    "platform": "android",
+    "environment": "production",
+    "optimizations": {
+      "minification": true,
+      "treeShaking": true
+    }
+  },
+  "metrics": {
+    "buildTime": {
+      "total": 26193.916699999998,
+      "phases": {
+        "resolution": 2619.39167,
+        "transformation": 18335.74169,
+        "serialization": 3929.0875049999995,
+        "minification": 1309.695835
+      }
+    },
+    "bundleSize": {
+      "total": 1676440,
+      "gzipped": 502932,
+      "modules": 0,
+      "assets": 0
+    },
+    "memoryUsage": {
+      "peak": 7372984,
+      "average": 7374704,
+      "final": 7374944
+    },
+    "optimization": {
+      "treeShakingEffectiveness": 82.9938565256515,
+      "deadCodeEliminated": 0,
+      "modulesOptimized": 0,
+      "compressionRatio": 31.793883818119745
+    }
+  },
+  "environment": {
+    "nodeVersion": "v20.19.5",
+    "metroVersion": "0.81.0",
+    "platform": "win32",
+    "os": "win32 x64",
+    "cpuCores": 16,
+    "totalMemory": 68388872192
+  }
+}

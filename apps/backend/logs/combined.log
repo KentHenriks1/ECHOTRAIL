@@ -1,0 +1,631 @@
+2025-09-18 17:40:29:4029 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 17:40:33:4033 [[31merror[39m]: [31m[DatabaseSeed] Error seeding database:[39m {
+  "error": {
+    "message": "\nInvalid `prisma.user.upsert()` invocation in\nC:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:19:37\n\n  16 try {\n  17   // Create admin user\n  18   const adminPassword = await bcrypt.hash('admin123!@#', 12);\n→ 19   const admin = await prisma.user.upsert(\nThe column `name` does not exist in the current database.",
+    "stack": "PrismaClientKnownRequestError: \nInvalid `prisma.user.upsert()` invocation in\nC:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:19:37\n\n  16 try {\n  17   // Create admin user\n  18   const adminPassword = await bcrypt.hash('admin123!@#', 12);\n→ 19   const admin = await prisma.user.upsert(\nThe column `name` does not exist in the current database.\n    at $n.handleRequestError (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:7315)\n    at $n.handleAndLogRequestError (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6623)\n    at $n.request (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6307)\n    at async l (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:130:9633)\n    at async main (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:19:19)",
+    "name": "PrismaClientKnownRequestError"
+  }
+}
+2025-09-18 18:16:06:166 [[32minfo[39m]: [32m[UserSchemaMigration] Starting User schema migration...[39m
+2025-09-18 18:16:06:166 [[32minfo[39m]: [32m[UserSchemaMigration] Checking current database structure...[39m
+2025-09-18 18:16:06:166 [[32minfo[39m]: [32m[UserSchemaMigration] Adding missing columns...[39m
+2025-09-18 18:16:06:166 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "name" VARCHAR(255)[39m
+2025-09-18 18:16:06:166 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "password" VARCHAR(255)[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "role" VARCHAR(20) DEFAULT 'USER'[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "units" VARCHAR(20) DEFAULT 'METRIC'[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "language" VARCHAR(10) DEFAULT 'EN'[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "mapStyle" VARCHAR(50) DEFAULT 'standard'[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ADD COLUMN IF NOT EXISTS "privacyLevel" VARCHAR(20) DEFAULT 'PUBLIC'[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Updating existing users with default values...[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Setting column constraints...[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ALTER COLUMN "name" SET NOT NULL[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ALTER COLUMN "password" SET NOT NULL[39m
+2025-09-18 18:16:07:167 [[32minfo[39m]: [32m[UserSchemaMigration] Creating enum types...[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] Converting columns to use enums...[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ALTER COLUMN "role" TYPE "Role" USING "role"::"Role"[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ALTER COLUMN "units" TYPE "Units" USING "units"::"Units"[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ALTER COLUMN "language" TYPE "Language" USING "language"::"Language"[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] Executed: ALTER TABLE users ALTER COLUMN "privacyLevel" TYPE "PrivacyLevel" USING "privacyLevel"::"PrivacyLevel"[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] Migration completed successfully![39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] [39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] IMPORTANT NOTES:[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] ================[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] 1. Existing users have been given a temporary password: "ChangeMe123!@#"[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] 2. Users should reset their passwords on next login[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] 3. The display_name field is preserved alongside the new name field[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] 4. All user preferences have been set to default values[39m
+2025-09-18 18:16:08:168 [[32minfo[39m]: [32m[UserSchemaMigration] [39m
+2025-09-18 18:16:27:1627 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:16:28:1628 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:16:29:1629 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:16:29:1629 [[31merror[39m]: [31m[DatabaseSeed] Error seeding database:[39m {
+  "error": {
+    "message": "\nInvalid `prisma.story.upsert()` invocation in\nC:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:54:38\n\n  51 logger.info(`Demo user created/updated: ${demo.email}`);\n  52 \n  53 // Create sample story\n→ 54 const story = await prisma.story.upsert({\n       where: {\n         id: \"demo-story-oslo\"\n       },\n       update: {},\n       create: {\n         id: \"demo-story-oslo\",\n         title: \"The Royal Palace Gardens\",\n         content: \"In the heart of Oslo, where the Royal Palace stands proudly, there once lived a gardener named Erik who discovered something extraordinary. Legend says that in 1880, while tending to the palace gardens, Erik found a hidden grove where the trees whispered stories of ancient kings and queens.\\n\\nEvery morning, as the sun rose over the Oslofjord, Erik would listen to these whispers and learn about the secret meetings that took place in these very gardens. It was here that Crown Prince Oscar would meet with common folk, breaking royal protocol to understand the lives of his future subjects.\\n\\nThe old oak tree, still standing today, is said to hold the memories of these conversations. Visitors who sit quietly beneath its branches sometimes report hearing faint echoes of laughter and earnest discussions about justice, equality, and the future of Norway.\",\n         location: \"Royal Palace Gardens, Oslo\",\n         latitude: 59.9139,\n         longitude: 10.7522,\n         tags: [\n           \"historical\",\n           \"royal\",\n           \"oslo\",\n           \"gardens\",\n           \"folklore\"\n         ],\n         category: \"HISTORICAL\",\n         mood: \"inspiring\",\n         estimatedReadTime: 2,\n         prompt: \"Generate a historical story about the Royal Palace in Oslo, focusing on human connections and Norwegian culture\",\n         model: \"gpt-4o-mini\",\n         userId: \"9946dd2a-e0a8-48f5-a0e7-01cd172fc44b\",\n     +   poi_id: String\n       }\n     })\n\nArgument `poi_id` is missing.",
+    "stack": "PrismaClientValidationError: \nInvalid `prisma.story.upsert()` invocation in\nC:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:54:38\n\n  51 logger.info(`Demo user created/updated: ${demo.email}`);\n  52 \n  53 // Create sample story\n→ 54 const story = await prisma.story.upsert({\n       where: {\n         id: \"demo-story-oslo\"\n       },\n       update: {},\n       create: {\n         id: \"demo-story-oslo\",\n         title: \"The Royal Palace Gardens\",\n         content: \"In the heart of Oslo, where the Royal Palace stands proudly, there once lived a gardener named Erik who discovered something extraordinary. Legend says that in 1880, while tending to the palace gardens, Erik found a hidden grove where the trees whispered stories of ancient kings and queens.\\n\\nEvery morning, as the sun rose over the Oslofjord, Erik would listen to these whispers and learn about the secret meetings that took place in these very gardens. It was here that Crown Prince Oscar would meet with common folk, breaking royal protocol to understand the lives of his future subjects.\\n\\nThe old oak tree, still standing today, is said to hold the memories of these conversations. Visitors who sit quietly beneath its branches sometimes report hearing faint echoes of laughter and earnest discussions about justice, equality, and the future of Norway.\",\n         location: \"Royal Palace Gardens, Oslo\",\n         latitude: 59.9139,\n         longitude: 10.7522,\n         tags: [\n           \"historical\",\n           \"royal\",\n           \"oslo\",\n           \"gardens\",\n           \"folklore\"\n         ],\n         category: \"HISTORICAL\",\n         mood: \"inspiring\",\n         estimatedReadTime: 2,\n         prompt: \"Generate a historical story about the Royal Palace in Oslo, focusing on human connections and Norwegian culture\",\n         model: \"gpt-4o-mini\",\n         userId: \"9946dd2a-e0a8-48f5-a0e7-01cd172fc44b\",\n     +   poi_id: String\n       }\n     })\n\nArgument `poi_id` is missing.\n    at wn (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:29:1363)\n    at $n.handleRequestError (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6958)\n    at $n.handleAndLogRequestError (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6623)\n    at $n.request (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6307)\n    at async l (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:130:9633)\n    at async main (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:54:19)",
+    "name": "PrismaClientValidationError"
+  }
+}
+2025-09-18 18:17:04:174 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:17:05:175 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:17:06:176 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:17:06:176 [[31merror[39m]: [31m[DatabaseSeed] Error seeding database:[39m {
+  "error": {
+    "message": "\nInvalid `prisma.locations.upsert()` invocation in\nC:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:54:45\n\n  51 logger.info(`Demo user created/updated: ${demo.email}`);\n  52 \n  53 // First, create a location (POI) for the story\n→ 54 const location = await prisma.locations.upsert(\nThe table `public.locations` does not exist in the current database.",
+    "stack": "PrismaClientKnownRequestError: \nInvalid `prisma.locations.upsert()` invocation in\nC:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:54:45\n\n  51 logger.info(`Demo user created/updated: ${demo.email}`);\n  52 \n  53 // First, create a location (POI) for the story\n→ 54 const location = await prisma.locations.upsert(\nThe table `public.locations` does not exist in the current database.\n    at $n.handleRequestError (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:7315)\n    at $n.handleAndLogRequestError (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6623)\n    at $n.request (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:121:6307)\n    at async l (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\@prisma\\client\\runtime\\library.js:130:9633)\n    at async main (C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\scripts\\seed.ts:54:22)",
+    "name": "PrismaClientKnownRequestError"
+  }
+}
+2025-09-18 18:18:44:1844 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:18:49:1849 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:18:51:1851 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] Demo story created/updated: The Royal Palace Gardens[39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] Database seeding completed successfully![39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] Demo Credentials:[39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] ================[39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] Admin: admin@echotrail.app / admin123!@#[39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] Demo User: demo@echotrail.app / demo123!@#[39m
+2025-09-18 18:18:52:1852 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:19:47:1947 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:19:52:1952 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:19:54:1954 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] Demo story created/updated: The Royal Palace Gardens[39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] Database seeding completed successfully![39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] Demo Credentials:[39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] ================[39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] Admin: admin@echotrail.app / admin123!@#[39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] Demo User: demo@echotrail.app / demo123!@#[39m
+2025-09-18 18:19:56:1956 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:20:50:2050 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:20:55:2055 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:20:57:2057 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] Demo story created/updated: The Royal Palace Gardens[39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] Database seeding completed successfully![39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] Demo Credentials:[39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] ================[39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] Admin: admin@echotrail.app / admin123!@#[39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] Demo User: demo@echotrail.app / demo123!@#[39m
+2025-09-18 18:20:58:2058 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:32:57:3257 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Demo story created/updated: The Royal Palace Gardens[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Database seeding completed successfully![39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Demo Credentials:[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] ================[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Admin: admin@echotrail.app / admin123!@#[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] Demo User: demo@echotrail.app / demo123!@#[39m
+2025-09-18 18:32:59:3259 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:39:08:398 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Demo story created/updated: The Royal Palace Gardens[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Database seeding completed successfully![39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Demo Credentials:[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] ================[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Admin: admin@echotrail.app / admin123!@#[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] Demo User: demo@echotrail.app / demo123!@#[39m
+2025-09-18 18:39:11:3911 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:40:13:4013 [[32minfo[39m]: [32m[DatabaseSeed] Starting database seeding...[39m
+2025-09-18 18:40:14:4014 [[32minfo[39m]: [32m[DatabaseSeed] Admin user created/updated: admin@echotrail.app[39m
+2025-09-18 18:40:14:4014 [[32minfo[39m]: [32m[DatabaseSeed] Demo user created/updated: demo@echotrail.app[39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] Demo story created/updated: The Royal Palace Gardens[39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] Database seeding completed successfully![39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] Demo Credentials:[39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] ================[39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] Admin: admin@echotrail.app / admin123!@#[39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] Demo User: demo@echotrail.app / demo123!@#[39m
+2025-09-18 18:40:15:4015 [[32minfo[39m]: [32m[DatabaseSeed] [39m
+2025-09-18 18:42:37:4237 [[32minfo[39m]: [32mConfiguration loaded successfully[39m {
+  "port": 3000,
+  "nodeEnv": "development",
+  "apiVersion": "v1",
+  "allowedOrigins": [
+    "http://localhost:8081",
+    "http://192.168.1.*:8081",
+    "exp://192.168.1.*:8081"
+  ],
+  "logLevel": "debug",
+  "hasOpenAI": true,
+  "hasGoogleMaps": true,
+  "hasMapbox": true,
+  "hasSmtp": false
+}
+2025-09-18 18:42:39:4239 [[32minfo[39m]: [32mEchoTrail API Server started[39m {
+  "port": 3000,
+  "environment": "development",
+  "version": "1.0.0",
+  "cors": [
+    "http://localhost:8081",
+    "http://192.168.1.*:8081",
+    "exp://192.168.1.*:8081"
+  ]
+}
+2025-09-18 18:42:39:4239 [[32minfo[39m]: [32mHealth check: http://localhost:3000/health[39m
+2025-09-18 18:42:39:4239 [[32minfo[39m]: [32mAPI endpoint: http://localhost:3000/v1[39m
+2025-09-18 18:59:26:5926 [[31merror[39m]: [31mEnvironment validation failed:[39m {
+  "errors": [
+    "SMTP_HOST: \"SMTP_HOST\" is not allowed to be empty",
+    "SMTP_USER: \"SMTP_USER\" is not allowed to be empty",
+    "SMTP_PASS: \"SMTP_PASS\" is not allowed to be empty"
+  ],
+  "received": [
+    "DATABASE_URL",
+    "JWT_EXPIRES_IN",
+    "JWT_SECRET",
+    "NODE_ENV",
+    "PORT"
+  ]
+}
+2025-09-18 19:05:51:551 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:05:51:551 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:05:51:551 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:05:51:551 [[33mwarn[39m]: [33mService configuration issues detected:[39m {
+  "issues": [
+    "JWT_SECRET should be at least 64 characters for production security"
+  ]
+}
+2025-09-18 19:05:51:551 [[32minfo[39m]: [32m🚀 EchoTrail Backend Server Started[39m {
+  "port": 3001,
+  "environment": "development",
+  "nodeVersion": "v20.18.1",
+  "pid": 112012
+}
+2025-09-18 19:05:51:551 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:05:51:551 [[32minfo[39m]: [32m📋 Server Configuration[39m {
+  "server": {
+    "port": 3001,
+    "environment": "development",
+    "apiVersion": "v1"
+  },
+  "database": {
+    "connected": true,
+    "url": "postgresql://neondb_owner:***@ep-frosty-mud-a924gwbk-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
+  },
+  "security": {
+    "jwtConfigured": true,
+    "jwtExpiry": "24h"
+  },
+  "services": {
+    "openAI": true,
+    "email": false,
+    "redis": false
+  },
+  "limits": {
+    "rateLimitWindow": 900000,
+    "rateLimitMax": 100,
+    "maxFileSize": 5242880
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8081",
+      "http://192.168.1.*:8081",
+      "exp://192.168.1.*:8081"
+    ]
+  }
+}
+2025-09-18 19:24:23:2423 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:24:23:2423 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:24:23:2423 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:24:23:2423 [[33mwarn[39m]: [33mService configuration issues detected:[39m {
+  "issues": [
+    "JWT_SECRET should be at least 64 characters for production security"
+  ]
+}
+2025-09-18 19:24:23:2423 [[32minfo[39m]: [32m🚀 EchoTrail Backend Server Started[39m {
+  "port": 3001,
+  "environment": "development",
+  "nodeVersion": "v20.18.1",
+  "pid": 46560
+}
+2025-09-18 19:24:23:2423 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:24:23:2423 [[32minfo[39m]: [32m📋 Server Configuration[39m {
+  "server": {
+    "port": 3001,
+    "environment": "development",
+    "apiVersion": "v1"
+  },
+  "database": {
+    "connected": true,
+    "url": "postgresql://neondb_owner:***@ep-frosty-mud-a924gwbk-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
+  },
+  "security": {
+    "jwtConfigured": true,
+    "jwtExpiry": "24h"
+  },
+  "services": {
+    "openAI": true,
+    "email": false,
+    "redis": false
+  },
+  "limits": {
+    "rateLimitWindow": 900000,
+    "rateLimitMax": 100,
+    "maxFileSize": 5242880
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8081",
+      "http://192.168.1.*:8081",
+      "exp://192.168.1.*:8081"
+    ]
+  }
+}
+2025-09-18 19:54:52:5452 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:54:53:5453 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:54:53:5453 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:54:53:5453 [[33mwarn[39m]: [33mService configuration issues detected:[39m {
+  "issues": [
+    "JWT_SECRET should be at least 64 characters for production security"
+  ]
+}
+2025-09-18 19:54:53:5453 [[32minfo[39m]: [32m🚀 EchoTrail Backend Server Started[39m {
+  "port": 3001,
+  "environment": "development",
+  "nodeVersion": "v20.18.1",
+  "pid": 15416
+}
+2025-09-18 19:54:53:5453 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 19:54:53:5453 [[32minfo[39m]: [32m📋 Server Configuration[39m {
+  "server": {
+    "port": 3001,
+    "environment": "development",
+    "apiVersion": "v1"
+  },
+  "database": {
+    "connected": true,
+    "url": "postgresql://neondb_owner:***@ep-frosty-mud-a924gwbk-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
+  },
+  "security": {
+    "jwtConfigured": true,
+    "jwtExpiry": "24h"
+  },
+  "services": {
+    "openAI": true,
+    "email": false,
+    "redis": false
+  },
+  "limits": {
+    "rateLimitWindow": 900000,
+    "rateLimitMax": 100,
+    "maxFileSize": 5242880
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8081",
+      "http://192.168.1.*:8081",
+      "exp://192.168.1.*:8081"
+    ]
+  }
+}
+2025-09-18 20:05:29:529 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:05:38:538 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:05:38:538 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:05:38:538 [[33mwarn[39m]: [33mService configuration issues detected:[39m {
+  "issues": [
+    "JWT_SECRET should be at least 64 characters for production security"
+  ]
+}
+2025-09-18 20:05:38:538 [[32minfo[39m]: [32m🚀 EchoTrail Backend Server Started[39m {
+  "port": 3001,
+  "environment": "development",
+  "nodeVersion": "v20.18.1",
+  "pid": 44952
+}
+2025-09-18 20:05:38:538 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:05:38:538 [[32minfo[39m]: [32m📋 Server Configuration[39m {
+  "server": {
+    "port": 3001,
+    "environment": "development",
+    "apiVersion": "v1"
+  },
+  "database": {
+    "connected": true,
+    "url": "postgresql://neondb_owner:***@ep-frosty-mud-a924gwbk-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
+  },
+  "security": {
+    "jwtConfigured": true,
+    "jwtExpiry": "24h"
+  },
+  "services": {
+    "openAI": true,
+    "email": false,
+    "redis": false
+  },
+  "limits": {
+    "rateLimitWindow": 900000,
+    "rateLimitMax": 100,
+    "maxFileSize": 5242880
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8081",
+      "http://192.168.1.*:8081",
+      "exp://192.168.1.*:8081"
+    ]
+  }
+}
+2025-09-18 20:06:30:630 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:06:30:630 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:06:30:630 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:06:30:630 [[33mwarn[39m]: [33mService configuration issues detected:[39m {
+  "issues": [
+    "JWT_SECRET should be at least 64 characters for production security"
+  ]
+}
+2025-09-18 20:06:30:630 [[32minfo[39m]: [32m🚀 EchoTrail Backend Server Started[39m {
+  "port": 3001,
+  "environment": "development",
+  "nodeVersion": "v20.18.1",
+  "pid": 107948
+}
+2025-09-18 20:06:30:630 [[32minfo[39m]: [32mEnvironment validation successful[39m {
+  "nodeEnv": "development",
+  "port": 3001,
+  "apiVersion": "v1",
+  "hasDatabase": true,
+  "hasJwtSecret": true,
+  "hasOpenAI": true,
+  "hasEmail": false,
+  "hasRedis": false
+}
+2025-09-18 20:06:30:630 [[32minfo[39m]: [32m📋 Server Configuration[39m {
+  "server": {
+    "port": 3001,
+    "environment": "development",
+    "apiVersion": "v1"
+  },
+  "database": {
+    "connected": true,
+    "url": "postgresql://neondb_owner:***@ep-frosty-mud-a924gwbk-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
+  },
+  "security": {
+    "jwtConfigured": true,
+    "jwtExpiry": "24h"
+  },
+  "services": {
+    "openAI": true,
+    "email": false,
+    "redis": false
+  },
+  "limits": {
+    "rateLimitWindow": 900000,
+    "rateLimitMax": 100,
+    "maxFileSize": 5242880
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8081",
+      "http://192.168.1.*:8081",
+      "exp://192.168.1.*:8081"
+    ]
+  }
+}
+2025-09-18 20:06:50:650 [[32minfo[39m]: [32mRequest completed[39m {
+  "method": "GET",
+  "path": "/api/v1",
+  "statusCode": 200,
+  "duration": "6ms",
+  "ip": "::1",
+  "userAgent": "curl/8.14.1"
+}
+2025-09-18 20:07:02:72 [[32minfo[39m]: [32m[MicrosoftRoutes] Microsoft OAuth login initiated[39m {
+  "appContext": "echotrail",
+  "ip": "::1"
+}
+2025-09-18 20:07:03:73 [[33mwarn[39m]: [33mRequest completed[39m {
+  "method": "GET",
+  "path": "/login",
+  "statusCode": 401,
+  "duration": "1540ms",
+  "ip": "::1",
+  "userAgent": "curl/8.14.1"
+}
+2025-09-18 20:07:12:712 [[32minfo[39m]: [32m[MicrosoftRoutes] Microsoft OAuth login initiated[39m {
+  "appContext": "echotrail",
+  "ip": "::1"
+}
+2025-09-18 20:07:12:712 [[33mwarn[39m]: [33mRequest completed[39m {
+  "method": "GET",
+  "path": "/login",
+  "statusCode": 401,
+  "duration": "676ms",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+}
+2025-09-18 20:07:18:718 [[32minfo[39m]: [32m[MicrosoftRoutes] Microsoft OAuth login initiated[39m {
+  "appContext": "zentric",
+  "ip": "::1"
+}
+2025-09-18 20:07:19:719 [[33mwarn[39m]: [33mRequest completed[39m {
+  "method": "GET",
+  "path": "/login",
+  "statusCode": 401,
+  "duration": "574ms",
+  "ip": "::1",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
+}
+2025-09-18 20:07:27:727 [[32minfo[39m]: [32mRequest completed[39m {
+  "method": "GET",
+  "path": "/health",
+  "statusCode": 200,
+  "duration": "860ms",
+  "ip": "::1",
+  "userAgent": "curl/8.14.1"
+}

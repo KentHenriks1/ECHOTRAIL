@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoTrail Metro Performance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .dashboard {
+            padding: 2rem 0;
+        }
+
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .status-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-card h3 {
+            color: #475569;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .status-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-change {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-good { color: #10b981; }
+        .status-warning { color: #f59e0b; }
+        .status-critical { color: #ef4444; }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .chart-card h3 {
+            color: #475569;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .recent-builds {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .recent-builds h3 {
+            padding: 1.5rem;
+            color: #475569;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .builds-table {
+            width: 100%;
+        }
+
+        .builds-table th,
+        .builds-table td {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .builds-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .builds-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .build-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.success { background: #10b981; }
+        .status-dot.warning { background: #f59e0b; }
+        .status-dot.error { background: #ef4444; }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        select, button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: white;
+            color: #374151;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border: 1px solid #fecaca;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🚀 Metro Performance Dashboard</h1>
+            <p>Real-time monitoring of EchoTrail React Native build performance</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Time Range</label>
+                    <select id="timeRange">
+                        <option value="24h">Last 24 Hours</option>
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d" selected>Last 30 Days</option>
+                        <option value="90d">Last 90 Days</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Platform</label>
+                    <select id="platformFilter">
+                        <option value="all">All Platforms</option>
+                        <option value="android">Android</option>
+                        <option value="ios">iOS</option>
+                        <option value="web">Web</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Environment</label>
+                    <select id="environmentFilter">
+                        <option value="all">All Environments</option>
+                        <option value="development">Development</option>
+                        <option value="production">Production</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button id="refreshButton">🔄 Refresh</button>
+                </div>
+            </div>
+
+            <div id="errorContainer"></div>
+            <div id="loadingIndicator" class="loading">
+                <p>📊 Loading performance data...</p>
+            </div>
+
+            <div class="status-bar">
+                <div class="status-card">
+                    <h3>Average Build Time</h3>
+                    <div class="status-value" id="avgBuildTime">-</div>
+                    <div class="status-change" id="buildTimeChange">-</div>
+                </div>
+                <div class="status-card">
+                    <h3>Average Bundle Size</h3>
+                    <div class="status-value" id="avgBundleSize">-</div>
+                    <div class="status-change" id="bundleSizeChange">-</div>
+                </div>
+                <div class="status-card">
+                    <h3>Memory Usage</h3>
+                    <div class="status-value" id="avgMemoryUsage">-</div>
+                    <div class="status-change" id="memoryUsageChange">-</div>
+                </div>
+                <div class="status-card">
+                    <h3>Optimization Score</h3>
+                    <div class="status-value" id="avgOptScore">-</div>
+                    <div class="status-change" id="optScoreChange">-</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>📈 Build Time Trends</h3>
+                    <div class="chart-container">
+                        <canvas id="buildTimeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>📦 Bundle Size Trends</h3>
+                    <div class="chart-container">
+                        <canvas id="bundleSizeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>🧠 Memory Usage Trends</h3>
+                    <div class="chart-container">
+                        <canvas id="memoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>⚡ Optimization Score</h3>
+                    <div class="chart-container">
+                        <canvas id="optimizationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-builds">
+                <h3>📋 Recent Build Results</h3>
+                <div style="overflow-x: auto;">
+                    <table class="builds-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Platform</th>
+                                <th>Environment</th>
+                                <th>Build Time</th>
+                                <th>Bundle Size</th>
+                                <th>Memory</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentBuildsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>EchoTrail Metro Performance Dashboard v2.0 | Last updated: <span id="lastUpdateTime">-</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Dashboard State
+        let performanceData = [];
+        let charts = {};
+        let isLoading = false;
+
+        // DOM Elements
+        const elements = {
+            timeRange: document.getElementById('timeRange'),
+            platformFilter: document.getElementById('platformFilter'),
+            environmentFilter: document.getElementById('environmentFilter'),
+            refreshButton: document.getElementById('refreshButton'),
+            loadingIndicator: document.getElementById('loadingIndicator'),
+            errorContainer: document.getElementById('errorContainer'),
+            lastUpdateTime: document.getElementById('lastUpdateTime'),
+            
+            // Status cards
+            avgBuildTime: document.getElementById('avgBuildTime'),
+            buildTimeChange: document.getElementById('buildTimeChange'),
+            avgBundleSize: document.getElementById('avgBundleSize'),
+            bundleSizeChange: document.getElementById('bundleSizeChange'),
+            avgMemoryUsage: document.getElementById('avgMemoryUsage'),
+            memoryUsageChange: document.getElementById('memoryUsageChange'),
+            avgOptScore: document.getElementById('avgOptScore'),
+            optScoreChange: document.getElementById('optScoreChange'),
+            
+            // Table
+            recentBuildsTableBody: document.getElementById('recentBuildsTableBody'),
+        };
+
+        // Chart configurations
+        const chartConfigs = {
+            buildTime: {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Build Time (seconds)' }
+                        },
+                        x: {
+                            type: 'time',
+                            time: { unit: 'day' }
+                        }
+                    }
+                }
+            },
+            bundleSize: {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Bundle Size (MB)' }
+                        },
+                        x: {
+                            type: 'time',
+                            time: { unit: 'day' }
+                        }
+                    }
+                }
+            },
+            memory: {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Memory Usage (MB)' }
+                        },
+                        x: {
+                            type: 'time',
+                            time: { unit: 'day' }
+                        }
+                    }
+                }
+            },
+            optimization: {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            title: { display: true, text: 'Optimization Score' }
+                        },
+                        x: {
+                            type: 'time',
+                            time: { unit: 'day' }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Utility functions
+        function formatTime(ms) {
+            if (ms < 1000) return `${Math.round(ms)}ms`;
+            return `${Math.round(ms / 1000)}s`;
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return `${bytes}B`;
+            if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)}KB`;
+            return `${Math.round(bytes / 1024 / 1024 * 10) / 10}MB`;
+        }
+
+        function formatChange(current, previous) {
+            if (!previous || previous === 0) return '-';
+            const change = ((current - previous) / previous) * 100;
+            const prefix = change > 0 ? '+' : '';
+            const className = change > 0 ? 'status-critical' : change < 0 ? 'status-good' : '';
+            return `<span class="${className}">${prefix}${Math.round(change)}% vs prev period</span>`;
+        }
+
+        function getStatusClass(value, thresholds) {
+            if (value <= thresholds.good) return 'status-good';
+            if (value <= thresholds.warning) return 'status-warning';
+            return 'status-critical';
+        }
+
+        function showError(message) {
+            elements.errorContainer.innerHTML = `<div class="error">❌ ${message}</div>`;
+        }
+
+        function hideError() {
+            elements.errorContainer.innerHTML = '';
+        }
+
+        function setLoading(loading) {
+            isLoading = loading;
+            elements.loadingIndicator.style.display = loading ? 'block' : 'none';
+            elements.refreshButton.disabled = loading;
+        }
+
+        // Generate mock data for demo
+        function generateMockData(days = 30) {
+            const data = [];
+            const now = new Date();
+            const platforms = ['android', 'ios'];
+            const environments = ['development', 'production'];
+
+            for (let i = days; i >= 0; i--) {
+                const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+                
+                platforms.forEach(platform => {
+                    environments.forEach(environment => {
+                        // Add some builds per day
+                        for (let build = 0; build < Math.random() * 3 + 1; build++) {
+                            const buildDate = new Date(date.getTime() + Math.random() * 24 * 60 * 60 * 1000);
+                            
+                            data.push({
+                                timestamp: buildDate.toISOString(),
+                                platform,
+                                environment,
+                                buildTime: Math.random() * 120000 + 30000, // 30s to 2.5min
+                                bundleSize: Math.random() * 8000000 + 1000000, // 1MB to 9MB
+                                memoryUsage: Math.random() * 1500000000 + 500000000, // 500MB to 2GB
+                                optimizationScore: Math.random() * 40 + 60, // 60-100
+                                status: Math.random() > 0.9 ? 'error' : Math.random() > 0.7 ? 'warning' : 'success'
+                            });
+                        }
+                    });
+                });
+            }
+
+            return data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        }
+
+        // Load performance data
+        async function loadPerformanceData() {
+            setLoading(true);
+            hideError();
+
+            try {
+                // In a real implementation, this would fetch from an API
+                // For demo purposes, we'll generate mock data
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+                
+                performanceData = generateMockData(getDaysFromTimeRange());
+                
+                updateDashboard();
+                elements.lastUpdateTime.textContent = new Date().toLocaleString();
+                
+            } catch (error) {
+                console.error('Error loading performance data:', error);
+                showError('Failed to load performance data. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function getDaysFromTimeRange() {
+            const range = elements.timeRange.value;
+            switch (range) {
+                case '24h': return 1;
+                case '7d': return 7;
+                case '30d': return 30;
+                case '90d': return 90;
+                default: return 30;
+            }
+        }
+
+        // Filter data based on current filters
+        function getFilteredData() {
+            let filtered = performanceData;
+
+            const platform = elements.platformFilter.value;
+            if (platform !== 'all') {
+                filtered = filtered.filter(item => item.platform === platform);
+            }
+
+            const environment = elements.environmentFilter.value;
+            if (environment !== 'all') {
+                filtered = filtered.filter(item => item.environment === environment);
+            }
+
+            return filtered;
+        }
+
+        // Update dashboard with current data
+        function updateDashboard() {
+            const data = getFilteredData();
+            
+            updateStatusCards(data);
+            updateCharts(data);
+            updateRecentBuildsTable(data);
+        }
+
+        // Update status cards
+        function updateStatusCards(data) {
+            if (data.length === 0) {
+                Object.values(elements).forEach(el => {
+                    if (el && el.id && (el.id.includes('avg') || el.id.includes('Change'))) {
+                        el.textContent = '-';
+                    }
+                });
+                return;
+            }
+
+            // Calculate current period averages
+            const currentPeriod = data.slice(0, Math.floor(data.length / 2));
+            const previousPeriod = data.slice(Math.floor(data.length / 2));
+
+            const currentAvg = {
+                buildTime: currentPeriod.reduce((sum, item) => sum + item.buildTime, 0) / currentPeriod.length,
+                bundleSize: currentPeriod.reduce((sum, item) => sum + item.bundleSize, 0) / currentPeriod.length,
+                memoryUsage: currentPeriod.reduce((sum, item) => sum + item.memoryUsage, 0) / currentPeriod.length,
+                optimizationScore: currentPeriod.reduce((sum, item) => sum + item.optimizationScore, 0) / currentPeriod.length
+            };
+
+            const previousAvg = previousPeriod.length > 0 ? {
+                buildTime: previousPeriod.reduce((sum, item) => sum + item.buildTime, 0) / previousPeriod.length,
+                bundleSize: previousPeriod.reduce((sum, item) => sum + item.bundleSize, 0) / previousPeriod.length,
+                memoryUsage: previousPeriod.reduce((sum, item) => sum + item.memoryUsage, 0) / previousPeriod.length,
+                optimizationScore: previousPeriod.reduce((sum, item) => sum + item.optimizationScore, 0) / previousPeriod.length
+            } : null;
+
+            // Update values and changes
+            elements.avgBuildTime.textContent = formatTime(currentAvg.buildTime);
+            elements.avgBuildTime.className = 'status-value ' + getStatusClass(currentAvg.buildTime / 1000, { good: 60, warning: 180 });
+            elements.buildTimeChange.innerHTML = formatChange(currentAvg.buildTime, previousAvg?.buildTime);
+
+            elements.avgBundleSize.textContent = formatSize(currentAvg.bundleSize);
+            elements.avgBundleSize.className = 'status-value ' + getStatusClass(currentAvg.bundleSize / 1024 / 1024, { good: 2, warning: 5 });
+            elements.bundleSizeChange.innerHTML = formatChange(currentAvg.bundleSize, previousAvg?.bundleSize);
+
+            elements.avgMemoryUsage.textContent = formatSize(currentAvg.memoryUsage);
+            elements.avgMemoryUsage.className = 'status-value ' + getStatusClass(currentAvg.memoryUsage / 1024 / 1024 / 1024, { good: 1, warning: 2 });
+            elements.memoryUsageChange.innerHTML = formatChange(currentAvg.memoryUsage, previousAvg?.memoryUsage);
+
+            elements.avgOptScore.textContent = Math.round(currentAvg.optimizationScore);
+            elements.avgOptScore.className = 'status-value ' + (currentAvg.optimizationScore >= 80 ? 'status-good' : currentAvg.optimizationScore >= 60 ? 'status-warning' : 'status-critical');
+            elements.optScoreChange.innerHTML = formatChange(currentAvg.optimizationScore, previousAvg?.optimizationScore);
+        }
+
+        // Update charts
+        function updateCharts(data) {
+            const chartData = prepareChartData(data);
+            
+            // Build Time Chart
+            if (charts.buildTime) {
+                charts.buildTime.data = {
+                    datasets: [{
+                        label: 'Build Time',
+                        data: chartData.buildTime,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        pointRadius: 3
+                    }]
+                };
+                charts.buildTime.update();
+            }
+
+            // Bundle Size Chart
+            if (charts.bundleSize) {
+                charts.bundleSize.data = {
+                    datasets: [{
+                        label: 'Bundle Size',
+                        data: chartData.bundleSize,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        pointRadius: 3
+                    }]
+                };
+                charts.bundleSize.update();
+            }
+
+            // Memory Chart
+            if (charts.memory) {
+                charts.memory.data = {
+                    datasets: [{
+                        label: 'Memory Usage',
+                        data: chartData.memory,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4,
+                        pointRadius: 3
+                    }]
+                };
+                charts.memory.update();
+            }
+
+            // Optimization Chart
+            if (charts.optimization) {
+                charts.optimization.data = {
+                    datasets: [{
+                        label: 'Optimization Score',
+                        data: chartData.optimization,
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        pointRadius: 3
+                    }]
+                };
+                charts.optimization.update();
+            }
+        }
+
+        // Prepare data for charts
+        function prepareChartData(data) {
+            // Group data by day and calculate averages
+            const grouped = {};
+            
+            data.forEach(item => {
+                const date = new Date(item.timestamp).toDateString();
+                if (!grouped[date]) {
+                    grouped[date] = [];
+                }
+                grouped[date].push(item);
+            });
+
+            const chartData = {
+                buildTime: [],
+                bundleSize: [],
+                memory: [],
+                optimization: []
+            };
+
+            Object.entries(grouped)
+                .sort(([a], [b]) => new Date(a) - new Date(b))
+                .forEach(([date, items]) => {
+                    const avgBuildTime = items.reduce((sum, item) => sum + item.buildTime, 0) / items.length / 1000;
+                    const avgBundleSize = items.reduce((sum, item) => sum + item.bundleSize, 0) / items.length / 1024 / 1024;
+                    const avgMemory = items.reduce((sum, item) => sum + item.memoryUsage, 0) / items.length / 1024 / 1024;
+                    const avgOptScore = items.reduce((sum, item) => sum + item.optimizationScore, 0) / items.length;
+
+                    chartData.buildTime.push({ x: new Date(date), y: avgBuildTime });
+                    chartData.bundleSize.push({ x: new Date(date), y: avgBundleSize });
+                    chartData.memory.push({ x: new Date(date), y: avgMemory });
+                    chartData.optimization.push({ x: new Date(date), y: avgOptScore });
+                });
+
+            return chartData;
+        }
+
+        // Update recent builds table
+        function updateRecentBuildsTable(data) {
+            const tableBody = elements.recentBuildsTableBody;
+            tableBody.innerHTML = '';
+
+            const recentBuilds = data.slice(0, 20); // Show last 20 builds
+
+            recentBuilds.forEach(build => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(build.timestamp).toLocaleString()}</td>
+                    <td>${build.platform}</td>
+                    <td>${build.environment}</td>
+                    <td>${formatTime(build.buildTime)}</td>
+                    <td>${formatSize(build.bundleSize)}</td>
+                    <td>${formatSize(build.memoryUsage)}</td>
+                    <td>${Math.round(build.optimizationScore)}</td>
+                    <td>
+                        <div class="build-status">
+                            <div class="status-dot ${build.status}"></div>
+                            ${build.status}
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            const ctx = {
+                buildTime: document.getElementById('buildTimeChart').getContext('2d'),
+                bundleSize: document.getElementById('bundleSizeChart').getContext('2d'),
+                memory: document.getElementById('memoryChart').getContext('2d'),
+                optimization: document.getElementById('optimizationChart').getContext('2d')
+            };
+
+            charts.buildTime = new Chart(ctx.buildTime, chartConfigs.buildTime);
+            charts.bundleSize = new Chart(ctx.bundleSize, chartConfigs.bundleSize);
+            charts.memory = new Chart(ctx.memory, chartConfigs.memory);
+            charts.optimization = new Chart(ctx.optimization, chartConfigs.optimization);
+        }
+
+        // Event listeners
+        elements.timeRange.addEventListener('change', loadPerformanceData);
+        elements.platformFilter.addEventListener('change', updateDashboard);
+        elements.environmentFilter.addEventListener('change', updateDashboard);
+        elements.refreshButton.addEventListener('click', loadPerformanceData);
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCharts();
+            loadPerformanceData();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(() => {
+                if (!isLoading) {
+                    loadPerformanceData();
+                }
+            }, 5 * 60 * 1000);
+        });
+    </script>
+</body>
+</html>

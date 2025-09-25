@@ -1,0 +1,170 @@
+\App.tsx:6 - default
+\src\App.tsx:154 - default
+\src\index.ts:7 - App
+\src\index.ts:11 - AppConfig
+\src\index.ts:12 - EnvironmentConfig
+\src\index.ts:13 - ApiConfig
+\src\index.ts:14 - DatabaseConfig
+\src\index.ts:18 - Logger
+\src\index.ts:18 - ErrorHandler
+\src\index.ts:18 - PerformanceMonitor
+\src\index.ts:21 - APP_VERSION
+\src\index.ts:22 - BUILD_NUMBER
+\src\index.ts:23 - BUILD_TYPE
+\src\index.ts:26 - ENTERPRISE_FEATURES
+\src\__tests__\quality\QualityValidator.ts:10 - QualityReport (used in module)
+\src\__tests__\quality\QualityValidator.ts:20 - QualityCategory (used in module)
+\src\__tests__\quality\QualityValidator.ts:29 - QualityIssue (used in module)
+\src\__tests__\quality\QualityValidator.ts:42 - QualitySummary (used in module)
+\src\__tests__\quality\QualityValidator.ts:51 - QualityConfig (used in module)
+\src\__tests__\quality\QualityValidator.ts:98 - QualityValidator (used in module)
+\src\components\common\LazyComponent.tsx:71 - withLazyComponent (used in module)
+\src\components\common\LazyComponent.tsx:136 - createConditionalLazyComponent (used in module)
+\src\components\common\LazyComponent.tsx:163 - createFeatureFlagLazyComponent
+\src\components\common\LazyComponent.tsx:185 - createViewportLazyComponent
+\src\components\common\LazyScreen.tsx:58 - withLazyScreen (used in module)
+\src\components\common\LazyScreen.tsx:106 - createLazyScreen
+\src\components\common\OptimizedImageCore.tsx:19 - OptimizedImageCoreProps (used in module)
+\src\components\common\OptimizedImageUI.tsx:163 - optimizedImageUIStyles
+\src\components\lazy\index.tsx:12 - LazyMapComponent
+\src\components\lazy\index.tsx:55 - LazyPerformanceMonitor
+\src\components\lazy\index.tsx:67 - createLazyComponent (used in module)
+\src\components\lazy\index.tsx:68 - createPerformanceLazyComponent (used in module)
+\src\components\maps\LazyMapComponents.tsx:81 - MapControls
+\src\components\maps\LazyMapComponents.tsx:93 - TrailOverlay
+\src\core\analysis\MetroBundleAnalyzer.ts:324 - MetroBundleAnalyzer (used in module)
+\src\core\analysis\MetroBundleAnalyzer.ts:1137 - default
+\src\core\assets\index.ts:8 - AssetOptimizer (used in module)
+\src\core\assets\index.ts:10 - AssetOptimizationConfig
+\src\core\assets\index.ts:11 - OptimizedImageSource
+\src\core\assets\index.ts:12 - ImageOptimizationOptions (used in module)
+\src\core\assets\index.ts:13 - ImageFormat (used in module)
+\src\core\assets\index.ts:14 - ImageQuality (used in module)
+\src\core\assets\index.ts:15 - LoadingStrategy
+\src\core\assets\index.ts:18 - ImageProcessor (used in module)
+\src\core\assets\index.ts:20 - ImageProcessingOptions
+\src\core\assets\index.ts:21 - ImageProcessingResult
+\src\core\assets\index.ts:30 - OptimizedImage
+\src\core\assets\index.ts:31 - FastImage
+\src\core\assets\index.ts:32 - ProgressiveImage
+\src\core\assets\index.ts:33 - LazyImage
+\src\core\assets\index.ts:35 - OptimizedImageProps
+\src\core\assets\index.ts:38 - AssetUtils
+\src\core\automation\MetroBuildPipeline.ts:531 - MetroBuildPipeline (used in module)
+\src\core\benchmarking\MetroPerformanceBenchmark.ts:126 - MetroPerformanceBenchmark (used in module)
+\src\core\benchmarking\MetroPerformanceBenchmark.ts:870 - default
+\src\core\bundler\MetroBundleOptimizer.ts:18 - BundleOptimizationConfig (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:56 - TransformerConfig (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:64 - PlatformOptimizations (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:72 - BundleAnalysisResult (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:92 - ChunkAnalysisResult (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:101 - ModuleInfo (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:110 - DependencyGraphNode (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:119 - OptimizationOpportunity (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:128 - BundlePerformanceMetrics (used in module)
+\src\core\bundler\MetroBundleOptimizer.ts:137 - BundleRecommendation (used in module)
+\src\core\caching\MetroCacheManager.ts:594 - MetroCacheManager (used in module)
+\src\core\config\index.ts:299 - createConfig (used in module)
+\src\core\config\index.ts:380 - AppConfig
+\src\core\config\index.ts:384 - ThemeConfig (used in module)
+\src\core\config\index.ts:385 - SecurityConfig (used in module)
+\src\core\config\index.ts:386 - LocalizationConfig (used in module)
+\src\core\config\index.ts:390 - getCurrentEnvironment (used in module)
+\src\core\config\index.ts:390 - validateConfig (used in module)
+\src\core\config\index.ts:21 - ApiConfig (used in module)
+\src\core\config\index.ts:32 - DatabaseConfig (used in module)
+\src\core\config\index.ts:42 - RemoteDatabaseConfig
+\src\core\config\index.ts:49 - AuthConfig (used in module)
+\src\core\config\index.ts:58 - FeatureFlags (used in module)
+\src\core\config\index.ts:71 - MonitoringConfig (used in module)
+\src\core\config\index.ts:80 - MapsConfig (used in module)
+\src\core\config\index.ts:93 - AIConfig (used in module)
+\src\core\config\index.ts:105 - VoiceSettings
+\src\core\config\index.ts:113 - EnvironmentConfig (used in module)
+\src\core\config\index.ts:136 - SpacingConfig
+\src\core\config\index.ts:145 - TypographyConfig
+\src\core\config\index.ts:168 - AnimationConfig
+\src\core\config\index.ts:176 - ErrorConfig
+\src\core\config\index.ts:185 - PerformanceConfig
+\src\core\monitoring\MetroPerformanceMonitor.ts:111 - MetroPerformanceMonitor (used in module)
+\src\core\testing\MetroOptimizationTestSuite.ts:725 - MetroOptimizationTestSuite (used in module)
+\src\core\testing\MetroOptimizationTestSuite.ts:983 - default
+\src\core\theme\utils.ts:33 - getSpacing
+\src\core\theme\utils.ts:40 - getFontSize
+\src\core\theme\utils.ts:49 - getColor
+\src\core\theme\utils.ts:73 - getShadowStyle
+\src\core\transformers\AdvancedMetroTransformers.ts:56 - TreeShakingTransformer (used in module)
+\src\core\transformers\AdvancedMetroTransformers.ts:221 - DeadCodeEliminationTransformer (used in module)
+\src\core\transformers\AdvancedMetroTransformers.ts:399 - PlatformSpecificTransformer (used in module)
+\src\core\transformers\AdvancedMetroTransformers.ts:542 - DynamicImportOptimizer (used in module)
+\src\core\transformers\AdvancedMetroTransformers.ts:741 - default
+\src\core\utils\ErrorHandler.ts:57 - ErrorRecoveryStrategy (used in module)
+\src\core\utils\index.ts:7 - Logger
+\src\core\utils\index.ts:8 - LogLevel
+\src\core\utils\index.ts:8 - LogEntry
+\src\core\utils\index.ts:8 - LoggerConfig
+\src\core\utils\index.ts:11 - ErrorHandler
+\src\core\utils\index.ts:12 - ErrorConfig
+\src\core\utils\index.ts:12 - ErrorReport
+\src\core\utils\index.ts:12 - ErrorCategory
+\src\core\utils\index.ts:15 - PerformanceMonitor
+\src\core\utils\index.ts:17 - PerformanceMetric
+\src\core\utils\index.ts:18 - PerformanceReport
+\src\core\utils\index.ts:19 - PerformanceConfig
+\src\core\utils\index.ts:29 - ApiConfig
+\src\core\utils\index.ts:30 - DatabaseConfig
+\src\core\utils\index.ts:31 - AuthConfig
+\src\core\utils\index.ts:32 - FeatureFlags
+\src\core\utils\index.ts:33 - ThemeConfig
+\src\core\utils\PerformanceMonitor.ts:43 - PerformanceAlert (used in module)
+\src\screens\HomeScreen\components.tsx:20 - LoadingStateProps (used in module)
+\src\screens\HomeScreen\components.tsx:37 - AuthStateProps (used in module)
+\src\screens\HomeScreen\components.tsx:55 - HeaderProps (used in module)
+\src\screens\HomeScreen\components.tsx:69 - QuickActionsProps (used in module)
+\src\screens\HomeScreen\components.tsx:96 - StatisticsProps (used in module)
+\src\screens\HomeScreen\components.tsx:128 - TrailCardProps (used in module)
+\src\screens\HomeScreen\components.tsx:133 - TrailCard (used in module)
+\src\screens\HomeScreen\components.tsx:168 - RecentTrailsProps (used in module)
+\src\screens\HomeScreen\components.tsx:207 - ErrorStateProps (used in module)
+\src\screens\HomeScreen\useDashboardData.ts:19 - DashboardData (used in module)
+\src\screens\HomeScreen\useNavigation.ts:11 - NavigationActions (used in module)
+\src\screens\lazy\index.tsx:9 - LazyHomeScreen
+\src\screens\lazy\index.tsx:15 - LazyMapsScreen
+\src\screens\lazy\index.tsx:21 - LazyTrailsScreen
+\src\screens\lazy\index.tsx:27 - LazyTrailRecordingScreen
+\src\screens\lazy\index.tsx:33 - LazyProfileScreen
+\src\screens\lazy\index.tsx:41 - LoginScreen
+\src\screens\LoginScreen\useAuthActions.ts:12 - AuthActionsData (used in module)
+\src\screens\LoginScreen\useAuthActions.ts:22 - useAuthActions
+\src\screens\LoginScreen\useAuthForm.ts:22 - AuthFormData (used in module)
+\src\screens\LoginScreen\useAuthForm.ts:33 - useAuthForm
+\src\services\api\index.ts:22 - ApiServices
+\src\services\api\index.ts:60 - apiClient (used in module)
+\src\services\api\index.ts:60 - authService (used in module)
+\src\services\api\index.ts:60 - trailService (used in module)
+\src\services\api\index.ts:10 - ApiConfig
+\src\services\api\index.ts:19 - ApiResponse
+\src\services\api\index.ts:39 - RequestConfig
+\src\services\api\index.ts:51 - AuthTokens
+\src\services\api\index.ts:60 - ApiClient (used in module)
+\src\services\api\index.ts:12 - User
+\src\services\api\index.ts:28 - LoginCredentials
+\src\services\api\index.ts:33 - RegisterData
+\src\services\api\index.ts:39 - AuthResponse
+\src\services\api\index.ts:49 - UserUpdateData
+\src\services\api\index.ts:58 - AuthService (used in module)
+\src\services\api\index.ts:10 - TrackPoint
+\src\services\api\index.ts:24 - TrackPointInput
+\src\services\api\index.ts:36 - Trail
+\src\services\api\index.ts:55 - TrailCreateData
+\src\services\api\index.ts:61 - TrailUpdateData
+\src\services\api\index.ts:67 - TrailQuery
+\src\services\api\index.ts:79 - TrailFilters
+\src\services\api\index.ts:88 - TrailSortOption
+\src\services\api\index.ts:95 - TrailsResponse
+\src\services\api\index.ts:106 - ShareLink
+\src\services\api\index.ts:119 - TrailService (used in module)
+\src\services\database\DatabaseSyncService.ts:11 - SyncOperation
+\src\services\database\DatabaseSyncService.ts:23 - SyncStatus (used in module)
+\src\services\database\DatabaseSyncService.ts:31 - SyncConflict (used in module)
+\src\services\database\DatabaseSyncService.ts:43 - DatabaseSyncService

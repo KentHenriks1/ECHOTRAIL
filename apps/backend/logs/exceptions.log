@@ -1,0 +1,146 @@
+2025-09-18 18:59:26:5926 [[31merror[39m]: [31muncaughtException: Environment validation failed:[39m
+[31mSMTP_HOST: "SMTP_HOST" is not allowed to be empty[39m
+[31mSMTP_USER: "SMTP_USER" is not allowed to be empty[39m
+[31mSMTP_PASS: "SMTP_PASS" is not allowed to be empty[39m
+[31mError: Environment validation failed:[39m
+[31mSMTP_HOST: "SMTP_HOST" is not allowed to be empty[39m
+[31mSMTP_USER: "SMTP_USER" is not allowed to be empty[39m
+[31mSMTP_PASS: "SMTP_PASS" is not allowed to be empty[39m
+[31m    at validateEnvironment (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\utils\env-validator.ts:112:11)[39m
+[31m    at env (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\utils\env-validator.ts:202:20)[39m
+[31m    at Object.<anonymous> (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\utils\env-validator.ts:202:40)[39m
+[31m    at Module._compile (node:internal/modules/cjs/loader:1469:14)[39m
+[31m    at Object.transformer (C:\Users\Kenth\Desktop\echotrail-project\echotrail\node_modules\tsx\dist\register-D46fvsV_.cjs:3:1104)[39m
+[31m    at Module.load (node:internal/modules/cjs/loader:1288:32)[39m
+[31m    at Module._load (node:internal/modules/cjs/loader:1104:12)[39m
+[31m    at Module.require (node:internal/modules/cjs/loader:1311:19)[39m
+[31m    at require (node:internal/modules/helpers:179:18)[39m
+[31m    at <anonymous> (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\app.ts:12:21)[39m
+Error: Environment validation failed:
+SMTP_HOST: "SMTP_HOST" is not allowed to be empty
+SMTP_USER: "SMTP_USER" is not allowed to be empty
+SMTP_PASS: "SMTP_PASS" is not allowed to be empty
+    at validateEnvironment (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\utils\env-validator.ts:112:11)
+    at env (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\utils\env-validator.ts:202:20)
+    at Object.<anonymous> (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\utils\env-validator.ts:202:40)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Object.transformer (C:\Users\Kenth\Desktop\echotrail-project\echotrail\node_modules\tsx\dist\register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Module.require (node:internal/modules/cjs/loader:1311:19)
+    at require (node:internal/modules/helpers:179:18)
+    at <anonymous> (C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\backend\src\app.ts:12:21)
+{
+  "error": {},
+  "exception": true,
+  "date": "Thu Sep 18 2025 18:59:26 GMT+0200 (sentraleuropeisk sommertid)",
+  "process": {
+    "pid": 96276,
+    "uid": null,
+    "gid": null,
+    "cwd": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend",
+    "execPath": "C:\\nvm4w\\nodejs\\node.exe",
+    "version": "v20.18.1",
+    "argv": [
+      "C:\\nvm4w\\nodejs\\node.exe",
+      "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\server.ts"
+    ],
+    "memoryUsage": {
+      "rss": 94666752,
+      "heapTotal": 31657984,
+      "heapUsed": 15759920,
+      "external": 3758016,
+      "arrayBuffers": 156062
+    }
+  },
+  "os": {
+    "loadavg": [
+      0,
+      0,
+      0
+    ],
+    "uptime": 577548.843
+  },
+  "trace": [
+    {
+      "column": 11,
+      "file": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\utils\\env-validator.ts",
+      "function": "validateEnvironment",
+      "line": 112,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 20,
+      "file": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\utils\\env-validator.ts",
+      "function": "env",
+      "line": 202,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 40,
+      "file": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\utils\\env-validator.ts",
+      "function": null,
+      "line": 202,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 14,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module._compile",
+      "line": 1469,
+      "method": "_compile",
+      "native": false
+    },
+    {
+      "column": 1104,
+      "file": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\node_modules\\tsx\\dist\\register-D46fvsV_.cjs",
+      "function": "Object.transformer",
+      "line": 3,
+      "method": "transformer",
+      "native": false
+    },
+    {
+      "column": 32,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module.load",
+      "line": 1288,
+      "method": "load",
+      "native": false
+    },
+    {
+      "column": 12,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module._load",
+      "line": 1104,
+      "method": "_load",
+      "native": false
+    },
+    {
+      "column": 19,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module.require",
+      "line": 1311,
+      "method": "require",
+      "native": false
+    },
+    {
+      "column": 18,
+      "file": "node:internal/modules/helpers",
+      "function": "require",
+      "line": 179,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 21,
+      "file": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\backend\\src\\app.ts",
+      "function": "<anonymous>",
+      "line": 12,
+      "method": null,
+      "native": false
+    }
+  ]
+}

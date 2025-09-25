@@ -1,0 +1,562 @@
+{
+  "bundleSize": {},
+  "moduleAnalysis": [
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\automation\\MetroBuildPipeline.ts",
+      "size": 38715,
+      "lines": 1279,
+      "imports": 11,
+      "exports": 4,
+      "complexity": 35
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\analysis\\MetroBundleAnalyzer.ts",
+      "size": 37122,
+      "lines": 1137,
+      "imports": 4,
+      "exports": 3,
+      "complexity": 31
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\testing\\MetroOptimizationTestSuite.ts",
+      "size": 31946,
+      "lines": 983,
+      "imports": 13,
+      "exports": 3,
+      "complexity": 32
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\caching\\MetroCacheManager.ts",
+      "size": 30934,
+      "lines": 1151,
+      "imports": 7,
+      "exports": 2,
+      "complexity": 68
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\benchmarking\\MetroPerformanceBenchmark.ts",
+      "size": 28161,
+      "lines": 870,
+      "imports": 6,
+      "exports": 2,
+      "complexity": 44
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\bundler\\MetroBundleOptimizer.ts",
+      "size": 27370,
+      "lines": 867,
+      "imports": 4,
+      "exports": 11,
+      "complexity": 23
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\transformers\\AdvancedMetroTransformers.ts",
+      "size": 24117,
+      "lines": 741,
+      "imports": 7,
+      "exports": 7,
+      "complexity": 70
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\monitoring\\MetroPerformanceMonitor.ts",
+      "size": 23851,
+      "lines": 731,
+      "imports": 4,
+      "exports": 2,
+      "complexity": 40
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\assets\\AssetOptimizer.ts",
+      "size": 20448,
+      "lines": 658,
+      "imports": 4,
+      "exports": 7,
+      "complexity": 27
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\utils\\PerformanceMonitor.ts",
+      "size": 17078,
+      "lines": 645,
+      "imports": 1,
+      "exports": 5,
+      "complexity": 24
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\LoginScreen.tsx",
+      "size": 16863,
+      "lines": 609,
+      "imports": 6,
+      "exports": 1,
+      "complexity": 18
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\assets\\ImageProcessor.ts",
+      "size": 14622,
+      "lines": 505,
+      "imports": 4,
+      "exports": 3,
+      "complexity": 15
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\utils\\ErrorHandler.ts",
+      "size": 14506,
+      "lines": 538,
+      "imports": 1,
+      "exports": 5,
+      "complexity": 20
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\utils\\Logger.ts",
+      "size": 13651,
+      "lines": 520,
+      "imports": 1,
+      "exports": 4,
+      "complexity": 23
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\bundler\\MetroBundleOptimizer.js",
+      "size": 12600,
+      "lines": 432,
+      "imports": 0,
+      "exports": 0,
+      "complexity": 16
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\config\\index.ts",
+      "size": 10952,
+      "lines": 394,
+      "imports": 3,
+      "exports": 5,
+      "complexity": 13
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\common\\OptimizedImage.tsx",
+      "size": 10054,
+      "lines": 385,
+      "imports": 4,
+      "exports": 5,
+      "complexity": 20
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\common\\LazyComponent.tsx",
+      "size": 9083,
+      "lines": 319,
+      "imports": 4,
+      "exports": 6,
+      "complexity": 21
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\AuthProvider.tsx",
+      "size": 7983,
+      "lines": 304,
+      "imports": 3,
+      "exports": 2,
+      "complexity": 23
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\LoginScreen\\useAuthActions.ts",
+      "size": 6991,
+      "lines": 252,
+      "imports": 5,
+      "exports": 2,
+      "complexity": 12
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\common\\OptimizedImageCore.tsx",
+      "size": 6593,
+      "lines": 213,
+      "imports": 5,
+      "exports": 3,
+      "complexity": 17
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\navigation\\AppNavigator.tsx",
+      "size": 6417,
+      "lines": 224,
+      "imports": 8,
+      "exports": 1,
+      "complexity": 6
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\HomeScreen\\components.tsx",
+      "size": 6149,
+      "lines": 223,
+      "imports": 6,
+      "exports": 16,
+      "complexity": 6
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\HomeScreen\\styles.ts",
+      "size": 6090,
+      "lines": 222,
+      "imports": 3,
+      "exports": 1,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\config\\types.ts",
+      "size": 6069,
+      "lines": 217,
+      "imports": 0,
+      "exports": 19,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\App.tsx",
+      "size": 5184,
+      "lines": 155,
+      "imports": 18,
+      "exports": 2,
+      "complexity": 5
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\common\\LazyScreen.tsx",
+      "size": 4009,
+      "lines": 155,
+      "imports": 4,
+      "exports": 2,
+      "complexity": 5
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\common\\OptimizedImageUI.tsx",
+      "size": 3709,
+      "lines": 163,
+      "imports": 2,
+      "exports": 4,
+      "complexity": 8
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\assets\\index.ts",
+      "size": 3363,
+      "lines": 123,
+      "imports": 2,
+      "exports": 7,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\HomeScreen\\useDashboardData.ts",
+      "size": 3325,
+      "lines": 117,
+      "imports": 5,
+      "exports": 3,
+      "complexity": 5
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\maps\\LazyMapComponents.tsx",
+      "size": 3045,
+      "lines": 97,
+      "imports": 1,
+      "exports": 8,
+      "complexity": 2
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\HomeScreen.tsx",
+      "size": 3035,
+      "lines": 106,
+      "imports": 8,
+      "exports": 1,
+      "complexity": 3
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\theme\\utils.ts",
+      "size": 2458,
+      "lines": 103,
+      "imports": 2,
+      "exports": 5,
+      "complexity": 5
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\LoginScreen\\useAuthForm.ts",
+      "size": 2426,
+      "lines": 95,
+      "imports": 1,
+      "exports": 4,
+      "complexity": 10
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\lazy\\index.tsx",
+      "size": 2147,
+      "lines": 70,
+      "imports": 0,
+      "exports": 7,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\HomeScreen\\useNavigation.ts",
+      "size": 1855,
+      "lines": 55,
+      "imports": 4,
+      "exports": 2,
+      "complexity": 4
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\lazy\\index.tsx",
+      "size": 1291,
+      "lines": 41,
+      "imports": 1,
+      "exports": 6,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\screens\\HomeScreen\\utils.ts",
+      "size": 1111,
+      "lines": 45,
+      "imports": 0,
+      "exports": 4,
+      "complexity": 6
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\core\\utils\\index.ts",
+      "size": 920,
+      "lines": 35,
+      "imports": 0,
+      "exports": 8,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\index.ts",
+      "size": 871,
+      "lines": 34,
+      "imports": 0,
+      "exports": 9,
+      "complexity": 0
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\AppProvider.tsx",
+      "size": 351,
+      "lines": 18,
+      "imports": 2,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\ThemeProvider.tsx",
+      "size": 283,
+      "lines": 17,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\loading\\LoadingScreen.tsx",
+      "size": 274,
+      "lines": 11,
+      "imports": 2,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\NotificationProvider.tsx",
+      "size": 181,
+      "lines": 10,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\AnalyticsProvider.tsx",
+      "size": 178,
+      "lines": 10,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\DatabaseProvider.tsx",
+      "size": 177,
+      "lines": 10,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\LocalizationProvider.tsx",
+      "size": 165,
+      "lines": 9,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\errors\\GlobalErrorBoundary.tsx",
+      "size": 164,
+      "lines": 9,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\components\\performance\\PerformanceTracker.tsx",
+      "size": 163,
+      "lines": 9,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    },
+    {
+      "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\src\\providers\\NavigationProvider.tsx",
+      "size": 163,
+      "lines": 9,
+      "imports": 1,
+      "exports": 1,
+      "complexity": 1
+    }
+  ],
+  "dependencyGraph": {
+    "totalDependencies": 99,
+    "productionDependencies": 27,
+    "devDependencies": 72,
+    "heaviestDependencies": [
+      {
+        "name": "expo",
+        "version": "^54.0.7",
+        "estimatedSize": 991238.1761559945
+      },
+      {
+        "name": "expo-device",
+        "version": "~7.0.0",
+        "estimatedSize": 866313.4185598549
+      },
+      {
+        "name": "react-native-safe-area-context",
+        "version": "^5.0.0",
+        "estimatedSize": 836718.1060280994
+      },
+      {
+        "name": "@react-native-async-storage/async-storage",
+        "version": "2.2.0",
+        "estimatedSize": 828249.082895068
+      },
+      {
+        "name": "@testing-library/react-native",
+        "version": "^13.3.3",
+        "estimatedSize": 758444.8704536544
+      },
+      {
+        "name": "expo-media-library",
+        "version": "~18.2.0",
+        "estimatedSize": 702756.3395831038
+      },
+      {
+        "name": "expo-location",
+        "version": "~19.0.7",
+        "estimatedSize": 687902.6781382848
+      },
+      {
+        "name": "@expo/vector-icons",
+        "version": "^15.0.2",
+        "estimatedSize": 674325.0016485109
+      },
+      {
+        "name": "expo-updates",
+        "version": "^29.0.11",
+        "estimatedSize": 597507.9290267802
+      },
+      {
+        "name": "@expo/webpack-config",
+        "version": "^19.0.1",
+        "estimatedSize": 544093.8763471133
+      }
+    ],
+    "unusedDependencies": [
+      "react-native-safe-area-context",
+      "@babel/preset-typescript",
+      "@testing-library/jest-dom",
+      "metro-babel-transformer"
+    ],
+    "duplicateModules": [
+      {
+        "name": "react",
+        "count": 2
+      },
+      {
+        "name": "lodash",
+        "count": 3
+      }
+    ]
+  },
+  "performanceProfile": {
+    "averageBuildTime": 0,
+    "buildTimesByEnvironment": {
+      "development": 0,
+      "production": 0
+    },
+    "buildTimesByPlatform": {
+      "android": 0,
+      "ios": 0
+    },
+    "performanceBottlenecks": [],
+    "cacheEffectiveness": {
+      "hitRate": 51.65519382794517,
+      "missRate": 3.6629922697643513,
+      "cacheSize": 685019.8750042394
+    },
+    "memoryUsage": {
+      "peakMemoryUsage": 312.729820645105,
+      "averageMemoryUsage": 101.0172248156832,
+      "memoryGrowthRate": 8.980297475700247
+    }
+  },
+  "optimizationOpportunities": [],
+  "recommendations": [
+    {
+      "category": "configuration",
+      "priority": "high",
+      "title": "Optimize Metro Configuration",
+      "items": [
+        "Enable aggressive tree shaking",
+        "Configure custom transformers for better optimization",
+        "Enable production minification",
+        "Optimize asset extensions",
+        "Configure custom module ID factory"
+      ]
+    },
+    {
+      "category": "bundle_optimization",
+      "priority": "high",
+      "title": "Bundle Size Optimization",
+      "items": [
+        "Implement dynamic imports for large modules",
+        "Use React.lazy for component lazy loading",
+        "Optimize third-party library imports",
+        "Enable code splitting strategies",
+        "Analyze and optimize asset sizes"
+      ]
+    }
+  ],
+  "environmentComparison": {
+    "development": {
+      "averageBuildTime": 0,
+      "averageBundleSize": 3097126.5982291065,
+      "totalAssets": 82,
+      "totalModules": 849
+    },
+    "production": {
+      "averageBuildTime": 0,
+      "averageBundleSize": 4328354.420150742,
+      "totalAssets": 31,
+      "totalModules": 408
+    },
+    "differences": {
+      "buildTimeChange": 0,
+      "bundleSizeChange": 1231227.8219216354,
+      "bundleSizeReduction": -39.75387453085173
+    }
+  },
+  "currentConfig": {
+    "path": "C:\\Users\\Kenth\\Desktop\\echotrail-project\\echotrail\\apps\\mobile\\metro.config.js",
+    "size": 7130,
+    "hasCustomTransformers": false,
+    "hasCustomResolver": false,
+    "hasCustomSerializer": false,
+    "enablesTreeShaking": true,
+    "enablesMinification": false,
+    "enablesSourceMaps": false,
+    "customAssetExts": [
+      "...(config.resolver?.assetExts || ["
+    ],
+    "customSourceExts": [
+      "...(config.resolver?.sourceExts || ["
+    ]
+  }
+}

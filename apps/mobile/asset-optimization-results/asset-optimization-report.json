@@ -1,0 +1,1055 @@
+{
+  "timestamp": "2025-09-19T04:02:48.261Z",
+  "summary": {
+    "totalAssets": 32,
+    "totalSize": 3704401,
+    "duplicateGroups": 2,
+    "duplicateAssets": 2,
+    "totalPotentialSavings": 1595486,
+    "optimizableAssets": 12
+  },
+  "assets": [
+    {
+      "path": "assets\\adaptive-icon.png",
+      "name": "adaptive-icon.png",
+      "extension": ".png",
+      "size": 3057,
+      "sizeFormatted": "2.99 KB",
+      "hash": "9679b0a5a305cfcee7166666d8b64cf2",
+      "modified": "2025-09-01T13:35:30.759Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 42,
+        "height": 24,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "assets\\favicon.png",
+      "name": "favicon.png",
+      "extension": ".png",
+      "size": 31765,
+      "sizeFormatted": "31.02 KB",
+      "hash": "3df5205f71569f0e70a25db14854359d",
+      "modified": "2025-09-01T13:35:30.754Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 137,
+        "height": 77,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "assets\\icon.png",
+      "name": "icon.png",
+      "extension": ".png",
+      "size": 3057,
+      "sizeFormatted": "2.99 KB",
+      "hash": "9679b0a5a305cfcee7166666d8b64cf2",
+      "modified": "2025-09-01T13:35:30.759Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 42,
+        "height": 24,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "assets\\splash.png",
+      "name": "splash.png",
+      "extension": ".png",
+      "size": 866772,
+      "sizeFormatted": "846.46 KB",
+      "hash": "556d432621813b1acd7377c7a497ce0c",
+      "modified": "2025-09-01T13:35:30.745Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 715,
+        "height": 403,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction",
+          "Large file - consider compression or resize"
+        ]
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\drawable-hdpi\\splashscreen_logo.png",
+      "name": "splashscreen_logo.png",
+      "extension": ".png",
+      "size": 40197,
+      "sizeFormatted": "39.25 KB",
+      "hash": "6fb5c633df638621ab1779e98b20d49a",
+      "modified": "2025-09-16T22:12:23.689Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 154,
+        "height": 87,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\drawable-mdpi\\splashscreen_logo.png",
+      "name": "splashscreen_logo.png",
+      "extension": ".png",
+      "size": 15531,
+      "sizeFormatted": "15.17 KB",
+      "hash": "2fd7d59d58f4bb2836cb54a1f261cdb0",
+      "modified": "2025-09-16T22:12:23.657Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 96,
+        "height": 54,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\drawable-xhdpi\\splashscreen_logo.png",
+      "name": "splashscreen_logo.png",
+      "extension": ".png",
+      "size": 86749,
+      "sizeFormatted": "84.72 KB",
+      "hash": "d6930464d555bc6423f640344e0fcc14",
+      "modified": "2025-09-16T22:12:23.723Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 226,
+        "height": 128,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\drawable-xxhdpi\\splashscreen_logo.png",
+      "name": "splashscreen_logo.png",
+      "extension": ".png",
+      "size": 249342,
+      "sizeFormatted": "243.5 KB",
+      "hash": "8e9c75ddb3b8db1346e77d379888f4c5",
+      "modified": "2025-09-16T22:12:23.723Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 383,
+        "height": 216,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\drawable-xxxhdpi\\splashscreen_logo.png",
+      "name": "splashscreen_logo.png",
+      "extension": ".png",
+      "size": 502186,
+      "sizeFormatted": "490.42 KB",
+      "hash": "3dee89af52329dbc3687de355c8ecfc6",
+      "modified": "2025-09-16T22:12:23.883Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 544,
+        "height": 307,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction",
+          "Large file - consider compression or resize"
+        ]
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.webp",
+      "name": "ic_launcher.webp",
+      "extension": ".webp",
+      "size": 4263,
+      "sizeFormatted": "4.16 KB",
+      "hash": "992dd7fd4031c5993ccdbd56979d2ad8",
+      "modified": "2025-09-16T22:12:21.867Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 50,
+        "height": 28,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.webp",
+      "name": "ic_launcher_foreground.webp",
+      "extension": ".webp",
+      "size": 15786,
+      "sizeFormatted": "15.42 KB",
+      "hash": "4ad2eab5869cd761d8936f837f2ded32",
+      "modified": "2025-09-16T22:12:21.914Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 96,
+        "height": 54,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.webp",
+      "name": "ic_launcher_round.webp",
+      "extension": ".webp",
+      "size": 5012,
+      "sizeFormatted": "4.89 KB",
+      "hash": "3c06fbdceaa019c91dab6044634c05a5",
+      "modified": "2025-09-16T22:12:21.889Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 54,
+        "height": 31,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.webp",
+      "name": "ic_launcher.webp",
+      "extension": ".webp",
+      "size": 2183,
+      "sizeFormatted": "2.13 KB",
+      "hash": "7580cc50f48942bec3ba9f5538fa955e",
+      "modified": "2025-09-16T22:12:21.867Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 36,
+        "height": 20,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.webp",
+      "name": "ic_launcher_foreground.webp",
+      "extension": ".webp",
+      "size": 8135,
+      "sizeFormatted": "7.94 KB",
+      "hash": "e61d74c4981a2f81523aa1f3a4b34535",
+      "modified": "2025-09-16T22:12:21.914Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 69,
+        "height": 39,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.webp",
+      "name": "ic_launcher_round.webp",
+      "extension": ".webp",
+      "size": 2698,
+      "sizeFormatted": "2.63 KB",
+      "hash": "928d4066b3199d05c3554bb026ca79b4",
+      "modified": "2025-09-16T22:12:21.889Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 40,
+        "height": 22,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp",
+      "name": "ic_launcher.webp",
+      "extension": ".webp",
+      "size": 6781,
+      "sizeFormatted": "6.62 KB",
+      "hash": "8cc7f62b4e2eda5f01e745af6653bc94",
+      "modified": "2025-09-16T22:12:21.867Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 63,
+        "height": 36,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.webp",
+      "name": "ic_launcher_foreground.webp",
+      "extension": ".webp",
+      "size": 25270,
+      "sizeFormatted": "24.68 KB",
+      "hash": "82faf871108c3c018c3731bbfa184183",
+      "modified": "2025-09-16T22:12:21.914Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 122,
+        "height": 69,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.webp",
+      "name": "ic_launcher_round.webp",
+      "extension": ".webp",
+      "size": 7892,
+      "sizeFormatted": "7.71 KB",
+      "hash": "362eef633e5d4a1274a375163acfb7bf",
+      "modified": "2025-09-16T22:12:21.889Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 68,
+        "height": 38,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.webp",
+      "name": "ic_launcher.webp",
+      "extension": ".webp",
+      "size": 13204,
+      "sizeFormatted": "12.89 KB",
+      "hash": "1c7775c1d0bf9dff4b2e2e9853e59c31",
+      "modified": "2025-09-16T22:12:21.867Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 88,
+        "height": 50,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.webp",
+      "name": "ic_launcher_foreground.webp",
+      "extension": ".webp",
+      "size": 48346,
+      "sizeFormatted": "47.21 KB",
+      "hash": "10826e41b829024240c4d14dce763add",
+      "modified": "2025-09-16T22:12:21.914Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 169,
+        "height": 95,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.webp",
+      "name": "ic_launcher_round.webp",
+      "extension": ".webp",
+      "size": 15041,
+      "sizeFormatted": "14.69 KB",
+      "hash": "84adf6dbedabd9c59301829d95aa2334",
+      "modified": "2025-09-16T22:12:21.889Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 94,
+        "height": 53,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.webp",
+      "name": "ic_launcher.webp",
+      "extension": ".webp",
+      "size": 20899,
+      "sizeFormatted": "20.41 KB",
+      "hash": "ddb3f6484b3aa16809d28db9fa614cac",
+      "modified": "2025-09-16T22:12:21.876Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 111,
+        "height": 63,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.webp",
+      "name": "ic_launcher_foreground.webp",
+      "extension": ".webp",
+      "size": 76595,
+      "sizeFormatted": "74.8 KB",
+      "hash": "e4fe52726f1c8d828c63680659738801",
+      "modified": "2025-09-16T22:12:21.922Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 213,
+        "height": 120,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.webp",
+      "name": "ic_launcher_round.webp",
+      "extension": ".webp",
+      "size": 23554,
+      "sizeFormatted": "23 KB",
+      "hash": "9d414913ccf87d06c9ca8a4cc5136bc4",
+      "modified": "2025-09-16T22:12:21.899Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 118,
+        "height": 66,
+        "estimated": true
+      },
+      "format": "webp",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": false,
+        "estimatedSavings": 0,
+        "recommendations": []
+      }
+    },
+    {
+      "path": "screenshots\\01_home_screen.png",
+      "name": "01_home_screen.png",
+      "extension": ".png",
+      "size": 258003,
+      "sizeFormatted": "251.96 KB",
+      "hash": "42e4a4780f01a879ff9dbb4d95606cf1",
+      "modified": "2025-09-17T16:02:07.464Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 390,
+        "height": 220,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\02_main_interface.png",
+      "name": "02_main_interface.png",
+      "extension": ".png",
+      "size": 258375,
+      "sizeFormatted": "252.32 KB",
+      "hash": "a5ad40595906bc0156f344ff86ff0cc5",
+      "modified": "2025-09-17T16:02:33.727Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 390,
+        "height": 220,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\03_navigation_tab.png",
+      "name": "03_navigation_tab.png",
+      "extension": ".png",
+      "size": 258375,
+      "sizeFormatted": "252.32 KB",
+      "hash": "a5ad40595906bc0156f344ff86ff0cc5",
+      "modified": "2025-09-17T16:03:08.724Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 390,
+        "height": 220,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\04_trails_section.png",
+      "name": "04_trails_section.png",
+      "extension": ".png",
+      "size": 259397,
+      "sizeFormatted": "253.32 KB",
+      "hash": "091e60cf9239a952145e03cd081c59d8",
+      "modified": "2025-09-17T16:03:43.297Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 391,
+        "height": 221,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\05_current_state.png",
+      "name": "05_current_state.png",
+      "extension": ".png",
+      "size": 148811,
+      "sizeFormatted": "145.32 KB",
+      "hash": "695418b3dcb0c92b73c2b887c2d29933",
+      "modified": "2025-09-17T16:05:09.088Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 296,
+        "height": 167,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\06_debug_current.png",
+      "name": "06_debug_current.png",
+      "extension": ".png",
+      "size": 149743,
+      "sizeFormatted": "146.23 KB",
+      "hash": "6b818e9db71d1fab2ad0d5ae87996a2d",
+      "modified": "2025-09-17T16:06:29.852Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 297,
+        "height": 168,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\07_with_permissions.png",
+      "name": "07_with_permissions.png",
+      "extension": ".png",
+      "size": 148950,
+      "sizeFormatted": "145.46 KB",
+      "hash": "dea18be74263f83a12e8e0c7ff1d7636",
+      "modified": "2025-09-17T16:08:06.470Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 296,
+        "height": 167,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    },
+    {
+      "path": "screenshots\\08_final_state.png",
+      "name": "08_final_state.png",
+      "extension": ".png",
+      "size": 148432,
+      "sizeFormatted": "144.95 KB",
+      "hash": "0a1494d9db55e90ad1d474dfbd2a4221",
+      "modified": "2025-09-17T16:08:28.009Z",
+      "isImage": true,
+      "dimensions": {
+        "width": 296,
+        "height": 167,
+        "estimated": true
+      },
+      "format": "png",
+      "quality": null,
+      "hasAlpha": null,
+      "optimizationPotential": {
+        "canOptimize": true,
+        "estimatedSavings": 0.4,
+        "recommendations": [
+          "Convert to WebP format for ~40% size reduction"
+        ]
+      }
+    }
+  ],
+  "duplicates": [
+    {
+      "hash": "9679b0a5a305cfcee7166666d8b64cf2",
+      "assets": [
+        {
+          "path": "assets\\adaptive-icon.png",
+          "name": "adaptive-icon.png",
+          "extension": ".png",
+          "size": 3057,
+          "sizeFormatted": "2.99 KB",
+          "hash": "9679b0a5a305cfcee7166666d8b64cf2",
+          "modified": "2025-09-01T13:35:30.759Z",
+          "isImage": true,
+          "dimensions": {
+            "width": 42,
+            "height": 24,
+            "estimated": true
+          },
+          "format": "png",
+          "quality": null,
+          "hasAlpha": null,
+          "optimizationPotential": {
+            "canOptimize": false,
+            "estimatedSavings": 0,
+            "recommendations": []
+          }
+        },
+        {
+          "path": "assets\\icon.png",
+          "name": "icon.png",
+          "extension": ".png",
+          "size": 3057,
+          "sizeFormatted": "2.99 KB",
+          "hash": "9679b0a5a305cfcee7166666d8b64cf2",
+          "modified": "2025-09-01T13:35:30.759Z",
+          "isImage": true,
+          "dimensions": {
+            "width": 42,
+            "height": 24,
+            "estimated": true
+          },
+          "format": "png",
+          "quality": null,
+          "hasAlpha": null,
+          "optimizationPotential": {
+            "canOptimize": false,
+            "estimatedSavings": 0,
+            "recommendations": []
+          }
+        }
+      ],
+      "totalSize": 6114,
+      "potentialSavings": 3057
+    },
+    {
+      "hash": "a5ad40595906bc0156f344ff86ff0cc5",
+      "assets": [
+        {
+          "path": "screenshots\\02_main_interface.png",
+          "name": "02_main_interface.png",
+          "extension": ".png",
+          "size": 258375,
+          "sizeFormatted": "252.32 KB",
+          "hash": "a5ad40595906bc0156f344ff86ff0cc5",
+          "modified": "2025-09-17T16:02:33.727Z",
+          "isImage": true,
+          "dimensions": {
+            "width": 390,
+            "height": 220,
+            "estimated": true
+          },
+          "format": "png",
+          "quality": null,
+          "hasAlpha": null,
+          "optimizationPotential": {
+            "canOptimize": true,
+            "estimatedSavings": 0.4,
+            "recommendations": [
+              "Convert to WebP format for ~40% size reduction"
+            ]
+          }
+        },
+        {
+          "path": "screenshots\\03_navigation_tab.png",
+          "name": "03_navigation_tab.png",
+          "extension": ".png",
+          "size": 258375,
+          "sizeFormatted": "252.32 KB",
+          "hash": "a5ad40595906bc0156f344ff86ff0cc5",
+          "modified": "2025-09-17T16:03:08.724Z",
+          "isImage": true,
+          "dimensions": {
+            "width": 390,
+            "height": 220,
+            "estimated": true
+          },
+          "format": "png",
+          "quality": null,
+          "hasAlpha": null,
+          "optimizationPotential": {
+            "canOptimize": true,
+            "estimatedSavings": 0.4,
+            "recommendations": [
+              "Convert to WebP format for ~40% size reduction"
+            ]
+          }
+        }
+      ],
+      "totalSize": 516750,
+      "potentialSavings": 258375
+    }
+  ],
+  "optimizationResults": [
+    {
+      "type": "format_optimization",
+      "asset": "assets\\splash.png",
+      "currentSize": 866772,
+      "estimatedNewSize": 520063.19999999995,
+      "estimatedSavings": 346708.80000000005,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction",
+        "Large file - consider compression or resize"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "android\\app\\src\\main\\res\\drawable-xhdpi\\splashscreen_logo.png",
+      "currentSize": 86749,
+      "estimatedNewSize": 52049.4,
+      "estimatedSavings": 34699.6,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "android\\app\\src\\main\\res\\drawable-xxhdpi\\splashscreen_logo.png",
+      "currentSize": 249342,
+      "estimatedNewSize": 149605.2,
+      "estimatedSavings": 99736.8,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "android\\app\\src\\main\\res\\drawable-xxxhdpi\\splashscreen_logo.png",
+      "currentSize": 502186,
+      "estimatedNewSize": 301311.6,
+      "estimatedSavings": 200874.40000000002,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction",
+        "Large file - consider compression or resize"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\01_home_screen.png",
+      "currentSize": 258003,
+      "estimatedNewSize": 154801.8,
+      "estimatedSavings": 103201.20000000001,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\02_main_interface.png",
+      "currentSize": 258375,
+      "estimatedNewSize": 155025,
+      "estimatedSavings": 103350,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\03_navigation_tab.png",
+      "currentSize": 258375,
+      "estimatedNewSize": 155025,
+      "estimatedSavings": 103350,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\04_trails_section.png",
+      "currentSize": 259397,
+      "estimatedNewSize": 155638.2,
+      "estimatedSavings": 103758.8,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\05_current_state.png",
+      "currentSize": 148811,
+      "estimatedNewSize": 89286.6,
+      "estimatedSavings": 59524.4,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\06_debug_current.png",
+      "currentSize": 149743,
+      "estimatedNewSize": 89845.79999999999,
+      "estimatedSavings": 59897.200000000004,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\07_with_permissions.png",
+      "currentSize": 148950,
+      "estimatedNewSize": 89370,
+      "estimatedSavings": 59580,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "format_optimization",
+      "asset": "screenshots\\08_final_state.png",
+      "currentSize": 148432,
+      "estimatedNewSize": 89059.2,
+      "estimatedSavings": 59372.8,
+      "recommendations": [
+        "Convert to WebP format for ~40% size reduction"
+      ]
+    },
+    {
+      "type": "duplicate_removal",
+      "assets": [
+        "assets\\adaptive-icon.png",
+        "assets\\icon.png"
+      ],
+      "currentSize": 6114,
+      "estimatedNewSize": 3057,
+      "estimatedSavings": 3057,
+      "recommendations": [
+        "Remove duplicate files, keep one reference"
+      ]
+    },
+    {
+      "type": "duplicate_removal",
+      "assets": [
+        "screenshots\\02_main_interface.png",
+        "screenshots\\03_navigation_tab.png"
+      ],
+      "currentSize": 516750,
+      "estimatedNewSize": 258375,
+      "estimatedSavings": 258375,
+      "recommendations": [
+        "Remove duplicate files, keep one reference"
+      ]
+    }
+  ],
+  "errors": [],
+  "config": {
+    "outputDir": "asset-optimization-results",
+    "generateWebP": true,
+    "generateAVIF": false,
+    "compressionQuality": {
+      "webp": 80,
+      "jpg": 85,
+      "png": 6
+    },
+    "maxImageSize": 1920,
+    "duplicateThreshold": 0.95,
+    "reportFormats": [
+      "json",
+      "markdown",
+      "csv"
+    ]
+  }
+}

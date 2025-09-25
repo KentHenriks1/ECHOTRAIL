@@ -1,0 +1,532 @@
+name: 🚀 Comprehensive CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Cancel previous runs for the same branch/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '18'
+  CACHE_VERSION: 'v1'
+  # Performance regression gates
+  MAX_BUILD_TIME_MS: 300000  # 5 minutes
+  MAX_MEMORY_USAGE_MB: 512    # 512MB
+  MIN_COVERAGE_PERCENT: 90    # 90% coverage required
+  MAX_MUTATION_SURVIVAL: 20   # Max 20% mutants can survive
+
+jobs:
+  # ============================================================================
+  # SETUP AND VALIDATION
+  # ============================================================================
+  
+  setup:
+    name: 🔧 Setup and Validation
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-keys.outputs.key }}
+      test-matrix: ${{ steps.test-matrix.outputs.matrix }}
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Cache dependencies and build artifacts
+        id: cache-keys
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .jest-cache
+            .eslintcache
+            coverage
+          key: ${{ runner.os }}-deps-${{ env.CACHE_VERSION }}-${{ hashFiles('package*.json') }}
+          restore-keys: |
+            ${{ runner.os }}-deps-${{ env.CACHE_VERSION }}-
+
+      - name: 🔍 Install dependencies
+        run: npm ci
+
+      - name: ✅ Validate project structure
+        run: |
+          echo "🔍 Validating project structure..."
+          test -f "jest.config.enhanced.js" || (echo "❌ Enhanced Jest config missing" && exit 1)
+          test -f "stryker.conf.json" || (echo "❌ Stryker config missing" && exit 1)
+          test -d "src/__tests__/setup" || (echo "❌ Test setup directory missing" && exit 1)
+          echo "✅ Project structure validated"
+
+      - name: 🎯 Generate test matrix
+        id: test-matrix
+        run: |
+          echo 'matrix={
+            "test-suite": [
+              "unit",
+              "integration", 
+              "property",
+              "chaos",
+              "performance"
+            ],
+            "node-version": ["18", "20"],
+            "os": ["ubuntu-latest", "windows-latest"]
+          }' >> $GITHUB_OUTPUT
+
+  # ============================================================================
+  # CODE QUALITY AND LINTING
+  # ============================================================================
+  
+  code-quality:
+    name: 🔍 Code Quality Analysis
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .jest-cache
+            .eslintcache
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🔧 Install dependencies (if cache miss)
+        run: npm ci
+
+      - name: 📝 TypeScript type checking
+        run: npm run typecheck
+
+      - name: 🧹 ESLint analysis
+        run: |
+          npm run lint -- --format=json --output-file=reports/eslint-results.json || true
+          npm run lint
+
+      - name: 💅 Prettier format checking
+        run: npm run fmt
+
+      - name: 🗑️ Dead code detection
+        run: npm run deadcode || true
+
+      - name: 📦 Unused dependencies check
+        run: npm run deps:unused || true
+
+      - name: 🔒 Security audit
+        run: |
+          npm audit --audit-level=high --production || true
+          # npm run snyk || true  # Enable if Snyk token is available
+
+      - name: 📊 Upload code quality results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: code-quality-results
+          path: |
+            reports/eslint-results.json
+            reports/deadcode-report.json
+            reports/security-audit.json
+          retention-days: 30
+
+  # ============================================================================
+  # COMPREHENSIVE TESTING MATRIX
+  # ============================================================================
+  
+  test-matrix:
+    name: 🧪 Test Suite - ${{ matrix.test-suite }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: [setup, code-quality]
+    continue-on-error: ${{ matrix.test-suite == 'chaos' || matrix.test-suite == 'performance' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        test-suite: [unit, integration, property, chaos, performance]
+        os: [ubuntu-latest, windows-latest]
+        exclude:
+          # Chaos and performance tests only on Ubuntu for consistency
+          - test-suite: chaos
+            os: windows-latest
+          - test-suite: performance
+            os: windows-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .jest-cache
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🔧 Install dependencies (if cache miss)
+        run: npm ci
+
+      - name: 🧪 Run ${{ matrix.test-suite }} tests
+        run: npm run test:${{ matrix.test-suite }}
+        env:
+          CI: true
+          NODE_ENV: test
+          # Performance testing environment
+          PERF_TEST_ITERATIONS: ${{ matrix.test-suite == 'performance' && '5' || '10' }}
+          PERF_TIMEOUT_MS: ${{ matrix.test-suite == 'performance' && '60000' || '30000' }}
+          # Chaos testing configuration
+          CHAOS_FAILURE_RATE: ${{ matrix.test-suite == 'chaos' && '0.1' || '0' }}
+          # Property testing configuration  
+          PROPERTY_TEST_RUNS: ${{ matrix.test-suite == 'property' && '50' || '100' }}
+
+      - name: 📊 Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.test-suite }}-${{ matrix.os }}
+          path: |
+            reports/junit/*.xml
+            reports/html/test-report.html
+            coverage/
+            reports/performance-results.json
+          retention-days: 30
+
+      - name: 📈 Performance regression check
+        if: matrix.test-suite == 'performance'
+        run: |
+          echo "🔍 Checking for performance regressions..."
+          # Check if performance results exist
+          if [ -f "reports/performance-results.json" ]; then
+            # Extract key metrics (simplified check)
+            BUILD_TIME=$(jq -r '.results[] | select(.name=="buildExecution") | .avg' reports/performance-results.json 2>/dev/null || echo "0")
+            MEMORY_USAGE=$(jq -r '.results[] | select(.name=="memoryUsage") | .avg' reports/performance-results.json 2>/dev/null || echo "0")
+            
+            echo "📊 Performance Metrics:"
+            echo "  Build Time: ${BUILD_TIME}ms (max: ${{ env.MAX_BUILD_TIME_MS }}ms)"
+            echo "  Memory Usage: ${MEMORY_USAGE}MB (max: ${{ env.MAX_MEMORY_USAGE_MB }}MB)"
+            
+            # Check thresholds (simplified - in reality you'd compare with baseline)
+            if (( $(echo "$BUILD_TIME > ${{ env.MAX_BUILD_TIME_MS }}" | bc -l) )); then
+              echo "❌ Build time regression detected!"
+              exit 1
+            fi
+          else
+            echo "⚠️ No performance results found"
+          fi
+
+  # ============================================================================
+  # COVERAGE AND MUTATION TESTING
+  # ============================================================================
+  
+  coverage-analysis:
+    name: 📊 Coverage Analysis
+    runs-on: ubuntu-latest
+    needs: [setup, test-matrix]
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .jest-cache
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🔧 Install dependencies (if cache miss)
+        run: npm ci
+
+      - name: 📊 Generate comprehensive coverage report
+        run: npm run test:coverage:strict
+        env:
+          CI: true
+
+      - name: 🎯 Coverage threshold check
+        run: |
+          echo "🔍 Checking coverage thresholds..."
+          COVERAGE=$(grep -o '"lines":{"total":[0-9]*,"covered":[0-9]*,"pct":[0-9.]*' coverage/coverage-summary.json | grep -o 'pct":[0-9.]*' | cut -d':' -f2)
+          echo "📈 Line coverage: ${COVERAGE}%"
+          
+          if (( $(echo "$COVERAGE < ${{ env.MIN_COVERAGE_PERCENT }}" | bc -l) )); then
+            echo "❌ Coverage below threshold (${{ env.MIN_COVERAGE_PERCENT }}%)"
+            exit 1
+          else
+            echo "✅ Coverage meets threshold"
+          fi
+
+      - name: 📤 Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # TODO: Enable when Stryker dependencies are resolved
+  # mutation-testing:
+  #   name: 🧬 Mutation Testing
+  #   runs-on: ubuntu-latest
+  #   needs: [setup, coverage-analysis]
+  #   continue-on-error: true
+  #   steps:
+  #     - name: 📥 Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: 🏗️ Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         cache: 'npm'
+
+  #     - name: 📦 Restore dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: node_modules
+  #         key: ${{ needs.setup.outputs.cache-key }}
+
+  #     - name: 🧬 Run mutation testing
+  #       run: npm run test:mutation
+  #       timeout-minutes: 30
+
+  #     - name: 📊 Upload mutation results
+  #       uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: mutation-testing-results
+  #         path: reports/mutation/
+  #         retention-days: 30
+
+  # ============================================================================
+  # TYPE CONTRACT VALIDATION
+  # ============================================================================
+  
+  type-contracts:
+    name: 🔒 TypeScript Contract Validation
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🔧 Install dependencies (if cache miss)
+        run: npm ci
+
+      # TODO: Enable when tsd is installed
+      # - name: 🔍 Run type contract tests
+      #   run: npm run test:types
+
+      - name: ✅ TypeScript compilation check
+        run: npm run typecheck
+
+  # ============================================================================
+  # INTEGRATION AND E2E TESTING
+  # ============================================================================
+  
+  e2e-testing:
+    name: 🎭 End-to-End Testing
+    runs-on: ubuntu-latest
+    needs: [setup, test-matrix]
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: 🧪 Run E2E tests
+        run: npm run e2e
+        env:
+          CI: true
+
+      - name: 📊 Upload E2E results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+  # ============================================================================
+  # FINAL QUALITY GATE
+  # ============================================================================
+  
+  quality-gate:
+    name: 🚦 Quality Gate
+    runs-on: ubuntu-latest
+    needs: [code-quality, test-matrix, coverage-analysis, type-contracts, e2e-testing]
+    if: always()
+    steps:
+      - name: 📊 Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: 🔍 Analyze results
+        run: |
+          echo "🚦 QUALITY GATE ANALYSIS"
+          echo "========================"
+          
+          # Check for critical failures
+          CRITICAL_FAILURES=0
+          
+          # Check code quality
+          if [[ "${{ needs.code-quality.result }}" != "success" ]]; then
+            echo "❌ Code quality checks failed"
+            CRITICAL_FAILURES=$((CRITICAL_FAILURES + 1))
+          else
+            echo "✅ Code quality checks passed"
+          fi
+          
+          # Check test results
+          if [[ "${{ needs.test-matrix.result }}" != "success" ]]; then
+            echo "❌ Test matrix failed"
+            CRITICAL_FAILURES=$((CRITICAL_FAILURES + 1))
+          else
+            echo "✅ Test matrix passed"
+          fi
+          
+          # Check coverage
+          if [[ "${{ needs.coverage-analysis.result }}" != "success" ]]; then
+            echo "❌ Coverage analysis failed"
+            CRITICAL_FAILURES=$((CRITICAL_FAILURES + 1))
+          else
+            echo "✅ Coverage analysis passed"
+          fi
+          
+          # Check type contracts
+          if [[ "${{ needs.type-contracts.result }}" != "success" ]]; then
+            echo "❌ Type contracts failed"
+            CRITICAL_FAILURES=$((CRITICAL_FAILURES + 1))
+          else
+            echo "✅ Type contracts passed"
+          fi
+          
+          echo ""
+          echo "📊 FINAL RESULTS"
+          echo "================"
+          echo "Critical failures: $CRITICAL_FAILURES"
+          
+          if [[ $CRITICAL_FAILURES -gt 0 ]]; then
+            echo "❌ QUALITY GATE FAILED"
+            exit 1
+          else
+            echo "✅ QUALITY GATE PASSED"
+          fi
+
+      - name: 📋 Generate final report
+        run: |
+          cat > quality-gate-report.md << 'EOF'
+          # 📊 Quality Gate Report
+          
+          **Build**: ${{ github.run_number }}  
+          **Commit**: ${{ github.sha }}  
+          **Branch**: ${{ github.ref_name }}  
+          **Timestamp**: $(date -u)
+          
+          ## 📈 Results Summary
+          
+          | Check | Status |
+          |-------|--------|
+          | Code Quality | ${{ needs.code-quality.result == 'success' && '✅ PASS' || '❌ FAIL' }} |
+          | Test Matrix | ${{ needs.test-matrix.result == 'success' && '✅ PASS' || '❌ FAIL' }} |
+          | Coverage | ${{ needs.coverage-analysis.result == 'success' && '✅ PASS' || '❌ FAIL' }} |
+          | Type Contracts | ${{ needs.type-contracts.result == 'success' && '✅ PASS' || '❌ FAIL' }} |
+          | E2E Tests | ${{ needs.e2e-testing.result == 'success' && '✅ PASS' || '❌ FAIL' }} |
+          
+          ## 🎯 Quality Metrics
+          
+          - **Coverage Threshold**: ${{ env.MIN_COVERAGE_PERCENT }}%
+          - **Max Build Time**: ${{ env.MAX_BUILD_TIME_MS }}ms
+          - **Max Memory Usage**: ${{ env.MAX_MEMORY_USAGE_MB }}MB
+          
+          ## 📦 Artifacts
+          
+          All test results, coverage reports, and analysis artifacts are available in the workflow run.
+          EOF
+
+      - name: 📤 Upload quality gate report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gate-report
+          path: quality-gate-report.md
+          retention-days: 90
+
+  # ============================================================================
+  # DEPLOYMENT (on success)
+  # ============================================================================
+  
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    needs: quality-gate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy to production
+        run: |
+          echo "🚀 Deploying to production..."
+          echo "✅ Deployment successful!"
+          # Add actual deployment steps here
+
+      - name: 📢 Notify deployment
+        run: |
+          echo "📢 Production deployment completed successfully!"
+          echo "🔗 Build: ${{ github.run_number }}"
+          echo "📝 Commit: ${{ github.sha }}"

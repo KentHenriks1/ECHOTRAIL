@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "name": "echotrail-api",
+  "builds": [
+    {
+      "src": "src/server.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "prisma/schema.prisma",
+          "node_modules/.prisma/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "src/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "src/server.ts"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "OPENAI_API_KEY": "@openai_api_key",
+    "MICROSOFT_CLIENT_ID": "@microsoft_client_id",
+    "MICROSOFT_CLIENT_SECRET": "@microsoft_client_secret",
+    "MICROSOFT_TENANT_ID": "@microsoft_tenant_id",
+    "STACK_AUTH_PROJECT_ID": "@stack_auth_project_id",
+    "JWT_SECRET": "@jwt_secret"
+  }
+}

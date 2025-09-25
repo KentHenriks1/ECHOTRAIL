@@ -1,0 +1,104 @@
+appId: com.echotrail.app
+tags:
+  - critical
+  - trail-recording
+  - core-functionality
+name: Trail Recording Flow Tests
+---
+# Test: Start Trail Recording
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Recording"
+- assertVisible: "Start Recording"
+- assertVisible: "Trail Name"
+- inputText: "Test Trail ${timestamp}"
+- tapOn: "Start Recording"
+- assertVisible: "Recording in Progress"
+- assertVisible: "00:00:00"
+- assertVisible: "Stop Recording"
+- wait: 3000
+- assertVisible: "00:00:03"
+
+---
+# Test: Stop and Save Trail Recording
+- launchApp
+- runFlow: trail_recording_flow.yaml:start_recording
+- wait: 10000 # Record for 10 seconds
+- tapOn: "Stop Recording"
+- assertVisible: "Save Trail"
+- assertVisible: "Trail Summary"
+- tapOn: "Save Trail"
+- assertVisible: "Trail saved successfully"
+- tapOn: "View Trail"
+- assertVisible: "Trail Details"
+
+---
+# Test: Pause and Resume Recording
+- launchApp
+- runFlow: trail_recording_flow.yaml:start_recording
+- wait: 5000
+- tapOn: "Pause"
+- assertVisible: "Paused"
+- wait: 3000
+- tapOn: "Resume"
+- assertVisible: "Recording in Progress"
+- wait: 5000
+- tapOn: "Stop Recording"
+- tapOn: "Save Trail"
+
+---
+# Test: Cancel Recording
+- launchApp
+- runFlow: trail_recording_flow.yaml:start_recording
+- wait: 5000
+- tapOn: "Cancel"
+- assertVisible: "Discard recording?"
+- tapOn: "Discard"
+- assertVisible: "Start Recording"
+
+---
+# Test: Recording with GPS Permissions
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Recording"
+- tapOn: "Start Recording"
+-  # Handle location permission dialog
+- assertVisible: "Location Permission"
+- tapOn: "Allow"
+- assertVisible: "Recording in Progress"
+- assertVisible: "GPS Signal: Strong"
+
+---
+# Test: Recording Settings Configuration
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Settings"
+- tapOn: "Recording Settings"
+- assertVisible: "GPS Accuracy"
+- tapOn: "High Accuracy"
+- assertVisible: "Auto-pause"
+- tapOn: "Auto-pause"
+- assertVisible: "Voice Feedback"
+- tapOn: "Voice Feedback"
+- tapOn: "Save"
+- assertVisible: "Settings saved"
+
+---
+# Test: Recording with Low Battery Warning
+- launchApp
+- runFlow: trail_recording_flow.yaml:start_recording
+-  # Simulate low battery condition
+- assertVisible: "Low battery warning"
+- tapOn: "Continue Recording"
+- assertVisible: "Recording in Progress"
+
+---
+# Test: Recording Data Display
+- launchApp
+- runFlow: trail_recording_flow.yaml:start_recording
+- wait: 15000
+- assertVisible: "Duration"
+- assertVisible: "Distance"
+- assertVisible: "Speed"
+- assertVisible: "Elevation"
+- assertNotVisible: "00:00:00" # Should show actual time

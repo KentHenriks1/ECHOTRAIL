@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-09-19T05:06:38.106Z",
+  "buildId": "production-ios-optimized-1758258398106",
+  "configuration": {
+    "name": "production-ios-optimized",
+    "platform": "ios",
+    "environment": "production",
+    "optimizations": {
+      "minification": true,
+      "treeShaking": true
+    }
+  },
+  "metrics": {
+    "buildTime": {
+      "total": 26406.707400000007,
+      "phases": {
+        "resolution": 2640.670740000001,
+        "transformation": 18484.695180000002,
+        "serialization": 3961.0061100000007,
+        "minification": 1320.3353700000005
+      }
+    },
+    "bundleSize": {
+      "total": 1671278,
+      "gzipped": 501383,
+      "modules": 0,
+      "assets": 0
+    },
+    "memoryUsage": {
+      "peak": 7162784,
+      "average": 7164504,
+      "final": 7164744
+    },
+    "optimization": {
+      "treeShakingEffectiveness": 78.8664233196906,
+      "deadCodeEliminated": 0,
+      "modulesOptimized": 0,
+      "compressionRatio": 44.98243288657096
+    }
+  },
+  "environment": {
+    "nodeVersion": "v20.19.5",
+    "metroVersion": "0.81.0",
+    "platform": "win32",
+    "os": "win32 x64",
+    "cpuCores": 16,
+    "totalMemory": 68388872192
+  }
+}

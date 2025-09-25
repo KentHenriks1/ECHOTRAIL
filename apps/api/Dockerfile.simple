@@ -1,0 +1,43 @@
+# Simple API Dockerfile for development/quick deployment
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Create non-root user
+RUN addgroup --system --gid 1001 echotrail && \
+    adduser --system --uid 1001 echotrail --ingroup echotrail
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/types/package.json ./packages/types/
+COPY packages/config/package.json ./packages/config/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build the API
+WORKDIR /app/apps/api
+RUN pnpm build
+
+# Generate Prisma client
+RUN pnpm prisma generate
+
+# Switch to non-root user
+USER echotrail
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "http.get('http://localhost:3000/v1/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+
+# Start the application
+CMD ["node", "dist/index.js"]

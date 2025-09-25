@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "*.config.js",
+    "*.config.ts",
+    "coverage",
+    ".expo",
+    "android",
+    "ios",
+    "e2e",
+    "**/node_modules/react-native-maps/**/*",
+    "**/__tests__/**/*",
+    "**/__benchmarks__/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.test-d.ts",
+    "**/*.bench.ts",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ]
+}

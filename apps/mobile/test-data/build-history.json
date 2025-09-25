@@ -1,0 +1,35 @@
+{
+  "builds": [
+    {
+      "id": "build-1",
+      "timestamp": "2024-01-01T00:00:00Z",
+      "platform": "android",
+      "success": true,
+      "duration": 120000,
+      "bundleSize": 1024000,
+      "metrics": {
+        "jsSize": 500000,
+        "assetsSize": 524000,
+        "buildTime": 120000,
+        "memoryUsage": 256000000
+      }
+    },
+    {
+      "id": "build-2",
+      "timestamp": "2024-01-01T01:00:00Z",
+      "platform": "ios",
+      "success": true,
+      "duration": 150000,
+      "bundleSize": 1100000,
+      "metrics": {
+        "jsSize": 550000,
+        "assetsSize": 550000,
+        "buildTime": 150000,
+        "memoryUsage": 280000000
+      }
+    }
+  ],
+  "totalBuilds": 2,
+  "successRate": 1,
+  "averageDuration": 135000
+}

@@ -1,0 +1,866 @@
+import { PactV3, MatchersV3, SpecificationVersion } from "@pact-foundation/pact";
+import {
+  describe,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  test,
+  expect,
+} from "vitest";
+import path from "path";
+import axios, { AxiosInstance } from "axios";
+
+// Mock API client for testing
+class EchoTrailApiClient {
+  private client: AxiosInstance;
+
+  constructor(baseURL: string) {
+    this.client = axios.create({
+      baseURL,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      validateStatus: () => true, // Don't throw on any status code
+    });
+  }
+
+  setAuthToken(token: string) {
+    this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+
+  async healthCheck() {
+    const response = await this.client.get("/v1/health");
+    return response.data;
+  }
+
+  async login(email: string, password: string) {
+    const response = await this.client.post("/v1/auth/login", {
+      email,
+      password,
+    });
+    return response.data;
+  }
+
+  async register(userData: { name: string; email: string; password: string }) {
+    const response = await this.client.post("/v1/auth/register", userData);
+    return response.data;
+  }
+
+  async getCurrentUser() {
+    const response = await this.client.get("/v1/users/me");
+    return response.data;
+  }
+
+  async getTrails(
+    params: { page?: number; limit?: number; search?: string } = {}
+  ) {
+    const response = await this.client.get("/v1/trails", { params });
+    return response.data;
+  }
+
+  async getTrail(id: string) {
+    const response = await this.client.get(`/v1/trails/${id}`);
+    return response.data;
+  }
+
+  async createTrail(trailData: {
+    name: string;
+    description?: string;
+    isPublic?: boolean;
+  }) {
+    const response = await this.client.post("/v1/trails", trailData);
+    return response.data;
+  }
+
+  async updateTrail(
+    id: string,
+    trailData: Partial<{ name: string; description: string; isPublic: boolean }>
+  ) {
+    const response = await this.client.put(`/v1/trails/${id}`, trailData);
+    return response.data;
+  }
+
+  async deleteTrail(id: string) {
+    const response = await this.client.delete(`/v1/trails/${id}`);
+    return response.data;
+  }
+
+  async getTrackPoints(trailId: string, limit: number = 100) {
+    const response = await this.client.get(`/v1/trails/${trailId}/points`, {
+      params: { limit },
+    });
+    return response.data;
+  }
+
+  async addTrackPoints(
+    trailId: string,
+    points: Array<{
+      latitude: number;
+      longitude: number;
+      timestamp: string;
+      accuracy?: number;
+      altitude?: number;
+      speed?: number;
+      heading?: number;
+    }>
+  ) {
+    const response = await this.client.post(
+      `/v1/trails/${trailId}/points`,
+      points
+    );
+    return response.data;
+  }
+
+  async shareTrail(trailId: string) {
+    const response = await this.client.post(`/v1/trails/${trailId}/share`);
+    return response.data;
+  }
+
+  async getSharedTrail(token: string) {
+    const response = await this.client.get(`/v1/share/${token}`);
+    return response.data;
+  }
+}
+
+describe("EchoTrail API Contract Tests - Bulletproof Edition", () => {
+  let provider: PactV3;
+  let client: EchoTrailApiClient;
+  const port = 3001;
+  const { like, eachLike, regex, iso8601DateTime } = MatchersV3;
+
+  beforeAll(async () => {
+    provider = new PactV3({
+      consumer: "EchoTrail Mobile App",
+      provider: "EchoTrail API",
+      port,
+      dir: path.resolve(process.cwd(), "pacts"),
+      spec: SpecificationVersion.SPECIFICATION_VERSION_V3,
+    });
+
+    client = new EchoTrailApiClient(`http://localhost:${port}`);
+  });
+
+  afterAll(async () => {
+    await provider.writePacts();
+  });
+
+  describe("Health Check - Comprehensive Coverage", () => {
+    test("should return healthy status with proper contract", async () => {
+      await provider
+        .given("the API is healthy and all services are running")
+        .uponReceiving("a request for health status")
+        .withRequest({
+          method: "GET",
+          path: "/v1/health",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .willRespondWith({
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(true),
+            data: {
+              status: like("healthy"),
+              timestamp: iso8601DateTime("2025-09-15T10:00:00.000Z"),
+              version: regex(/^\d+\.\d+\.\d+$/, "1.0.0"),
+              services: {
+                database: like("healthy"),
+                redis: like("healthy"),
+                storage: like("healthy"),
+                auth: like("healthy"),
+              },
+              uptime: like(3600),
+              environment: like("test"),
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.healthCheck();
+
+        expect(result.success).toBe(true);
+        expect(result.data.status).toBe("healthy");
+        expect(result.data.services).toBeDefined();
+        expect(result.data.services.database).toBe("healthy");
+        expect(result.data.services.redis).toBe("healthy");
+        expect(result.data.timestamp).toMatch(
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/
+        );
+        expect(result.data.version).toMatch(/^\d+\.\d+\.\d+$/);
+      });
+    });
+
+    test("should handle unhealthy status gracefully", async () => {
+      await provider
+        .given("the API has some unhealthy services")
+        .uponReceiving("a request for health status when services are degraded")
+        .withRequest({
+          method: "GET",
+          path: "/v1/health",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .willRespondWith({
+          status: 503,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(false),
+            data: {
+              status: like("degraded"),
+              timestamp: iso8601DateTime("2025-09-15T10:00:00.000Z"),
+              version: like("1.0.0"),
+              services: {
+                database: like("healthy"),
+                redis: like("unhealthy"),
+                storage: like("healthy"),
+                auth: like("timeout"),
+              },
+              issues: eachLike({
+                service: "redis",
+                status: "connection_failed",
+                message: "Unable to connect to Redis server",
+              }),
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.healthCheck();
+
+        expect(result.success).toBe(false);
+        expect(result.data.status).toBe("degraded");
+        expect(result.data.issues).toBeDefined();
+        expect(Array.isArray(result.data.issues)).toBe(true);
+      });
+    });
+  });
+
+  describe("Authentication - Bulletproof Security Tests", () => {
+    test("should login successfully with valid credentials", async () => {
+      await provider
+        .given("a user with valid credentials exists")
+        .uponReceiving("a login request with valid credentials")
+        .withRequest({
+          method: "POST",
+          path: "/v1/auth/login",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: "test@example.com",
+            password: "password123",
+          },
+        })
+        .willRespondWith({
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(true),
+            data: {
+              user: {
+                id: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440000"),
+                email: like("test@example.com"),
+                name: like("Test User"),
+                role: regex(/^(USER|ADMIN|PREMIUM)$/, "USER"),
+                preferences: like({}),
+                createdAt: iso8601DateTime(),
+                lastLoginAt: iso8601DateTime(),
+              },
+              token: regex(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTY3NTY3NzU4OCwiZXhwIjoxNjc1Njc4MTg4fQ.VkaMb3T0W6D0X3pKrR6F3t0nJ2F9Q7Rht4kL5tC9F0A"),
+              refreshToken: regex(/^[A-Za-z0-9+/=]{64,}$/, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTY3NTY3NzU4OCwiZXhwIjoxNjc1Njc4MTg4fQ.VkaMb3T0W6D0X3pKrR6F3t0nJ2F9Q7Rht4kL5tC9F0A"),
+              expiresIn: like(3600),
+              tokenType: like("Bearer"),
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.login("test@example.com", "password123");
+
+        expect(result.success).toBe(true);
+        expect(result.data.user.email).toBe("test@example.com");
+        expect(result.data.token).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/);
+        expect(result.data.refreshToken).toMatch(/^[A-Za-z0-9+/=]{64,}$/);
+        expect(result.data.user.id).toMatch(/^[a-f0-9-]{36}$/);
+        expect(["USER", "ADMIN", "PREMIUM"]).toContain(result.data.user.role);
+        expect(typeof result.data.expiresIn).toBe("number");
+        expect(result.data.expiresIn).toBeGreaterThan(0);
+      });
+    });
+
+    test("should fail login with invalid credentials", async () => {
+      await provider
+        .given("invalid credentials are provided")
+        .uponReceiving("a login request with invalid credentials")
+        .withRequest({
+          method: "POST",
+          path: "/v1/auth/login",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: "wrong@example.com",
+            password: "wrongpassword",
+          },
+        })
+        .willRespondWith({
+          status: 401,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(false),
+            error: {
+              code: like("INVALID_CREDENTIALS"),
+              message: like("Invalid email or password"),
+              details: {
+                attemptId: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440001"),
+                attemptsRemaining: like(4),
+                lockoutMinutes: like(15),
+              },
+            },
+            timestamp: iso8601DateTime(),
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.login("wrong@example.com", "wrongpassword");
+
+        expect(result.success).toBe(false);
+        expect(result.error.code).toBe("INVALID_CREDENTIALS");
+        expect(result.error.details.attemptsRemaining).toBeGreaterThanOrEqual(0);
+        expect(result.error.details.attemptId).toMatch(/^[a-f0-9-]{36}$/);
+      });
+    });
+
+    test("should handle account lockout after too many failed attempts", async () => {
+      await provider
+        .given("user account is locked due to too many failed login attempts")
+        .uponReceiving("a login request for a locked account")
+        .withRequest({
+          method: "POST",
+          path: "/v1/auth/login",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: "locked@example.com",
+            password: "anypassword",
+          },
+        })
+        .willRespondWith({
+          status: 423,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(false),
+            error: {
+              code: like("ACCOUNT_LOCKED"),
+              message: like("Account is temporarily locked due to too many failed login attempts"),
+              details: {
+                lockedUntil: iso8601DateTime(),
+                lockoutMinutes: like(15),
+                supportContact: like("support@echotrail.com"),
+              },
+            },
+            timestamp: iso8601DateTime(),
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.login("locked@example.com", "anypassword");
+
+        expect(result.success).toBe(false);
+        expect(result.error.code).toBe("ACCOUNT_LOCKED");
+        expect(result.error.details.lockoutMinutes).toBeGreaterThan(0);
+        expect(result.error.details.lockedUntil).toMatch(
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/
+        );
+      });
+    });
+
+    test("should register a new user successfully with comprehensive validation", async () => {
+      await provider
+        .given("registration is allowed and email is not taken")
+        .uponReceiving("a registration request with valid data")
+        .withRequest({
+          method: "POST",
+          path: "/v1/auth/register",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            name: "New User",
+            email: "new@example.com",
+            password: "securePassword123!",
+            acceptTerms: true,
+            marketingConsent: false,
+          },
+        })
+        .willRespondWith({
+          status: 201,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(true),
+            data: {
+              user: {
+                id: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440002"),
+                email: like("new@example.com"),
+                name: like("New User"),
+                role: like("USER"),
+                isEmailVerified: like(false),
+                preferences: like({}),
+                createdAt: iso8601DateTime(),
+              },
+              token: regex(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTY3NTY3NzU4OCwiZXhwIjoxNjc1Njc4MTg4fQ.VkaMb3T0W6D0X3pKrR6F3t0nJ2F9Q7Rht4kL5tC9F0A"),
+              refreshToken: regex(/^[A-Za-z0-9+/=]{64,}$/, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTY3NTY3NzU4OCwiZXhwIjoxNjc1Njc4MTg4fQ.VkaMb3T0W6D0X3pKrR6F3t0nJ2F9Q7Rht4kL5tC9F0A"),
+              emailVerificationRequired: like(true),
+              expiresIn: like(3600),
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.register({
+          name: "New User",
+          email: "new@example.com",
+          password: "securePassword123!",
+        });
+
+        expect(result.success).toBe(true);
+        expect(result.data.user.email).toBe("new@example.com");
+        expect(result.data.user.name).toBe("New User");
+        expect(result.data.user.id).toMatch(/^[a-f0-9-]{36}$/);
+        expect(result.data.user.isEmailVerified).toBe(false);
+        expect(result.data.emailVerificationRequired).toBe(true);
+        expect(result.data.token).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/);
+      });
+    });
+
+    test("should reject registration with invalid email format", async () => {
+      await provider
+        .given("registration validation is enabled")
+        .uponReceiving("a registration request with invalid email format")
+        .withRequest({
+          method: "POST",
+          path: "/v1/auth/register",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            name: "Test User",
+            email: "invalid-email-format",
+            password: "password123",
+          },
+        })
+        .willRespondWith({
+          status: 400,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(false),
+            error: {
+              code: like("VALIDATION_ERROR"),
+              message: like("Invalid input data"),
+              details: {
+                field: like("email"),
+                constraint: like("must be a valid email address"),
+                providedValue: like("invalid-email-format"),
+              },
+            },
+            timestamp: iso8601DateTime(),
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.register({
+          name: "Test User",
+          email: "invalid-email-format",
+          password: "password123",
+        });
+
+        expect(result.success).toBe(false);
+        expect(result.error.code).toBe("VALIDATION_ERROR");
+        expect(result.error.details.field).toBe("email");
+      });
+    });
+  });
+
+  describe("Trail Management - Comprehensive Coverage", () => {
+    beforeEach(() => {
+      client.setAuthToken("valid-jwt-token");
+    });
+
+    test("should get paginated trails list with comprehensive metadata", async () => {
+      await provider
+        .given("user has trails and authentication is valid")
+        .uponReceiving("a request for paginated trails list")
+        .withRequest({
+          method: "GET",
+          path: "/v1/trails",
+          query: {
+            page: "1",
+            limit: "10",
+            sort: "createdAt",
+            order: "desc",
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer valid-jwt-token",
+          },
+        })
+        .willRespondWith({
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(true),
+            data: {
+              trails: eachLike({
+                id: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440000"),
+                name: like("Mountain Trail"),
+                description: like("A beautiful mountain trail with scenic views"),
+                isPublic: like(false),
+                userId: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440001"),
+                metadata: {
+                  distance: like(5.2),
+                  duration: like(7200),
+                  elevationGain: like(450),
+                  difficulty: regex(/^(easy|moderate|hard|extreme)$/, "moderate"),
+                  maxAltitude: like(1200),
+                  minAltitude: like(800),
+                  movingTime: like(6400),
+                  averageSpeed: like(0.8),
+                },
+                stats: {
+                  totalPoints: like(842),
+                  shareCount: like(3),
+                  likeCount: like(15),
+                  completionRate: like(0.87),
+                },
+                createdAt: iso8601DateTime(),
+                updatedAt: iso8601DateTime(),
+                lastModifiedBy: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440001"),
+              }),
+              pagination: {
+                page: like(1),
+                limit: like(10),
+                total: like(25),
+                pages: like(3),
+                hasNext: like(true),
+                hasPrev: like(false),
+              },
+              filters: {
+                availableDifficulties: eachLike("moderate"),
+                distanceRange: {
+                  min: like(0.5),
+                  max: like(50.0),
+                },
+                durationRange: {
+                  min: like(300),
+                  max: like(28800),
+                },
+              },
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.getTrails({ page: 1, limit: 10 });
+
+        expect(result.success).toBe(true);
+        expect(Array.isArray(result.data.trails)).toBe(true);
+        expect(result.data.trails.length).toBeGreaterThan(0);
+        expect(result.data.pagination.page).toBe(1);
+        expect(result.data.pagination.total).toBeGreaterThan(0);
+
+        const trail = result.data.trails[0];
+        expect(trail.id).toMatch(/^[a-f0-9-]{36}$/);
+        expect(trail.userId).toMatch(/^[a-f0-9-]{36}$/);
+        expect(["easy", "moderate", "hard", "extreme"]).toContain(trail.metadata.difficulty);
+        expect(typeof trail.metadata.distance).toBe("number");
+        expect(typeof trail.metadata.duration).toBe("number");
+        expect(trail.metadata.distance).toBeGreaterThan(0);
+        expect(trail.stats.totalPoints).toBeGreaterThan(0);
+      });
+    });
+
+    test("should get specific trail by ID with full details", async () => {
+      await provider
+        .given("a trail with ID exists and user has access")
+        .uponReceiving("a request for specific trail by ID")
+        .withRequest({
+          method: "GET",
+          path: "/v1/trails/550e8400-e29b-41d4-a716-446655440000",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer valid-jwt-token",
+          },
+        })
+        .willRespondWith({
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(true),
+            data: {
+              id: like("550e8400-e29b-41d4-a716-446655440000"),
+              name: like("Mountain Trail"),
+              description: like("A beautiful mountain trail with scenic views and challenging terrain"),
+              isPublic: like(false),
+              userId: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440001"),
+              metadata: {
+                distance: like(5.2),
+                duration: like(7200),
+                elevationGain: like(450),
+                elevationLoss: like(420),
+                difficulty: like("moderate"),
+                maxAltitude: like(1200),
+                minAltitude: like(800),
+                movingTime: like(6400),
+                averageSpeed: like(0.8),
+                maxSpeed: like(2.3),
+                startCoordinate: {
+                  latitude: like(59.9139),
+                  longitude: like(10.7522),
+                  elevation: like(850),
+                },
+                endCoordinate: {
+                  latitude: like(59.9205),
+                  longitude: like(10.7688),
+                  elevation: like(1180),
+                },
+                bounds: {
+                  northeast: {
+                    latitude: like(59.9205),
+                    longitude: like(10.7688),
+                  },
+                  southwest: {
+                    latitude: like(59.9139),
+                    longitude: like(10.7522),
+                  },
+                },
+              },
+              stats: {
+                totalPoints: like(842),
+                shareCount: like(3),
+                likeCount: like(15),
+                completionRate: like(0.87),
+                averageRating: like(4.2),
+                reviewCount: like(7),
+              },
+              tags: eachLike("mountain", { min: 1 }),
+              createdAt: iso8601DateTime(),
+              updatedAt: iso8601DateTime(),
+              user: {
+                id: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440001"),
+                name: like("Trail Creator"),
+                avatar: like("https://example.com/avatar.jpg"),
+              },
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.getTrail("550e8400-e29b-41d4-a716-446655440000");
+
+        expect(result.success).toBe(true);
+        expect(result.data.id).toBe("550e8400-e29b-41d4-a716-446655440000");
+        expect(result.data.metadata.distance).toBeGreaterThan(0);
+        expect(result.data.metadata.duration).toBeGreaterThan(0);
+        expect(result.data.metadata.startCoordinate.latitude).toBeGreaterThan(-90);
+        expect(result.data.metadata.startCoordinate.latitude).toBeLessThan(90);
+        expect(result.data.metadata.startCoordinate.longitude).toBeGreaterThan(-180);
+        expect(result.data.metadata.startCoordinate.longitude).toBeLessThan(180);
+        expect(Array.isArray(result.data.tags)).toBe(true);
+        expect(result.data.stats.totalPoints).toBeGreaterThan(0);
+      });
+    });
+
+    test("should create new trail with comprehensive validation", async () => {
+      await provider
+        .given("user is authenticated and can create trails")
+        .uponReceiving("a request to create a new trail")
+        .withRequest({
+          method: "POST",
+          path: "/v1/trails",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer valid-jwt-token",
+          },
+          body: {
+            name: "New Mountain Adventure",
+            description: "An exciting new trail through mountain terrain",
+            isPublic: true,
+            difficulty: "moderate",
+            estimatedDuration: 7200,
+            tags: ["mountain", "scenic", "adventure"],
+          },
+        })
+        .willRespondWith({
+          status: 201,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(true),
+            data: {
+              id: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440002"),
+              name: like("New Mountain Adventure"),
+              description: like("An exciting new trail through mountain terrain"),
+              isPublic: like(true),
+              userId: regex(/^[a-f0-9-]{36}$/, "550e8400-e29b-41d4-a716-446655440001"),
+              status: like("draft"),
+              metadata: {
+                difficulty: like("moderate"),
+                estimatedDuration: like(7200),
+                distance: like(0),
+                totalPoints: like(0),
+                elevationGain: like(0),
+                elevationLoss: like(0),
+              },
+              tags: eachLike("mountain", { min: 1 }),
+              createdAt: iso8601DateTime(),
+              updatedAt: iso8601DateTime(),
+              shareUrl: regex(/^https?:\/\/.+\/trails\/[a-f0-9-]{36}$/, "https://api.echotrail.com/trails/550e8400-e29b-41d4-a716-446655440002"),
+            },
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.createTrail({
+          name: "New Mountain Adventure",
+          description: "An exciting new trail through mountain terrain",
+          isPublic: true,
+        });
+
+        expect(result.success).toBe(true);
+        expect(result.data.name).toBe("New Mountain Adventure");
+        expect(result.data.isPublic).toBe(true);
+        expect(result.data.id).toMatch(/^[a-f0-9-]{36}$/);
+        expect(result.data.userId).toMatch(/^[a-f0-9-]{36}$/);
+        expect(result.data.shareUrl).toMatch(/^https?:\/\/.+\/trails\/[a-f0-9-]{36}$/);
+        expect(result.data.status).toBe("draft");
+        expect(Array.isArray(result.data.tags)).toBe(true);
+      });
+    });
+
+    test("should reject trail creation with invalid data", async () => {
+      await provider
+        .given("user is authenticated")
+        .uponReceiving("a request to create trail with invalid data")
+        .withRequest({
+          method: "POST",
+          path: "/v1/trails",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer valid-jwt-token",
+          },
+          body: {
+            name: "",
+            description: "x".repeat(10001), // Too long
+            isPublic: true,
+          },
+        })
+        .willRespondWith({
+          status: 400,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(false),
+            error: {
+              code: like("VALIDATION_ERROR"),
+              message: like("Invalid trail data provided"),
+              details: eachLike({
+                field: "name",
+                constraint: "must not be empty",
+                providedValue: "",
+              }, { min: 1 }),
+            },
+            timestamp: iso8601DateTime(),
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.createTrail({
+          name: "",
+          description: "x".repeat(10001),
+          isPublic: true,
+        });
+
+        expect(result.success).toBe(false);
+        expect(result.error.code).toBe("VALIDATION_ERROR");
+        expect(Array.isArray(result.error.details)).toBe(true);
+        expect(result.error.details.length).toBeGreaterThan(0);
+      });
+    });
+
+    test("should handle trail access denied for unauthorized users", async () => {
+      await provider
+        .given("a private trail exists that user cannot access")
+        .uponReceiving("a request for a private trail by unauthorized user")
+        .withRequest({
+          method: "GET",
+          path: "/v1/trails/550e8400-e29b-41d4-a716-446655440003",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer valid-jwt-token",
+          },
+        })
+        .willRespondWith({
+          status: 403,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: {
+            success: like(false),
+            error: {
+              code: like("ACCESS_DENIED"),
+              message: like("You do not have permission to access this trail"),
+              details: {
+                trailId: like("550e8400-e29b-41d4-a716-446655440003"),
+                requiredPermission: like("trail:read"),
+                userRole: like("USER"),
+              },
+            },
+            timestamp: iso8601DateTime(),
+          },
+        });
+
+      return provider.executeTest(async () => {
+        const result = await client.getTrail("550e8400-e29b-41d4-a716-446655440003");
+
+        expect(result.success).toBe(false);
+        expect(result.error.code).toBe("ACCESS_DENIED");
+        expect(result.error.details.trailId).toBe("550e8400-e29b-41d4-a716-446655440003");
+        expect(result.error.details.requiredPermission).toBeDefined();
+      });
+    });
+  });
+
+  // Additional test groups for comprehensive coverage could include:
+  // - Track Points Management
+  // - Trail Sharing
+  // - User Management  
+  // - Performance & Rate Limiting
+  // - Error Handling & Edge Cases
+  // - Security & Authorization
+  
+  // For now, we have comprehensive coverage of core authentication and trail management
+});

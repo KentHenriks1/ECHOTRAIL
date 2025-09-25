@@ -1,0 +1,25 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["jest", "react", "react-native", "node"],
+    "skipLibCheck": true,
+    "paths": {
+      "@echotrail/ui": ["./src/ui"],
+      "@echotrail/types": ["../../packages/types/src"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "src/**/__tests__/**",
+    "src/**/?(*.)+(spec|test).{ts,tsx}",
+    "src/lib/database.ts",
+    "snack-demo/**",
+    "snack-export/**"
+  ]
+}

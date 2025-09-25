@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-09-19T05:05:45.476Z",
+  "buildId": "development-android-basic-1758258345477",
+  "configuration": {
+    "name": "development-android-basic",
+    "platform": "android",
+    "environment": "development",
+    "optimizations": {
+      "minification": false,
+      "treeShaking": false
+    }
+  },
+  "metrics": {
+    "buildTime": {
+      "total": 22434.403100000003,
+      "phases": {
+        "resolution": 2243.4403100000004,
+        "transformation": 15704.082170000001,
+        "serialization": 3365.1604650000004,
+        "minification": 0
+      }
+    },
+    "bundleSize": {
+      "total": 7152495,
+      "gzipped": 2145748,
+      "modules": 95,
+      "assets": 0
+    },
+    "memoryUsage": {
+      "peak": 30492688,
+      "average": 30494560,
+      "final": 30494952
+    },
+    "optimization": {
+      "treeShakingEffectiveness": 0,
+      "deadCodeEliminated": 10,
+      "modulesOptimized": 206,
+      "compressionRatio": 38.561253748974025
+    }
+  },
+  "environment": {
+    "nodeVersion": "v20.19.5",
+    "metroVersion": "0.81.0",
+    "platform": "win32",
+    "os": "win32 x64",
+    "cpuCores": 16,
+    "totalMemory": 68388872192
+  }
+}

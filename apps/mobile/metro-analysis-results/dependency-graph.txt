@@ -1,0 +1,13 @@
+Dependency Graph (Top 10 Heaviest)
+===================================
+
+expo (968KB)
+expo-device (846KB)
+react-native-safe-area-context (817KB)
+@react-native-async-storage/async-storage (809KB)
+@testing-library/react-native (741KB)
+expo-media-library (686KB)
+expo-location (672KB)
+@expo/vector-icons (659KB)
+expo-updates (584KB)
+@expo/webpack-config (531KB)

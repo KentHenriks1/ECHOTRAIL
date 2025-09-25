@@ -1,0 +1,48 @@
+{
+  "welcome": "Welcome to EchoTrail",
+  "navigation": {
+    "home": "Home",
+    "map": "Map",
+    "trails": "Trails",
+    "settings": "Settings"
+  },
+  "home": {
+    "title": "Home",
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "pauseRecording": "Pause Recording",
+    "recentTrails": "Recent Trails"
+  },
+  "map": {
+    "title": "Map",
+    "myLocation": "My Location",
+    "enableLocation": "Enable Location",
+    "locationPermission": "Location permission required"
+  },
+  "trails": {
+    "title": "My Trails",
+    "noTrails": "No trails recorded yet",
+    "distance": "Distance",
+    "duration": "Duration",
+    "share": "Share",
+    "delete": "Delete"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "privacy": "Privacy",
+    "backgroundRecording": "Background Recording",
+    "offlineMaps": "Offline Maps",
+    "analytics": "Analytics"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "share": "Share",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry"
+  }
+}

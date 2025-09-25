@@ -1,0 +1,111 @@
+appId: com.echotrail.app
+tags:
+  - critical
+  - trail-sharing
+  - sync
+name: Trail Sharing and Sync Flow Tests
+---
+# Test: Share Trail Publicly
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- tapOn: "My Trail" # Assuming a trail exists
+- assertVisible: "Trail Details"
+- tapOn: "Share"
+- assertVisible: "Share Trail"
+- tapOn: "Public"
+- tapOn: "Share"
+- assertVisible: "Trail shared successfully"
+- assertVisible: "Share Link"
+- tapOn: "Copy Link"
+- assertVisible: "Link copied"
+
+---
+# Test: Share Trail with Specific Users
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- tapOn: "My Trail"
+- tapOn: "Share"
+- tapOn: "Private"
+- assertVisible: "Add Recipients"
+- inputText: "friend@example.com"
+- tapOn: "Add"
+- assertVisible: "friend@example.com"
+- tapOn: "Send Invite"
+- assertVisible: "Invite sent successfully"
+
+---
+# Test: Trail Sync to Cloud
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- assertVisible: "Sync Status"
+- tapOn: "Sync All"
+- assertVisible: "Syncing trails..."
+- wait: 5000
+- assertVisible: "Sync completed"
+- assertVisible: "All trails synced"
+
+---
+# Test: Download Shared Trail
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Shared with Me"
+- assertVisible: "Shared Trails"
+- tapOn: "Download Trail"
+- assertVisible: "Downloading..."
+- wait: 3000
+- assertVisible: "Trail downloaded"
+- tapOn: "View Trail"
+- assertVisible: "Trail Details"
+
+---
+# Test: Trail Export Functionality
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- tapOn: "My Trail"
+- tapOn: "Export"
+- assertVisible: "Export Options"
+- tapOn: "GPX Format"
+- assertVisible: "Exporting..."
+- wait: 3000
+- assertVisible: "Export completed"
+- tapOn: "Share File"
+
+---
+# Test: Offline Trail Access
+- launchApp
+- runFlow: auth_flow.yaml:login
+-  # Simulate offline mode
+- tapOn: "Trails"
+- assertVisible: "Offline Mode"
+- assertVisible: "Downloaded Trails"
+- tapOn: "My Trail"
+- assertVisible: "Trail Details"
+- assertVisible: "Offline Available"
+
+---
+# Test: Trail Collaboration
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- tapOn: "Collaborative Trail"
+- assertVisible: "Contributors"
+- tapOn: "Add Contributor"
+- inputText: "collaborator@example.com"
+- tapOn: "Send Invite"
+- assertVisible: "Invitation sent"
+
+---
+# Test: Trail Privacy Settings
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Trails"
+- tapOn: "My Trail"
+- tapOn: "Settings"
+- assertVisible: "Privacy Settings"
+- tapOn: "Private"
+- tapOn: "Save"
+- assertVisible: "Privacy updated"

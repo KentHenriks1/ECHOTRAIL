@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .auth-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .echotrail {
+            border-color: #2563eb;
+        }
+        .zentric {
+            border-color: #059669;
+        }
+        .auth-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+        .btn-echotrail {
+            background-color: #2563eb;
+            color: white;
+        }
+        .btn-zentric {
+            background-color: #059669;
+            color: white;
+        }
+        .btn-echotrail:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-zentric:hover {
+            background-color: #047857;
+        }
+        .info {
+            background-color: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .success {
+            background-color: #f0fdf4;
+            border: 1px solid #22c55e;
+            color: #15803d;
+        }
+        .error {
+            background-color: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+        .code {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .endpoints {
+            margin: 20px 0;
+        }
+        .endpoint {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Microsoft Authentication Test</h1>
+        
+        <div class="info">
+            <strong>Test Status:</strong> Microsoft Azure AD authentication is now active on the backend server!
+        </div>
+
+        <div class="auth-section echotrail">
+            <h2>🎯 EchoTrail Authentication</h2>
+            <p>Test Microsoft login for EchoTrail users. After successful authentication, you will be redirected to <code>localhost:8081</code>.</p>
+            <a href="http://localhost:3001/api/v1/auth/microsoft/login?app=echotrail" class="auth-button btn-echotrail">
+                🚀 Login with Microsoft (EchoTrail)
+            </a>
+            <div class="code">
+                GET http://localhost:3001/api/v1/auth/microsoft/login?app=echotrail
+                → Microsoft OAuth → http://localhost:8081/auth/success?access_token=...
+            </div>
+        </div>
+
+        <div class="auth-section zentric">
+            <h2>🏢 Zentric Authentication</h2>
+            <p>Test Microsoft login for Zentric users. After successful authentication, you will be redirected to <code>localhost:3000</code>.</p>
+            <a href="http://localhost:3001/api/v1/auth/microsoft/login?app=zentric" class="auth-button btn-zentric">
+                🔧 Login with Microsoft (Zentric)
+            </a>
+            <div class="code">
+                GET http://localhost:3001/api/v1/auth/microsoft/login?app=zentric
+                → Microsoft OAuth → http://localhost:3000/auth/success?access_token=...
+            </div>
+        </div>
+
+        <div class="endpoints">
+            <h3>📋 Available Endpoints</h3>
+            
+            <div class="endpoint">
+                <strong>API Documentation:</strong><br>
+                <code>GET <a href="http://localhost:3001/api/v1" target="_blank">http://localhost:3001/api/v1</a></code>
+            </div>
+            
+            <div class="endpoint">
+                <strong>Health Check:</strong><br>
+                <code>GET <a href="http://localhost:3001/health" target="_blank">http://localhost:3001/health</a></code>
+            </div>
+            
+            <div class="endpoint">
+                <strong>Microsoft User Info:</strong><br>
+                <code>GET http://localhost:3001/api/v1/auth/microsoft/me</code><br>
+                <small>Requires: Authorization: Bearer &lt;access_token&gt;</small>
+            </div>
+            
+            <div class="endpoint">
+                <strong>Microsoft Logout:</strong><br>
+                <code>POST http://localhost:3001/api/v1/auth/microsoft/logout</code><br>
+                <small>Body: {"refreshToken": "&lt;refresh_token&gt;"}</small>
+            </div>
+        </div>
+
+        <div class="info">
+            <h3>🔧 Configuration Details</h3>
+            <ul>
+                <li><strong>Azure Tenant ID:</strong> 3a25bf61-9abb-4b4c-b63b-15101151b584</li>
+                <li><strong>Client ID:</strong> 61393d5f-8784-4521-b92b-33a88a3e927d</li>
+                <li><strong>Redirect URIs:</strong> Configured for both development and production</li>
+                <li><strong>Permissions:</strong> openid, profile, email, User.Read</li>
+                <li><strong>App Context:</strong> Supports both EchoTrail and Zentric</li>
+            </ul>
+        </div>
+
+        <div class="info success" id="success-message" style="display: none;">
+            <h3>✅ Authentication Successful!</h3>
+            <p>Microsoft authentication completed successfully. Check the URL parameters for tokens.</p>
+        </div>
+
+        <div class="info error" id="error-message" style="display: none;">
+            <h3>❌ Authentication Error</h3>
+            <p>There was an error during Microsoft authentication. Check the console for details.</p>
+        </div>
+    </div>
+
+    <script>
+        // Check if we're returning from a successful authentication
+        const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get('access_token');
+        const error = urlParams.get('error');
+
+        if (accessToken) {
+            document.getElementById('success-message').style.display = 'block';
+            console.log('Access Token received:', accessToken);
+        } else if (error) {
+            document.getElementById('error-message').style.display = 'block';
+            console.error('Authentication error:', error);
+        }
+
+        // Log current configuration
+        console.log('Microsoft Auth Test Page Loaded');
+        console.log('Server:', 'http://localhost:3001');
+        console.log('EchoTrail redirect:', 'http://localhost:8081');
+        console.log('Zentric redirect:', 'http://localhost:3000');
+    </script>
+</body>
+</html>

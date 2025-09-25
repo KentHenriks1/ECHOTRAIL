@@ -1,0 +1,103 @@
+const js = require("@eslint/js");
+const tseslint = require("@typescript-eslint/eslint-plugin");
+const tsparser = require("@typescript-eslint/parser");
+const reactHooks = require("eslint-plugin-react-hooks");
+
+module.exports = [
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    languageOptions: {
+      parser: tsparser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        project: "./tsconfig.json",
+      },
+      globals: {
+        __DEV__: "readonly",
+        console: "readonly",
+        module: "readonly",
+        require: "readonly",
+        global: "readonly",
+        process: "readonly",
+        Buffer: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        NodeJS: "readonly",
+        fetch: "readonly",
+        FormData: "readonly",
+        Headers: "readonly",
+        Request: "readonly",
+        Response: "readonly",
+        RequestInit: "readonly",
+        window: "readonly",
+        navigator: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        AbortController: "readonly",
+        btoa: "readonly",
+        atob: "readonly",
+        performance: "readonly",
+        // Jest globals
+        describe: "readonly",
+        test: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        jest: "readonly",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint,
+      "react-hooks": reactHooks,
+    },
+    rules: {
+      // Very permissive rules for development
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/prefer-as-const": "off",
+      "@typescript-eslint/no-inferrable-types": "off",
+      "no-unused-vars": "off",
+      "no-console": "off",
+      "prefer-const": "off",
+      "no-empty": "off",
+      // React hooks rules
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
+  {
+    ignores: [
+      "node_modules/",
+      ".expo/",
+      "dist/",
+      "build/",
+      "coverage/",
+      "*.config.js",
+      "babel.config.js",
+      "metro.config.js",
+      "**/*.generated.*",
+      "**/android/**",
+      "**/ios/**",
+      "*.js",
+      "**/*.js",
+      "**/__tests__/**",
+      "src/__tests__/**",
+      "snack-demo/**",
+      "snack-export/**",
+      "src/lib/database.ts",
+      "*.sql",
+    ],
+  },
+];

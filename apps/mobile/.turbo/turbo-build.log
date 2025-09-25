@@ -1,0 +1,4 @@
+
+> mobile@1.0.0 build C:\Users\Kenth\Desktop\echotrail-project\echotrail\apps\mobile
+> tsc --noEmit --project tsconfig.build.json
+

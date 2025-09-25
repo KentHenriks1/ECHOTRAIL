@@ -1,0 +1,66 @@
+{
+  "timestamp": 1758297172048,
+  "environment": {
+    "node_version": "v20.19.5",
+    "platform": "win32",
+    "arch": "x64",
+    "memory": {
+      "rss": 54730752,
+      "heapTotal": 13344768,
+      "heapUsed": 4446344,
+      "external": 1660898,
+      "arrayBuffers": 19107
+    }
+  },
+  "results": [
+    {
+      "name": "file_system_operations",
+      "duration": 3.252665000000003,
+      "memoryUsage": 28115.2,
+      "iterations": 20,
+      "timestamp": 1758297171687
+    },
+    {
+      "name": "json_operations",
+      "duration": 0.23766799999999988,
+      "memoryUsage": 70862.24,
+      "iterations": 50,
+      "timestamp": 1758297171700
+    },
+    {
+      "name": "array_operations",
+      "duration": 0.3379600000000001,
+      "memoryUsage": 264562.93333333335,
+      "iterations": 30,
+      "timestamp": 1758297171712
+    },
+    {
+      "name": "concurrent_operations",
+      "duration": 15.33839,
+      "memoryUsage": 16712,
+      "iterations": 20,
+      "timestamp": 1758297172029
+    },
+    {
+      "name": "memory_allocation",
+      "duration": 0.2589466666666719,
+      "memoryUsage": 442391.4666666667,
+      "iterations": 15,
+      "timestamp": 1758297172034
+    },
+    {
+      "name": "module_operations",
+      "duration": 1.0228600000000028,
+      "memoryUsage": 463400.8,
+      "iterations": 10,
+      "timestamp": 1758297172046
+    }
+  ],
+  "summary": {
+    "total_operations": 6,
+    "total_duration": 20.448489666666674,
+    "average_duration": 3.4080816111111125,
+    "total_memory": 1286044.6400000001,
+    "average_memory": 214340.77333333335
+  }
+}

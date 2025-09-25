@@ -1,0 +1,16 @@
+{
+  "totalExecutionTime": 712,
+  "timestamp": "2025-09-19T17:06:58.956Z",
+  "nodeVersion": "v20.19.5",
+  "platform": "win32",
+  "arch": "x64",
+  "memoryUsage": {
+    "rss": 543293440,
+    "heapTotal": 489226240,
+    "heapUsed": 459886176,
+    "external": 3330334,
+    "arrayBuffers": 1093248
+  },
+  "environment": "test",
+  "ci": false
+}

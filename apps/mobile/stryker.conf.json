@@ -1,0 +1,63 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker/master/packages/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress", "json"],
+  "testRunner": "jest",
+  "mutate": [
+    "src/core/automation/errorHandler.ts",
+    "src/core/automation/errors.ts", 
+    "src/core/automation/pipelineUtils.ts",
+    "src/core/automation/MetroBuildPipeline.ts",
+    "!**/__tests__/**",
+    "!**/*.test.ts",
+    "!**/__benchmarks__/**"
+  ],
+  "testFramework": "jest",
+  "jest": {
+    "projectType": "custom",
+    "configFile": "jest.config.js",
+    "enableFindRelatedTests": true
+  },
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "thresholds": {
+    "high": 80,
+    "low": 70,
+    "break": 65
+  },
+  "concurrency": 4,
+  "cleanTempDir": true,
+  "tmpDir": "stryker-tmp",
+  "htmlReporter": {
+    "baseDir": "reports/mutation"
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation-report.json"
+  },
+  "logLevel": "info",
+  "fileLogLevel": "debug",
+  "plugins": [
+    "@stryker-mutator/jest-runner",
+    "@stryker-mutator/typescript-checker"
+  ],
+  "ignorePatterns": [
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/node_modules/**",
+    "**/coverage/**",
+    "**/reports/**"
+  ],
+  "mutator": {
+    "plugins": ["typescript"],
+    "excludedMutations": [
+      "StringLiteral",
+      "RegexMutator"
+    ]
+  },
+  "timeoutMS": 60000,
+  "timeoutFactor": 3,
+  "maxConcurrentTestRunners": 2,
+  "dryRunTimeoutMinutes": 5,
+  "allowConsoleColors": true
+}

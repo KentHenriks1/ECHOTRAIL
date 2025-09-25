@@ -1,0 +1,33 @@
+appId: com.echotrail.app
+name: EchoTrail Mobile E2E Tests
+includeTags:
+  - smoke
+  - critical
+  - regression
+env:
+  BASE_URL: https://api.echotrail.app
+  TEST_USER_EMAIL: test@echotrail.app
+  TEST_USER_PASSWORD: TestPassword123!
+  TIMEOUT_MS: 30000
+flowsDir: flows
+outputDir: test-results
+devices:
+  - iPhone 14 Pro
+  - Pixel 6
+tags:
+  smoke:
+    - auth
+    - navigation
+    - basic-functionality
+  critical:
+    - trail-recording
+    - trail-sharing
+    - sync
+  regression:
+    - settings
+    - notifications
+    - offline-mode
+onFailure:
+  - screenshot
+  - hierarchy
+  - logs

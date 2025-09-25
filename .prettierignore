@@ -1,0 +1,38 @@
+# Build outputs
+android/
+ios/
+.expo/
+dist/
+build/
+node_modules/
+
+# Generated files
+*.json
+*.md
+
+# Config files that should stay as-is
+*.config.js
+*.config.ts
+metro.config.js
+babel.config.js
+
+# Development utility scripts
+*.js
+!*.config.js
+
+# Legacy files to be cleaned up later
+advanced-cleanup.js
+convert-inline-styles.js
+create-stubs.js
+fix-*.js
+mass-*.js
+remove-*.js
+test-*.js
+find-*.js
+comprehensive-*.js
+
+# Documentation and setup files
+*.md
+OPENAI_*.md
+PRIORITY_*.md
+VISUAL_*.md

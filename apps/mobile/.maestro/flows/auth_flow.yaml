@@ -1,0 +1,68 @@
+appId: com.echotrail.app
+tags:
+  - smoke
+  - auth
+  - critical
+name: Authentication Flow Tests
+---
+# Test: User Login Flow
+- launchApp
+- assertVisible: "Welcome to EchoTrail"
+- tapOn: "Sign In"
+- assertVisible: "Email"
+- inputText: "${TEST_USER_EMAIL}"
+- tapOn: "Password"
+- inputText: "${TEST_USER_PASSWORD}"
+- tapOn: "Sign In"
+- assertVisible:
+    text: "Trails"
+    timeout: ${TIMEOUT_MS}
+- assertVisible: "Recording"
+
+---
+# Test: User Registration Flow
+- launchApp
+- tapOn: "Sign Up"
+- assertVisible: "Create Account"
+- inputText: "new-user-${random}@echotrail.app"
+- tapOn: "Password"
+- inputText: "NewPassword123!"
+- tapOn: "Confirm Password"
+- inputText: "NewPassword123!"
+- tapOn: "Create Account"
+- assertVisible:
+    text: "Verify Email"
+    timeout: ${TIMEOUT_MS}
+
+---
+# Test: Biometric Authentication Setup
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Settings"
+- assertVisible: "Security"
+- tapOn: "Security"
+- assertVisible: "Biometric Authentication"
+- tapOn: "Enable Biometric Authentication"
+- assertVisible: "Authenticate with biometrics"
+-  # Note: Actual biometric testing requires physical device
+
+---
+# Test: Password Reset Flow
+- launchApp
+- tapOn: "Sign In"
+- tapOn: "Forgot Password?"
+- assertVisible: "Reset Password"
+- inputText: "${TEST_USER_EMAIL}"
+- tapOn: "Send Reset Email"
+- assertVisible: "Check your email"
+
+---
+# Test: Logout Flow
+- launchApp
+- runFlow: auth_flow.yaml:login
+- tapOn: "Settings"
+- scrollUntilVisible: "Sign Out"
+- tapOn: "Sign Out"
+- assertVisible: "Sign out of EchoTrail?"
+- tapOn: "Sign Out"
+- assertVisible: "Welcome to EchoTrail"

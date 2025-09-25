@@ -1,0 +1,455 @@
+name: Metro Optimization Analysis
+
+# Trigger on pull requests and main branch pushes
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/**'
+      - 'metro.config.js'
+      - 'package.json'
+      - '.github/workflows/metro-optimization-analysis.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/**'
+      - 'metro.config.js'
+      - 'package.json'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      deep_analysis:
+        description: 'Enable deep analysis (slower but more detailed)'
+        required: false
+        default: 'false'
+        type: boolean
+      compare_baseline:
+        description: 'Compare with baseline branch'
+        required: false
+        default: 'main'
+        type: string
+
+# Permissions needed
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  metro-analysis:
+    name: Metro Bundle Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      matrix:
+        platform: [android, ios]
+        environment: [development, production]
+      fail-fast: false
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Need full history for comparison
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'apps/mobile/package-lock.json'
+
+      - name: Setup Java (for Android builds)
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup iOS build environment
+        if: matrix.platform == 'ios' && runner.os == 'macOS'
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache Metro
+        uses: actions/cache@v3
+        with:
+          path: apps/mobile/node_modules/.cache/metro
+          key: ${{ runner.os }}-metro-${{ matrix.platform }}-${{ matrix.environment }}-${{ hashFiles('apps/mobile/metro.config.js', 'apps/mobile/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-metro-${{ matrix.platform }}-${{ matrix.environment }}-
+            ${{ runner.os }}-metro-${{ matrix.platform }}-
+            ${{ runner.os }}-metro-
+
+      - name: Install Dependencies
+        run: |
+          cd apps/mobile
+          npm ci
+        env:
+          NODE_ENV: ${{ matrix.environment }}
+
+      - name: Create Metro Analysis Directory
+        run: mkdir -p apps/mobile/metro-analysis-results
+
+      - name: Run Metro Benchmarks
+        id: benchmarks
+        run: |
+          cd apps/mobile
+          
+          # Set environment variables
+          export NODE_ENV=${{ matrix.environment }}
+          export PLATFORM=${{ matrix.platform }}
+          export DEEP_ANALYSIS=${{ inputs.deep_analysis || 'false' }}
+          
+          # Run benchmarks with timeout
+          timeout 1200 npm run metro:benchmark:ci || echo "Benchmark timed out"
+          
+          # Collect benchmark results
+          if [ -f "metro-analysis-results/benchmark-results.json" ]; then
+            echo "benchmark_success=true" >> $GITHUB_OUTPUT
+            echo "benchmark_file=metro-analysis-results/benchmark-results.json" >> $GITHUB_OUTPUT
+          else
+            echo "benchmark_success=false" >> $GITHUB_OUTPUT
+            echo "No benchmark results file found"
+          fi
+        continue-on-error: true
+
+      - name: Analyze Bundle Composition
+        id: analysis
+        run: |
+          cd apps/mobile
+          
+          # Find the generated bundle
+          BUNDLE_FILE=""
+          if [ "${{ matrix.platform }}" = "android" ]; then
+            if [ -f "android/app/build/generated/assets/bundle.js" ]; then
+              BUNDLE_FILE="android/app/build/generated/assets/bundle.js"
+            elif [ -f "dist/bundle.android.js" ]; then
+              BUNDLE_FILE="dist/bundle.android.js"
+            fi
+          else
+            if [ -f "ios/main.jsbundle" ]; then
+              BUNDLE_FILE="ios/main.jsbundle"
+            elif [ -f "dist/bundle.ios.js" ]; then
+              BUNDLE_FILE="dist/bundle.ios.js"
+            fi
+          fi
+          
+          if [ -n "$BUNDLE_FILE" ] && [ -f "$BUNDLE_FILE" ]; then
+            echo "Found bundle: $BUNDLE_FILE"
+            
+            # Run bundle analysis
+            node scripts/analyze-metro-bundle.js "$BUNDLE_FILE" \
+              --platform "${{ matrix.platform }}" \
+              --environment "${{ matrix.environment }}" \
+              --format json \
+              --export "metro-analysis-results/bundle-analysis-${{ matrix.platform }}-${{ matrix.environment }}.json"
+            
+            echo "analysis_success=true" >> $GITHUB_OUTPUT
+            echo "bundle_file=$BUNDLE_FILE" >> $GITHUB_OUTPUT
+            echo "analysis_file=metro-analysis-results/bundle-analysis-${{ matrix.platform }}-${{ matrix.environment }}.json" >> $GITHUB_OUTPUT
+          else
+            echo "Bundle file not found for ${{ matrix.platform }}"
+            echo "analysis_success=false" >> $GITHUB_OUTPUT
+            
+            # List available files for debugging
+            find . -name "*.js" -path "*/build/*" -o -path "*/dist/*" | head -10
+          fi
+        continue-on-error: true
+
+      - name: Generate Performance Report
+        if: steps.benchmarks.outputs.benchmark_success == 'true' || steps.analysis.outputs.analysis_success == 'true'
+        run: |
+          cd apps/mobile
+          
+          # Create comprehensive report
+          cat > metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md << 'EOF'
+          # Metro Performance Report
+          
+          **Platform:** ${{ matrix.platform }}
+          **Environment:** ${{ matrix.environment }}
+          **Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Commit:** ${{ github.sha }}
+          **Branch:** ${{ github.ref_name }}
+          
+          ## Summary
+          
+          EOF
+          
+          # Add benchmark results if available
+          if [ "${{ steps.benchmarks.outputs.benchmark_success }}" = "true" ]; then
+            echo "### Benchmark Results" >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            echo "" >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            
+            # Extract key metrics from benchmark results
+            if [ -f "${{ steps.benchmarks.outputs.benchmark_file }}" ]; then
+              node -e "
+                const results = JSON.parse(require('fs').readFileSync('${{ steps.benchmarks.outputs.benchmark_file }}', 'utf8'));
+                console.log('- **Build Time:** ' + Math.round(results.buildTime || 0) + 'ms');
+                console.log('- **Bundle Size:** ' + Math.round((results.bundleSize || 0) / 1024) + 'KB');
+                console.log('- **Memory Usage:** ' + Math.round((results.memoryUsage || 0) / 1024 / 1024) + 'MB');
+                console.log('- **Optimization Score:** ' + Math.round(results.optimizationScore || 0) + '/100');
+              " >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            fi
+          fi
+          
+          # Add analysis results if available
+          if [ "${{ steps.analysis.outputs.analysis_success }}" = "true" ]; then
+            echo "" >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            echo "### Bundle Analysis" >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            echo "" >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            
+            if [ -f "${{ steps.analysis.outputs.analysis_file }}" ]; then
+              node -e "
+                const analysis = JSON.parse(require('fs').readFileSync('${{ steps.analysis.outputs.analysis_file }}', 'utf8'));
+                console.log('- **Total Modules:** ' + (analysis.composition?.totalModules || 0));
+                console.log('- **Bundle Size:** ' + Math.round((analysis.metadata?.bundleSize || 0) / 1024) + 'KB');
+                console.log('- **Security Score:** ' + (analysis.security?.securityScore || 0) + '/100');
+                console.log('- **Tree Shaking Effectiveness:** ' + Math.round(analysis.optimizations?.treeShaking?.effectiveness || 0) + '%');
+                console.log('- **Dead Code:** ' + Math.round(analysis.optimizations?.deadCode?.deadCodePercentage || 0) + '%');
+                console.log('- **Optimization Opportunities:** ' + (analysis.recommendations?.length || 0));
+              " >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+            fi
+          fi
+
+      - name: Compare with Baseline (PR only)
+        if: github.event_name == 'pull_request' && (steps.benchmarks.outputs.benchmark_success == 'true' || steps.analysis.outputs.analysis_success == 'true')
+        run: |
+          cd apps/mobile
+          
+          # Checkout baseline branch for comparison
+          git fetch origin ${{ inputs.compare_baseline || 'main' }}:baseline
+          git checkout baseline
+          
+          # Install dependencies on baseline
+          npm ci --prefer-offline
+          
+          # Run baseline benchmark
+          timeout 600 npm run metro:benchmark:ci || echo "Baseline benchmark timed out"
+          
+          # Compare results
+          git checkout ${{ github.head_ref }}
+          
+          if [ -f "metro-analysis-results/benchmark-results.json" ] && [ -f "../baseline-benchmark-results.json" ]; then
+            # Generate comparison report
+            node -e "
+              const current = JSON.parse(require('fs').readFileSync('metro-analysis-results/benchmark-results.json', 'utf8'));
+              const baseline = JSON.parse(require('fs').readFileSync('../baseline-benchmark-results.json', 'utf8'));
+              
+              const buildTimeDiff = ((current.buildTime || 0) - (baseline.buildTime || 0)) / (baseline.buildTime || 1) * 100;
+              const bundleSizeDiff = ((current.bundleSize || 0) - (baseline.bundleSize || 0)) / (baseline.bundleSize || 1) * 100;
+              
+              console.log('## Comparison with Baseline (${{ inputs.compare_baseline || 'main' }})');
+              console.log('');
+              console.log('| Metric | Current | Baseline | Change |');
+              console.log('|--------|---------|----------|--------|');
+              console.log('| Build Time | ' + Math.round(current.buildTime || 0) + 'ms | ' + Math.round(baseline.buildTime || 0) + 'ms | ' + (buildTimeDiff > 0 ? '+' : '') + Math.round(buildTimeDiff) + '% |');
+              console.log('| Bundle Size | ' + Math.round((current.bundleSize || 0) / 1024) + 'KB | ' + Math.round((baseline.bundleSize || 0) / 1024) + 'KB | ' + (bundleSizeDiff > 0 ? '+' : '') + Math.round(bundleSizeDiff) + '% |');
+              console.log('| Memory Usage | ' + Math.round((current.memoryUsage || 0) / 1024 / 1024) + 'MB | ' + Math.round((baseline.memoryUsage || 0) / 1024 / 1024) + 'MB | N/A |');
+              console.log('');
+            " >> metro-analysis-results/performance-report-${{ matrix.platform }}-${{ matrix.environment }}.md
+          fi
+
+      - name: Upload Analysis Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metro-analysis-${{ matrix.platform }}-${{ matrix.environment }}-${{ github.run_number }}
+          path: apps/mobile/metro-analysis-results/
+          retention-days: 30
+
+      - name: Check Performance Thresholds
+        id: thresholds
+        if: steps.benchmarks.outputs.benchmark_success == 'true' || steps.analysis.outputs.analysis_success == 'true'
+        run: |
+          cd apps/mobile
+          
+          # Define performance thresholds
+          MAX_BUILD_TIME=300000  # 5 minutes
+          MAX_BUNDLE_SIZE=10485760  # 10MB
+          MIN_OPTIMIZATION_SCORE=70
+          
+          THRESHOLD_VIOLATIONS=""
+          
+          # Check benchmark results
+          if [ -f "${{ steps.benchmarks.outputs.benchmark_file }}" ]; then
+            BUILD_TIME=$(node -e "console.log(JSON.parse(require('fs').readFileSync('${{ steps.benchmarks.outputs.benchmark_file }}', 'utf8')).buildTime || 0)")
+            BUNDLE_SIZE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('${{ steps.benchmarks.outputs.benchmark_file }}', 'utf8')).bundleSize || 0)")
+            OPT_SCORE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('${{ steps.benchmarks.outputs.benchmark_file }}', 'utf8')).optimizationScore || 100)")
+            
+            if [ "$(echo "$BUILD_TIME > $MAX_BUILD_TIME" | bc -l)" = "1" ]; then
+              THRESHOLD_VIOLATIONS="$THRESHOLD_VIOLATIONS\n- Build time exceeds threshold: ${BUILD_TIME}ms > ${MAX_BUILD_TIME}ms"
+            fi
+            
+            if [ "$(echo "$BUNDLE_SIZE > $MAX_BUNDLE_SIZE" | bc -l)" = "1" ]; then
+              THRESHOLD_VIOLATIONS="$THRESHOLD_VIOLATIONS\n- Bundle size exceeds threshold: $(echo "$BUNDLE_SIZE / 1024" | bc -l)KB > $(echo "$MAX_BUNDLE_SIZE / 1024" | bc -l)KB"
+            fi
+            
+            if [ "$(echo "$OPT_SCORE < $MIN_OPTIMIZATION_SCORE" | bc -l)" = "1" ]; then
+              THRESHOLD_VIOLATIONS="$THRESHOLD_VIOLATIONS\n- Optimization score below threshold: $OPT_SCORE < $MIN_OPTIMIZATION_SCORE"
+            fi
+          fi
+          
+          if [ -n "$THRESHOLD_VIOLATIONS" ]; then
+            echo "threshold_violations_found=true" >> $GITHUB_OUTPUT
+            echo "violations<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$THRESHOLD_VIOLATIONS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "threshold_violations_found=false" >> $GITHUB_OUTPUT
+            echo "All performance thresholds passed ✅"
+          fi
+
+  # Aggregate results and post PR comment
+  report-summary:
+    name: Generate Summary Report
+    runs-on: ubuntu-latest
+    needs: metro-analysis
+    if: always()
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download All Analysis Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: analysis-results/
+
+      - name: Generate Combined Report
+        run: |
+          mkdir -p combined-report
+          
+          echo "# 🚀 Metro Optimization Analysis Report" > combined-report/summary.md
+          echo "" >> combined-report/summary.md
+          echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> combined-report/summary.md
+          echo "**Commit:** ${{ github.sha }}" >> combined-report/summary.md
+          echo "**Branch:** ${{ github.ref_name }}" >> combined-report/summary.md
+          echo "" >> combined-report/summary.md
+          
+          # Process each platform/environment combination
+          for analysis_dir in analysis-results/metro-analysis-*/; do
+            if [ -d "$analysis_dir" ]; then
+              echo "Processing: $analysis_dir"
+              
+              # Extract platform and environment from directory name
+              dir_name=$(basename "$analysis_dir")
+              platform_env=$(echo "$dir_name" | sed 's/metro-analysis-\(.*\)-[0-9]*/\1/')
+              
+              echo "## 📱 Analysis: $platform_env" >> combined-report/summary.md
+              echo "" >> combined-report/summary.md
+              
+              # Include performance report if available
+              for report_file in "$analysis_dir"performance-report-*.md; do
+                if [ -f "$report_file" ]; then
+                  tail -n +4 "$report_file" >> combined-report/summary.md
+                  echo "" >> combined-report/summary.md
+                fi
+              done
+            fi
+          done
+          
+          # Add optimization recommendations
+          echo "## 🎯 Optimization Recommendations" >> combined-report/summary.md
+          echo "" >> combined-report/summary.md
+          echo "Based on the analysis, here are the top recommendations:" >> combined-report/summary.md
+          echo "" >> combined-report/summary.md
+          echo "1. **Enable Tree Shaking**: Ensure Metro tree shaking is properly configured" >> combined-report/summary.md
+          echo "2. **Bundle Splitting**: Consider implementing code splitting for large bundles" >> combined-report/summary.md
+          echo "3. **Dead Code Elimination**: Remove unused code and dependencies" >> combined-report/summary.md
+          echo "4. **Asset Optimization**: Optimize images and other static assets" >> combined-report/summary.md
+          echo "5. **Caching Strategy**: Implement proper Metro caching for faster builds" >> combined-report/summary.md
+          echo "" >> combined-report/summary.md
+          
+          echo "---" >> combined-report/summary.md
+          echo "*Generated by EchoTrail Metro Optimization Analysis*" >> combined-report/summary.md
+
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let reportContent = '';
+            try {
+              reportContent = fs.readFileSync('combined-report/summary.md', 'utf8');
+            } catch (error) {
+              reportContent = '# Metro Optimization Analysis\n\n⚠️ Analysis report could not be generated. Check the workflow logs for details.';
+            }
+            
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const existingComment = comments.find(comment => 
+              comment.body.includes('Metro Optimization Analysis Report')
+            );
+            
+            if (existingComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: reportContent
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: reportContent
+              });
+            }
+
+      - name: Upload Combined Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: metro-optimization-summary-${{ github.run_number }}
+          path: combined-report/
+          retention-days: 90
+
+  # Send Slack notification for performance regressions
+  notify-regression:
+    name: Notify Performance Regression
+    runs-on: ubuntu-latest
+    needs: metro-analysis
+    if: failure() && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Send Slack Notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: |
+            🚨 Metro Performance Regression Detected
+            
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            
+            Performance thresholds have been exceeded. Please review the analysis report and optimize accordingly.
+            
+            View Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

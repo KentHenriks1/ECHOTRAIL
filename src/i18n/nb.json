@@ -1,0 +1,48 @@
+{
+  "welcome": "Velkommen til EchoTrail",
+  "navigation": {
+    "home": "Hjem",
+    "map": "Kart",
+    "trails": "Ruter",
+    "settings": "Innstillinger"
+  },
+  "home": {
+    "title": "Hjem",
+    "startRecording": "Start opptak",
+    "stopRecording": "Stopp opptak",
+    "pauseRecording": "Pause opptak",
+    "recentTrails": "Nylige ruter"
+  },
+  "map": {
+    "title": "Kart",
+    "myLocation": "Min posisjon",
+    "enableLocation": "Aktiver posisjon",
+    "locationPermission": "Posisjonssøk kreves"
+  },
+  "trails": {
+    "title": "Mine ruter",
+    "noTrails": "Ingen ruter registrert ennå",
+    "distance": "Distanse",
+    "duration": "Varighet",
+    "share": "Del",
+    "delete": "Slett"
+  },
+  "settings": {
+    "title": "Innstillinger",
+    "language": "Språk",
+    "theme": "Tema",
+    "privacy": "Personvern",
+    "backgroundRecording": "Bakgrunnsopptak",
+    "offlineMaps": "Offline kart",
+    "analytics": "Analyser"
+  },
+  "common": {
+    "cancel": "Avbryt",
+    "save": "Lagre",
+    "delete": "Slett",
+    "share": "Del",
+    "loading": "Laster...",
+    "error": "Feil",
+    "retry": "Prøv igjen"
+  }
+}
