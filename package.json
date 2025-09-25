@@ -1,6 +1,28 @@
 {
   "name": "echotrail",
   "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise-grade AI-powered storytelling platform for Norwegian hiking adventures",
+  "author": "Kent Rune Henriksen <Kent@zentric.no>",
+  "license": "PROPRIETARY",
+  "homepage": "https://github.com/KentHenriks1/ECHOTRAIL",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KentHenriks1/ECHOTRAIL.git"
+  },
+  "keywords": [
+    "echotrail",
+    "react-native",
+    "expo",
+    "ai",
+    "openai",
+    "storytelling",
+    "hiking",
+    "norway",
+    "gps",
+    "location",
+    "enterprise"
+  ],
   "main": "index.js",
   "scripts": {
     "start": "expo start",

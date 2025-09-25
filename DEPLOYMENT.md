@@ -1,16 +1,23 @@
-# EchoTrail - Deployment Guide
+# EchoTrail - Production Deployment Guide
 
-Complete deployment guide for EchoTrail mobile application with intelligent design system.
+**Enterprise deployment guide for EchoTrail AI-powered storytelling platform**
+
+Complete deployment instructions for the production-ready EchoTrail platform featuring advanced AI integration, enterprise authentication, and comprehensive monitoring.
+
+**Contact**: Kent Rune Henriksen <Kent@zentric.no> | Zentric AS
 
 ## 🚀 Production Deployment
 
 ### Prerequisites
 
-- Node.js 18+
-- Expo CLI 54+
-- Android Studio (for Android builds)
-- Xcode (for iOS builds)
-- Valid certificates and API keys
+- **Node.js 20+** (LTS version)
+- **Expo CLI 54+** and **EAS CLI** latest
+- **Android Studio** (for Android builds)
+- **Xcode 15+** (for iOS builds, macOS only)
+- **Valid certificates** and **API keys**
+- **Neon PostgreSQL** database access
+- **OpenAI API** access (GPT-4o)
+- **Microsoft Azure AD** tenant (for enterprise auth)
 
 ### Environment Setup
 
@@ -19,8 +26,18 @@ Complete deployment guide for EchoTrail mobile application with intelligent desi
    # Copy production environment
    cp .env.production .env
    
+   # Required variables (examples)
+   OPENAI_API_KEY=...
+   GOOGLE_MAPS_API_KEY=...
+   MAPBOX_ACCESS_TOKEN=...
+   NEON_DATABASE_URL=...
+   MICROSOFT_AUTH_CLIENT_ID=...
+   MICROSOFT_AUTH_CLIENT_SECRET=...
+   MICROSOFT_AUTH_TENANT_ID=...
+   API_URL=https://api.echotrail.com
+   
    # Verify all required variables are set
-   npm run env:check
+   # (Use your preferred env checker)
    ```
 
 2. **Dependencies**
@@ -50,13 +67,16 @@ npm run format
 #### 2. Production Build
 ```bash
 # Set production environment
-export NODE_ENV=production
+$Env:NODE_ENV="production"  # PowerShell on Windows
 
-# Build for Android
-npx eas build --platform android --profile production
+# Build for Android (AAB)
+eas build --platform android --profile production --non-interactive
 
-# Build for iOS
-npx eas build --platform ios --profile production
+# Optional: APK for internal testing
+eas build --platform android --profile preview --non-interactive
+
+# Build for iOS (requires macOS)
+eas build --platform ios --profile production --non-interactive
 ```
 
 #### 3. App Store Deployment
@@ -76,15 +96,19 @@ npx eas submit --platform ios --profile production
 ### Database Migration
 
 1. **Production Database Setup**
-   ```sql
-   -- Run necessary migrations on Neon DB
-   -- URL: postgresql://neondb_owner:npg_VdrkBMsfI35z@ep-frosty-mud-a924gwbk-pooler.gwc.azure.neon.tech/neondb
+   ```bash
+   # Using Prisma (backend)
+   cd apps/backend
+   npm ci
+   npm run db:generate
+   npm run db:migrate
+   npm run db:seed
    ```
 
 2. **Verify API Connectivity**
    ```bash
-   # Test API endpoints
-   curl https://app-empty-hat-65510830.dpl.myneon.app/health
+   # Health check (after deploy)
+   curl https://api.echotrail.com/health
    ```
 
 ### Production Configuration

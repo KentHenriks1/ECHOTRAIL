@@ -64,8 +64,11 @@
     "location",
     "stories",
     "gps",
-    "trails"
+    "trails",
+    "ai",
+    "openai",
+    "norway"
   ],
-  "author": "EchoTrail Team",
-  "license": "MIT"
+  "author": "Kent Rune Henriksen <Kent@zentric.no>",
+  "license": "PROPRIETARY"
 }

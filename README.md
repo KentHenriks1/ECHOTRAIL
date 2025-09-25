@@ -2,20 +2,20 @@
 
 <div align="center">
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
-[![React Native](https://img.shields.io/badge/React%20Native-0.73+-green.svg)](https://reactnative.dev/)
-[![Expo SDK](https://img.shields.io/badge/Expo%20SDK-49.0+-black.svg)](https://expo.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6+-blue.svg)](https://www.typescriptlang.org/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.81+-green.svg)](https://reactnative.dev/)
+[![Expo SDK](https://img.shields.io/badge/Expo%20SDK-54.0+-black.svg)](https://expo.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791.svg)](https://postgresql.org/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-orange.svg)](https://openai.com/)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/KentHenriks1/ECHOTRAIL/production-build.yml?branch=main)](https://github.com/KentHenriks1/ECHOTRAIL/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](#contributing)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
-**Transform your Norwegian hiking adventures into interactive AI-powered storytelling experiences**
+**Enterprise-grade AI-powered storytelling platform for Norwegian hiking adventures**
 
-[🚀 Features](#-features) • [📱 Getting Started](#-getting-started) • [🏗️ Architecture](#-architecture) • [🤝 Contributing](#-contributing) • [📚 Documentation](#-documentation)
+[🚀 Features](#-features) • [📱 Getting Started](#-getting-started) • [🏗️ Architecture](#-architecture) • [🤝 Contributing](#-contributing) • [📚 Documentation](#-documentation) • [👤 Contact](#-contact)
 
-![EchoTrail Demo](assets/echotrail_screenshot.png)
+![EchoTrail Demo](echotrail_screenshot.png)
 
 </div>
 
@@ -23,15 +23,17 @@
 
 ## 🌟 About EchoTrail
 
-EchoTrail revolutionizes hiking in Norway by combining cutting-edge AI technology with rich cultural storytelling. As you explore iconic Norwegian trails like **Preikestolen**, **Trolltunga**, **Galdhøpiggen**, and **Besseggen**, the app dynamically generates personalized stories, folklore, and historical narratives based on your exact GPS location.
+EchoTrail is an enterprise-grade platform that revolutionizes hiking experiences in Norway through cutting-edge AI technology and rich cultural storytelling. Explore iconic trails like **Preikestolen**, **Trolltunga**, **Galdhøpiggen**, and **Besseggen** while the app dynamically generates personalized stories, folklore, and historical narratives based on your exact GPS location.
 
 ### 💡 Why EchoTrail?
 
-- 🧠 **AI-Driven Content**: Stories generated in real-time using OpenAI GPT-4o
-- 📍 **Location-Precise**: GPS-triggered narratives for specific trail points
-- 🗣️ **Authentic Norwegian**: High-quality TTS in Norwegian and English
-- 📱 **Production-Ready**: Built with React Native and Expo for iOS/Android
-- 🏔️ **Cultural Heritage**: Deep integration with Norwegian folklore and history
+- 🤖 **Enterprise AI**: Advanced OpenAI GPT-4o integration with cost optimization
+- 📍 **Context-Aware**: Seasonal, weather, and time-based story adaptation
+- 🗣️ **Premium Audio**: High-quality TTS with Norwegian voice synthesis
+- 📱 **Production-Ready**: Google Play Store validated with EAS builds
+- 🏔️ **Cultural Heritage**: Deep integration with Norwegian folklore and traditions
+- 🔒 **Enterprise Security**: Comprehensive security scanning and compliance
+- 🚀 **Performance**: Advanced Metro bundling and optimization algorithms
 
 ---
 
@@ -126,9 +128,9 @@ Try EchoTrail with these pre-configured demo accounts:
 
 | Role | Email | Password | Access Level |
 |------|-------|----------|--------------|
-| 👤 Demo User | `demo@echotrail.no` | `demo123` | Standard features |
-| 👩‍🏫 Expert Guide | `guide@echotrail.no` | `guide123` | All trails unlocked |
-| 🔧 Admin | `admin@echotrail.no` | `admin123` | Full admin access |
+| 👤 Demo User | `demo@echotrail.no` | `demo123!@#` | Standard features |
+| 👩‍🏫 Expert Guide | `guide@echotrail.no` | `guide123!@#` | All trails unlocked |
+| 🔧 Admin | `admin@echotrail.no` | `admin123!@#` | Full admin access |
 
 ### 📱 Running the App
 
@@ -154,39 +156,49 @@ eas build --platform all
 
 | Category | Technology | Purpose |
 |----------|------------|---------|
-| **Frontend** | React Native + Expo | Cross-platform mobile development |
-| **Language** | TypeScript 5.0+ | Type safety and developer experience |
-| **State Management** | Context API + Zustand | Global state and data flow |
-| **Navigation** | Expo Router | File-based navigation system |
-| **Database** | Neon PostgreSQL | AI-enhanced database with extensions |
-| **AI Services** | OpenAI GPT-4o + TTS | Story generation and audio synthesis |
-| **Maps** | Google Maps + Mapbox | Mapping and location services |
-| **Authentication** | Microsoft Azure AD | Secure user authentication |
-| **Testing** | Jest + Testing Library | Unit and integration testing |
-| **CI/CD** | GitHub Actions + EAS | Automated builds and deployments |
+| **Frontend** | React Native 0.81 + Expo 54 | Cross-platform mobile development |
+| **Language** | TypeScript 5.6+ | Type safety and developer experience |
+| **State Management** | Context API + React Hooks | Global state and data flow |
+| **Navigation** | React Navigation 7+ | Stack and tab-based navigation |
+| **Database** | Neon PostgreSQL + Prisma | Enterprise database with ORM |
+| **AI Services** | OpenAI GPT-4o + TTS-1-HD | Advanced story generation and audio |
+| **Maps** | Google Maps + React Native Maps | Location services and mapping |
+| **Authentication** | Microsoft Azure AD + JWT | Enterprise authentication |
+| **Testing** | Jest + Playwright + Testing Library | Comprehensive testing suite |
+| **CI/CD** | GitHub Actions + EAS Build | Automated builds and deployments |
+| **Bundling** | Metro + Custom Optimizers | Advanced bundling and performance |
+| **Security** | Snyk + SonarCloud + npm audit | Enterprise security scanning |
 
 ### 📁 Project Structure
 
 ```
-src/
-├── app/                 # Expo Router app directory
-│   ├── (tabs)/         # Tab-based navigation
-│   ├── auth/           # Authentication screens
-│   └── _layout.tsx     # Root layout
-├── components/          # Reusable UI components
-│   ├── modern/         # Modern UI components
-│   ├── maps/           # Map-related components
-│   └── trails/         # Trail-specific components
-├── screens/            # Full-screen components
-├── services/           # Business logic & API calls
-│   ├── intelligence/   # AI-powered services
-│   └── __tests__/      # Service tests
-├── hooks/              # Custom React hooks
-├── contexts/           # React Context providers
-├── utils/              # Helper functions and utilities
-├── types/              # TypeScript type definitions
-├── constants/          # App constants and configuration
-└── i18n/               # Internationalization
+echotrail/
+├── apps/                    # Monorepo applications
+│   ├── mobile/             # React Native app
+│   │   ├── src/
+│   │   │   ├── services/       # AI, location, API services
+│   │   │   │   ├── ai/         # OpenAI integration
+│   │   │   │   ├── location/   # Enhanced location context
+│   │   │   │   └── api/        # Trail and user services
+│   │   │   ├── core/           # Advanced systems
+│   │   │   │   ├── bundler/    # Metro optimization
+│   │   │   │   ├── caching/    # Intelligent caching
+│   │   │   │   └── automation/ # Build pipelines
+│   │   │   ├── screens/        # App screens
+│   │   │   ├── components/     # Reusable components
+│   │   │   └── __tests__/      # Comprehensive tests
+│   │   └── metro.config.js     # Metro bundler config
+│   ├── backend/            # Express.js API
+│   │   ├── src/
+│   │   │   ├── routes/         # API endpoints
+│   │   │   ├── middleware/     # Auth & security
+│   │   │   └── services/       # Business logic
+│   │   └── prisma/             # Database schema
+│   └── api/                # Vercel serverless API
+├── database/                # Database schemas and migrations
+├── .github/workflows/       # CI/CD pipelines
+├── docs/                    # Documentation
+└── scripts/                 # Automation scripts
 ```
 
 ### 🗄️ Database Schema
@@ -368,13 +380,29 @@ git checkout -b feature/your-feature-name
 - **🤖 Google Play**: [Download for Android](https://play.google.com/store/apps/echotrail)
 - **💬 Discord**: [Join our community](https://discord.gg/echotrail)
 - **🐦 Twitter**: [@EchoTrailApp](https://twitter.com/EchoTrailApp)
-- **📧 Contact**: contact@echotrail.no
+- **📧 Contact**: Kent@zentric.no
+
+---
+
+## 👤 Contact
+
+**Kent Rune Henriksen**  
+*Lead Developer & Architect*
+
+- 📧 **Email**: Kent@zentric.no
+- 🏢 **Company**: Zentric AS
+- 🌍 **Location**: Norway
+- 💼 **LinkedIn**: [Kent Rune Henriksen](https://linkedin.com/in/kent-rune-henriksen)
+
+For business inquiries, technical questions, or collaboration opportunities, feel free to reach out!
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under a **Proprietary Software License** - see the [LICENSE](LICENSE) and [URGENT_LEGAL_NOTICE.md](URGENT_LEGAL_NOTICE.md) files for details.
+
+**© 2024 Zentric AS. All rights reserved.**
 
 ---
 

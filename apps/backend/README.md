@@ -1,16 +1,36 @@
-# EchoTrail Backend Server
+# EchoTrail Backend Server - Enterprise Edition
 
-A production-ready REST API server for the EchoTrail mobile application, featuring AI-powered location storytelling, GPS trail tracking, and comprehensive user management.
+**Production-ready REST API server powering the EchoTrail platform**
 
-## 🚀 Features
+Enterprise-grade backend services featuring AI-powered location storytelling, advanced GPS trail tracking, Microsoft Azure AD authentication, and comprehensive user management. Built with Express.js, Prisma ORM, and Neon PostgreSQL.
 
-- **Authentication & Authorization**: JWT-based auth with refresh tokens
-- **Trail Management**: GPS track point storage and trail creation
-- **AI Story Generation**: Location-based storytelling powered by OpenAI
-- **Database Integration**: PostgreSQL with Prisma ORM
-- **Production Ready**: Comprehensive logging, error handling, and monitoring
-- **Security**: Rate limiting, CORS, input validation, and data sanitization
-- **Real-time Updates**: Support for mobile app synchronization
+**Contact**: Kent Rune Henriksen <Kent@zentric.no> | Zentric AS
+
+## 🚀 Enterprise Features
+
+### 🔒 Authentication & Security
+- **Multi-Provider Auth**: JWT + Microsoft Azure AD + Google Sign-In
+- **Enterprise SSO**: Azure Active Directory integration
+- **Token Management**: Access tokens + refresh tokens with secure rotation
+- **Security Hardening**: Rate limiting, CORS, input validation, Helmet.js
+
+### 📍 Trail & Location Services
+- **Advanced GPS Tracking**: Comprehensive track point storage and analysis
+- **Trail Management**: Create, update, share, and manage hiking trails
+- **Location Context**: Weather, seasonal, and cultural context integration
+- **Real-time Sync**: Mobile app synchronization with conflict resolution
+
+### 🤖 AI Integration
+- **OpenAI GPT-4o**: Advanced story generation with context awareness
+- **Cost Optimization**: Intelligent caching and request optimization
+- **Performance Monitoring**: AI service performance tracking and alerting
+- **Context-Aware Stories**: Season, weather, and time-based adaptations
+
+### 🏗️ Production Infrastructure
+- **Database**: Neon PostgreSQL with Prisma ORM and migrations
+- **Monitoring**: Winston logging with structured error handling
+- **Performance**: Advanced caching and query optimization
+- **Deployment**: Vercel serverless with GitHub Actions CI/CD
 
 ## 🏗️ Architecture
 
@@ -161,8 +181,9 @@ Authorization: Bearer your-access-token
 
 The database is seeded with these demo accounts:
 
-- **Admin User**: `admin@echotrail.app` / `admin123!@#`
-- **Demo User**: `demo@echotrail.app` / `demo123!@#`
+- **Admin User**: `admin@echotrail.no` / `admin123!@#`
+- **Demo User**: `demo@echotrail.no` / `demo123!@#`
+- **Guide User**: `guide@echotrail.no` / `guide123!@#`
 
 ## 🧪 Testing the API
 
@@ -175,7 +196,7 @@ curl http://localhost:3000/health
 # Login with demo user
 curl -X POST http://localhost:3000/v1/auth/login \\
   -H "Content-Type: application/json" \\
-  -d '{"email":"demo@echotrail.app","password":"demo123!@#"}'
+  -d '{"email":"demo@echotrail.no","password":"demo123!@#"}'
 
 # Get stories (with location)
 curl "http://localhost:3000/v1/stories?latitude=59.9139&longitude=10.7522&radius=1000"
