@@ -118,19 +118,19 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
           email,
           name,
           password_hash: passwordHash,
-          preferences: {
-            units: 'metric',
-            language: 'en',
-            mapStyle: 'default',
-            privacyLevel: 'private'
-          }
+          units: 'METRIC',
+          language: 'EN',
+          mapStyle: 'standard',
+          privacyLevel: 'PRIVATE',
+          provider: 'LOCAL',
+          appContext: 'echotrail'
         },
         select: {
           id: true,
           email: true,
           name: true,
           role: true,
-          created_at: true
+          createdAt: true
         }
       })
 
@@ -138,13 +138,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
       const refreshToken = nanoid(64)
       const refreshExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
 
-      await prisma.userSession.create({
+      await prisma.refreshToken.create({
         data: {
-          user_id: user.id,
-          refresh_token: refreshToken,
-          expires_at: refreshExpiresAt,
-          user_agent: request.headers['user-agent'],
-          ip_address: request.ip
+          userId: user.id,
+          token: refreshToken,
+          expiresAt: refreshExpiresAt
         }
       })
 
@@ -212,7 +210,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
           name: true,
           role: true,
           password_hash: true,
-          created_at: true
+          createdAt: true
         }
       })
 
@@ -243,13 +241,11 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
       const refreshToken = nanoid(64)
       const refreshExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
 
-      await prisma.userSession.create({
+      await prisma.refreshToken.create({
         data: {
-          user_id: user.id,
-          refresh_token: refreshToken,
-          expires_at: refreshExpiresAt,
-          user_agent: request.headers['user-agent'],
-          ip_address: request.ip
+          userId: user.id,
+          token: refreshToken,
+          expiresAt: refreshExpiresAt
         }
       })
 
@@ -309,8 +305,8 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
       const { refresh_token: refreshToken } = refreshSchema.parse(request.body)
 
       // Find and validate refresh token
-      const session = await prisma.userSession.findUnique({
-        where: { refresh_token: refreshToken },
+      const tokenRecord = await prisma.refreshToken.findUnique({
+        where: { token: refreshToken },
         include: {
           user: {
             select: {
@@ -323,7 +319,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
         }
       })
 
-      if (!session || session.expires_at < new Date()) {
+      if (!tokenRecord || tokenRecord.expiresAt < new Date()) {
         return reply.code(401).send({
           success: false,
           error: {
@@ -335,19 +331,13 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
 
       // Generate new access token
       const accessToken = fastify.jwt.sign(
-        { userId: session.user.id, email: session.user.email, role: session.user.role },
+        { userId: tokenRecord.user.id, email: tokenRecord.user.email, role: tokenRecord.user.role },
         { expiresIn: env.JWT_EXPIRES_IN }
       )
 
-      // Update session timestamp
-      await prisma.userSession.update({
-        where: { id: session.id },
-        data: { updated_at: new Date() }
-      })
-
       return reply.send({
         success: true,
-        user: session.user,
+        user: tokenRecord.user,
         tokens: {
           accessToken,
           refresh_token: refreshToken, // Keep the same refresh token
@@ -382,9 +372,9 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     }
   }, async (request, reply) => {
     try {
-      // Invalidate all user sessions
-      await prisma.userSession.deleteMany({
-        where: { user_id: request.userId }
+      // Invalidate all refresh tokens for user
+      await prisma.refreshToken.deleteMany({
+        where: { userId: request.userId }
       })
 
       fastify.log.info('User logged out')

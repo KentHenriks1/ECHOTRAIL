@@ -19,13 +19,12 @@ async function main() {
       name: 'Demo User',
       password_hash: demoPasswordHash,
       role: 'USER',
-      preferences: {
-        units: 'metric',
-        theme: 'auto',
-        enableNotifications: true,
-        enableLocationTracking: true,
-        privacyLevel: 'public'
-      }
+      units: 'METRIC',
+      language: 'EN',
+      mapStyle: 'standard',
+      privacyLevel: 'PUBLIC',
+      provider: 'LOCAL',
+      appContext: 'echotrail'
     }
   });
 
@@ -38,13 +37,12 @@ async function main() {
       name: 'Test User',
       password_hash: testPasswordHash,
       role: 'USER',
-      preferences: {
-        units: 'imperial',
-        theme: 'light',
-        enableNotifications: false,
-        enableLocationTracking: true,
-        privacyLevel: 'private'
-      }
+      units: 'IMPERIAL',
+      language: 'EN',
+      mapStyle: 'standard',
+      privacyLevel: 'PRIVATE',
+      provider: 'LOCAL',
+      appContext: 'echotrail'
     }
   });
 
@@ -95,7 +93,7 @@ async function main() {
         latitude: point.lat,
         longitude: point.lng,
         timestamp: new Date(point.timestamp),
-        altitude: point.altitude,
+        elevation: point.altitude,
         accuracy: 5.0,
         speed: 5.5 + Math.random() * 2, // Random speed between 5.5-7.5 km/h
         trail_id: demoTrail.id
@@ -109,25 +107,23 @@ async function main() {
   const shareLink = await prisma.shareLink.create({
     data: {
       trail_id: demoTrail.id,
-      user_id: demoUser.id,
+      share_url: `https://echotrail.com/share/${demoTrail.id}`,
       expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // Expires in 30 days
     }
   });
 
   console.log('✅ Created share link for demo trail');
 
-  // Create user sessions (for testing JWT functionality)
-  await prisma.userSession.create({
+  // Create refresh tokens (for testing JWT functionality)
+  await prisma.refreshToken.create({
     data: {
-      user_id: demoUser.id,
-      refresh_token: 'demo_refresh_token_12345',
-      expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Expires in 7 days
-      user_agent: 'EchoTrail-Demo/1.0',
-      ip_address: '192.168.1.100'
+      userId: demoUser.id,
+      token: 'demo_refresh_token_12345',
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Expires in 7 days
     }
   });
 
-  console.log('✅ Created user session for demo user');
+  console.log('✅ Created refresh token for demo user');
 
   console.log('🎉 Database seeding completed successfully!');
   console.log('');

@@ -75,9 +75,12 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
             name: true,
             avatar: true,
             role: true,
-            preferences: true,
-            created_at: true,
-            updated_at: true
+            units: true,
+            language: true,
+            mapStyle: true,
+            privacyLevel: true,
+            createdAt: true,
+            updatedAt: true
           }
         })
 
@@ -168,19 +171,34 @@ const userRoutes: FastifyPluginAsync = async (fastify) => {
     try {
       const updateData = updateUserSchema.parse(request.body)
 
+      // Transform preferences object to individual fields
+      const { preferences, ...otherData } = updateData
+      const updateFields = {
+        ...otherData,
+        ...(preferences && {
+          units: preferences.units ? preferences.units.toUpperCase() as 'METRIC' | 'IMPERIAL' : undefined,
+          language: preferences.language ? preferences.language.toUpperCase() as 'EN' | 'NB' : undefined,
+          mapStyle: preferences.mapStyle,
+          privacyLevel: preferences.privacyLevel ? preferences.privacyLevel.toUpperCase() as 'PUBLIC' | 'FRIENDS' | 'PRIVATE' : undefined
+        })
+      }
+
       // Update user in database
       const user = await prisma.user.update({
         where: { id: request.userId },
-        data: updateData,
+        data: updateFields,
         select: {
           id: true,
           email: true,
           name: true,
           avatar: true,
           role: true,
-          preferences: true,
-          created_at: true,
-          updated_at: true
+          units: true,
+          language: true,
+          mapStyle: true,
+          privacyLevel: true,
+          createdAt: true,
+          updatedAt: true
         }
       })
 

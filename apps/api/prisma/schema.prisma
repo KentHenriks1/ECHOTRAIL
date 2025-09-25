@@ -1,159 +1,164 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
 }
 
-// User model with preferences and authentication
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String       @id @default(cuid())
+  email        String       @unique
   name         String
+  display_name String?
+  password_hash String?      @map("password_hash")
   avatar       String?
-  role         Role     @default(USER)
-  
-  // Authentication
-  password_hash String  @map("password_hash")
-  
-  // Preferences stored as JSON
-  preferences  Json     @default("{}")
-  
-  // Timestamps
-  created_at   DateTime @default(now()) @map("created_at")
-  updated_at   DateTime @updatedAt @map("updated_at")
-  
-  // Relations
-  trails       Trail[]    @relation("UserTrails")
-  share_links  ShareLink[] @relation("UserShareLinks")
-  user_sessions UserSession[] @relation("UserSessions")
-  
+  role         Role         @default(USER)
+  units        Units        @default(METRIC)
+  language     Language     @default(EN)
+  mapStyle     String       @default("standard")
+  privacyLevel PrivacyLevel @default(PUBLIC)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  lastSeenAt   DateTime?
+  appContext   String?      @default("echotrail")
+  lastLoginAt  DateTime?
+  microsoftId  String?      @unique
+  provider     Provider     @default(LOCAL)
+  stories      Story[]
+  refreshTokens RefreshToken[]
+
   @@map("users")
 }
 
-// Trail model for GPS tracks
 model Trail {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
-  is_public   Boolean @default(false) @map("is_public")
-  
-  // Metadata stored as JSON for flexibility
-  metadata    Json    @default("{}")
-  
-  // Timestamps
-  created_at  DateTime @default(now()) @map("created_at")
-  updated_at  DateTime @updatedAt @map("updated_at")
-  
-  // Relations
-  user_id      String   @map("user_id")
-  user         User     @relation("UserTrails", fields: [user_id], references: [id], onDelete: Cascade)
-  track_points TrackPoint[] @relation("TrailTrackPoints")
-  share_links  ShareLink[]  @relation("TrailShareLinks")
-  
-  // Indexes
-  @@index([user_id])
-  @@index([created_at])
-  @@index([is_public])
+  id           String       @id @default(cuid()) @db.VarChar(255)
+  name         String       @db.VarChar(255)
+  description  String?
+  user_id      String       @default("local-user") @db.VarChar(255)
+  is_public    Boolean?     @default(false)
+  metadata     Json?        @default("{}")
+  distance     Decimal?     @default(0) @db.Decimal(10, 2)
+  duration     Int?         @default(0)
+  elevation    Json?        @default("{\"max\": 0, \"min\": 0, \"gain\": 0, \"loss\": 0}")
+  tags         String[]     @default([])
+  sync_status  String?      @default("PENDING")
+  local_only   Boolean?     @default(false)
+  version      Int?         @default(1)
+  start_time   DateTime?    @db.Timestamptz(6)
+  end_time     DateTime?    @db.Timestamptz(6)
+  created_at   DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?    @default(now()) @db.Timestamptz(6)
+  share_links  ShareLink[]
+  track_points TrackPoint[]
+
+  @@index([created_at], map: "trails_created_at_index")
+  @@index([is_public], map: "trails_is_public_index")
+  @@index([sync_status], map: "trails_sync_status_index")
+  @@index([user_id], map: "trails_user_id_index")
   @@map("trails")
 }
 
-// GPS track points
 model TrackPoint {
-  id        String   @id @default(cuid())
-  latitude  Float
-  longitude Float
-  timestamp DateTime
-  
-  // Optional GPS data
-  accuracy  Float?
-  altitude  Float?
-  speed     Float?
-  heading   Float?
-  
-  // Timestamps
-  created_at DateTime @default(now()) @map("created_at")
-  
-  // Relations
-  trail_id  String   @map("trail_id")
-  trail     Trail    @relation("TrailTrackPoints", fields: [trail_id], references: [id], onDelete: Cascade)
-  
-  // Indexes for geospatial and time-based queries
-  @@index([trail_id])
-  @@index([timestamp])
-  @@index([latitude, longitude])
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  trail_id        String?  @db.VarChar(255)
+  latitude        Decimal  @db.Decimal(10, 7)
+  longitude       Decimal  @db.Decimal(10, 7)
+  elevation       Decimal? @db.Decimal(8, 2)
+  timestamp       DateTime @db.Timestamptz(6)
+  accuracy        Decimal? @db.Decimal(6, 2)
+  speed           Decimal? @db.Decimal(6, 2)
+  heading         Decimal? @db.Decimal(6, 2)
+  additional_data Json?    @default("{}")
+  trails          Trail?   @relation(fields: [trail_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "track_points_trail_id_foreign")
+
+  @@index([latitude, longitude], map: "track_points_latitude_longitude_index")
+  @@index([timestamp], map: "track_points_timestamp_index")
+  @@index([trail_id], map: "track_points_trail_id_index")
   @@map("track_points")
 }
 
-// Share links for trail sharing
 model ShareLink {
-  id         String    @id @default(cuid())
-  token      String    @unique @default(cuid())
-  expires_at DateTime? @map("expires_at")
-  is_active  Boolean   @default(true) @map("is_active")
-  
-  // Timestamps
-  created_at DateTime  @default(now()) @map("created_at")
-  
-  // Relations
-  trail_id   String    @map("trail_id")
-  trail      Trail     @relation("TrailShareLinks", fields: [trail_id], references: [id], onDelete: Cascade)
-  user_id    String    @map("user_id")
-  user       User      @relation("UserShareLinks", fields: [user_id], references: [id], onDelete: Cascade)
-  
-  // Indexes
-  @@index([token])
-  @@index([trail_id])
-  @@index([expires_at])
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  trail_id   String?   @db.VarChar(255)
+  token      String    @unique(map: "share_links_token_unique") @default(cuid()) @db.VarChar(255)
+  share_url  String    @db.VarChar(255)
+  is_active  Boolean?  @default(true)
+  expires_at DateTime? @db.Timestamptz(6)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  trails     Trail?    @relation(fields: [trail_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "share_links_trail_id_foreign")
+
+  @@index([is_active], map: "share_links_is_active_index")
+  @@index([token], map: "share_links_token_index")
+  @@index([trail_id], map: "share_links_trail_id_index")
   @@map("share_links")
 }
 
-// User sessions for token management
-model UserSession {
-  id            String   @id @default(cuid())
-  refresh_token String   @unique @map("refresh_token")
-  expires_at    DateTime @map("expires_at")
-  user_agent    String?  @map("user_agent")
-  ip_address    String?  @map("ip_address")
-  
-  // Timestamps
-  created_at    DateTime @default(now()) @map("created_at")
-  updated_at    DateTime @updatedAt @map("updated_at")
-  
-  // Relations
-  user_id       String   @map("user_id")
-  user          User     @relation("UserSessions", fields: [user_id], references: [id], onDelete: Cascade)
-  
-  // Indexes
-  @@index([user_id])
-  @@index([refresh_token])
-  @@index([expires_at])
-  @@map("user_sessions")
+model Story {
+  id                String   @id @default(cuid())
+  title             String
+  content           String
+  location          String
+  latitude          Float
+  longitude         Float
+  tags              String[] @default([])
+  category          String   @default("HISTORICAL")
+  mood              String?
+  estimatedReadTime Int?
+  prompt            String?
+  model             String?
+  userId            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User?    @relation(fields: [userId], references: [id])
+
+  @@index([latitude, longitude])
+  @@index([category])
+  @@index([createdAt])
+  @@map("stories")
 }
 
-// Enums
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
 enum Role {
   USER
   ADMIN
 }
 
-// Views for performance optimization
-// Note: These would be created via migrations, not Prisma schema
+enum Units {
+  METRIC
+  IMPERIAL
+}
 
-// Example: Trail statistics view
-// CREATE VIEW trail_stats AS
-// SELECT 
-//   t.id,
-//   t.name,
-//   COUNT(tp.id) as point_count,
-//   MIN(tp.timestamp) as start_time,
-//   MAX(tp.timestamp) as end_time,
-//   ST_Length(ST_MakeLine(ST_Point(tp.longitude, tp.latitude) ORDER BY tp.timestamp)) as distance
-// FROM trails t
-// LEFT JOIN track_points tp ON t.id = tp.trail_id
-// GROUP BY t.id, t.name;
+enum Language {
+  EN
+  NB
+  NO
+}
+
+enum PrivacyLevel {
+  PUBLIC
+  FRIENDS
+  PRIVATE
+}
+
+enum Provider {
+  LOCAL
+  MICROSOFT
+  GOOGLE
+  GITHUB
+}

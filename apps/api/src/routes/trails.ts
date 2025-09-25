@@ -624,7 +624,7 @@ const trailRoutes: FastifyPluginAsync = async (fastify) => {
         longitude: point.coordinate.longitude,
         timestamp: new Date(point.timestamp),
         accuracy: point.accuracy,
-        altitude: point.altitude,
+        elevation: point.altitude, // Map altitude to elevation field
         speed: point.speed,
         heading: point.heading,
       }))
@@ -679,8 +679,8 @@ const trailRoutes: FastifyPluginAsync = async (fastify) => {
   })
 }
 
-// Helper function to calculate trail metadata
-function calculateTrailMetadata(track_points: { latitude: number; longitude: number; timestamp: string | Date; altitude?: number | null; speed?: number | null }[]) {
+// Helper function to calculate trail metadata  
+function calculateTrailMetadata(track_points: any[]) {
   if (track_points.length === 0) {
     return {
       distance: 0,
@@ -704,14 +704,14 @@ function calculateTrailMetadata(track_points: { latitude: number; longitude: num
 
     // Calculate distance between points using Haversine formula
     const distance = calculateDistance(
-      prev.latitude, prev.longitude,
-      curr.latitude, curr.longitude
+      Number(prev.latitude), Number(prev.longitude),
+      Number(curr.latitude), Number(curr.longitude)
     )
     totalDistance += distance
 
     // Calculate elevation changes
-    if (prev.altitude && curr.altitude) {
-      const elevDiff = curr.altitude - prev.altitude
+    if (prev.elevation && curr.elevation) {
+      const elevDiff = Number(curr.elevation) - Number(prev.elevation)
       if (elevDiff > 0) {
         elevationGain += elevDiff
       } else {
@@ -720,8 +720,8 @@ function calculateTrailMetadata(track_points: { latitude: number; longitude: num
     }
 
     // Track max speed
-    if (curr.speed && curr.speed > maxSpeed) {
-      maxSpeed = curr.speed
+    if (curr.speed && Number(curr.speed) > maxSpeed) {
+      maxSpeed = Number(curr.speed)
     }
   }
 

@@ -138,17 +138,17 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
         throw new Error('User ID is required')
       }
 
+      const shareUrl = `${process.env.FRONTEND_URL || 'https://echotrail.app'}/shared/${token}`
+      
       const shareLink = await prisma.shareLink.create({
         data: {
           trail_id: trailId,
-          user_id: request.userId,
           token,
+          share_url: shareUrl,
           expires_at: expiresAt,
           is_active: true
         }
       })
-
-      const shareUrl = `${process.env.FRONTEND_URL || 'https://echotrail.app'}/shared/${token}`
 
       fastify.log.info(`Share link created for trail ${trailId}`)
 
@@ -269,7 +269,7 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
       const shareLink = await prisma.shareLink.findUnique({
         where: { token: shareToken },
         include: {
-          trail: {
+          trails: {
             include: {
               track_points: {
                 select: {
@@ -277,14 +277,9 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
                   latitude: true,
                   longitude: true,
                   timestamp: true,
-                  altitude: true
+                  elevation: true
                 },
                 orderBy: { timestamp: 'asc' }
-              },
-              user: {
-                select: {
-                  name: true
-                }
               }
             }
           }
@@ -316,14 +311,14 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
 
       // Prepare response data (exclude sensitive information)
       const trailData = {
-        id: shareLink.trail.id,
-        name: shareLink.trail.name,
-        description: shareLink.trail.description,
-        metadata: shareLink.trail.metadata,
-        track_points: shareLink.trail.track_points,
-        created_at: shareLink.trail.created_at,
+        id: shareLink.trails.id,
+        name: shareLink.trails.name,
+        description: shareLink.trails.description,
+        metadata: shareLink.trails.metadata,
+        track_points: shareLink.trails.track_points,
+        created_at: shareLink.trails.created_at,
         owner: {
-          name: shareLink.trail.user.name
+          name: 'Trail Owner' // User info not available in current schema
         }
       }
 
@@ -335,7 +330,7 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
       // Cache the result for 5 minutes
       await RedisUtils.setCache(cacheKey, { trail: trailData, shareInfo }, 300)
 
-      fastify.log.info(`Shared trail accessed: ${shareLink.trail.name} (${shareToken})`)
+      fastify.log.info(`Shared trail accessed: ${shareLink.trails.name} (${shareToken})`)
 
       return reply.send({
         success: true,
@@ -389,21 +384,27 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
   }, async (request, reply) => {
     try {
       const shareLinks = await prisma.shareLink.findMany({
-        where: { user_id: request.userId },
         include: {
-          trail: {
+          trails: {
             select: {
               id: true,
-              name: true
+              name: true,
+              user_id: true
             }
           }
         },
         orderBy: { created_at: 'desc' }
       })
 
+      // Filter by current user's trails
+      const userShareLinks = shareLinks.filter(link => 
+        link.trails && link.trails.user_id === request.userId
+      )
+
       // Add share URLs
-      const shareLinksWithUrls = shareLinks.map(link => ({
+      const shareLinksWithUrls = userShareLinks.map(link => ({
         ...link,
+        trail: link.trails, // Keep trail structure for backward compatibility
         shareUrl: `${process.env.FRONTEND_URL || 'https://echotrail.app'}/shared/${link.token}`
       }))
 
@@ -459,17 +460,19 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
     try {
       const { shareId } = request.params as { shareId: string }
 
-      const result = await prisma.shareLink.updateMany({
-        where: {
-          id: shareId,
-          user_id: request.userId // Ensure user owns the share link
-        },
-        data: {
-          is_active: false
+      // First verify the user owns the trail associated with this share link
+      const shareLink = await prisma.shareLink.findUnique({
+        where: { id: shareId },
+        include: {
+          trails: {
+            select: {
+              user_id: true
+            }
+          }
         }
       })
 
-      if (result.count === 0) {
+      if (!shareLink || !shareLink.trails || shareLink.trails.user_id !== request.userId) {
         return reply.code(404).send({
           success: false,
           error: {
@@ -479,15 +482,15 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
         })
       }
 
-      // Get the share link to clear cache
-      const shareLink = await prisma.shareLink.findUnique({
-        where: { id: shareId }
+      const result = await prisma.shareLink.update({
+        where: { id: shareId },
+        data: {
+          is_active: false
+        }
       })
 
-      if (shareLink) {
-        // Clear cached shared trail
-        await RedisUtils.deleteCache(`shared-trail:${shareLink.token}`)
-      }
+      // Clear cached shared trail
+      await RedisUtils.deleteCache(`shared-trail:${result.token}`)
 
       fastify.log.info(`Share link deactivated: ${shareId} by ${request.user?.email}`)
 
@@ -533,17 +536,19 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
       const { shareId } = request.params as { shareId: string }
       const { expiresAt } = request.body as { expiresAt?: string | null }
 
-      const result = await prisma.shareLink.updateMany({
-        where: {
-          id: shareId,
-          user_id: request.userId // Ensure user owns the share link
-        },
-        data: {
-          expires_at: expiresAt ? new Date(expiresAt) : null
+      // First verify the user owns the trail associated with this share link
+      const existingShareLink = await prisma.shareLink.findUnique({
+        where: { id: shareId },
+        include: {
+          trails: {
+            select: {
+              user_id: true
+            }
+          }
         }
       })
 
-      if (result.count === 0) {
+      if (!existingShareLink || !existingShareLink.trails || existingShareLink.trails.user_id !== request.userId) {
         return reply.code(404).send({
           success: false,
           error: {
@@ -553,10 +558,13 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
         })
       }
 
-      const updatedShareLink = await prisma.shareLink.findUnique({
+      const updatedShareLink = await prisma.shareLink.update({
         where: { id: shareId },
+        data: {
+          expires_at: expiresAt ? new Date(expiresAt) : null
+        },
         include: {
-          trail: {
+          trails: {
             select: {
               id: true,
               name: true
@@ -576,7 +584,8 @@ const shareRoutes: FastifyPluginAsync = async (fastify) => {
         success: true,
         shareLink: {
           ...updatedShareLink,
-          shareUrl: `${process.env.FRONTEND_URL || 'https://echotrail.app'}/shared/${updatedShareLink?.token}`
+          trail: updatedShareLink.trails, // Keep backward compatibility
+          shareUrl: `${process.env.FRONTEND_URL || 'https://echotrail.app'}/shared/${updatedShareLink.token}`
         }
       })
 

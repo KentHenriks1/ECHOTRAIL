@@ -1,0 +1,212 @@
+
+> echotrail@1.0.0 type-check
+> tsc --noEmit
+
+apps/api/prisma/seed.ts(22,7): error TS2353: Object literal may only specify known properties, and 'preferences' does not exist in type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+apps/api/prisma/seed.ts(41,7): error TS2353: Object literal may only specify known properties, and 'preferences' does not exist in type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+apps/api/prisma/seed.ts(98,9): error TS2561: Object literal may only specify known properties, but 'altitude' does not exist in type '(Without<TrackPointCreateInput, TrackPointUncheckedCreateInput> & TrackPointUncheckedCreateInput) | (Without<...> & TrackPointCreateInput)'. Did you mean to write 'latitude'?
+apps/api/prisma/seed.ts(112,7): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type '(Without<ShareLinkCreateInput, ShareLinkUncheckedCreateInput> & ShareLinkUncheckedCreateInput) | (Without<...> & ShareLinkCreateInput)'.
+apps/api/prisma/seed.ts(120,16): error TS2339: Property 'userSession' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+apps/api/src/routes/auth.ts(121,11): error TS2353: Object literal may only specify known properties, and 'preferences' does not exist in type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+apps/api/src/routes/auth.ts(133,11): error TS2561: Object literal may only specify known properties, but 'created_at' does not exist in type 'UserSelect<DefaultArgs>'. Did you mean to write 'createdAt'?
+apps/api/src/routes/auth.ts(141,20): error TS2339: Property 'userSession' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+apps/api/src/routes/auth.ts(215,11): error TS2561: Object literal may only specify known properties, but 'created_at' does not exist in type 'UserSelect<DefaultArgs>'. Did you mean to write 'createdAt'?
+apps/api/src/routes/auth.ts(246,20): error TS2339: Property 'userSession' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+apps/api/src/routes/auth.ts(312,36): error TS2339: Property 'userSession' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+apps/api/src/routes/auth.ts(343,20): error TS2339: Property 'userSession' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+apps/api/src/routes/auth.ts(386,20): error TS2339: Property 'userSession' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+apps/api/src/routes/sharing.ts(144,11): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type '(Without<ShareLinkCreateInput, ShareLinkUncheckedCreateInput> & ShareLinkUncheckedCreateInput) | (Without<...> & ShareLinkCreateInput)'.
+apps/api/src/routes/sharing.ts(272,11): error TS2561: Object literal may only specify known properties, but 'trail' does not exist in type 'ShareLinkInclude<DefaultArgs>'. Did you mean to write 'trails'?
+apps/api/src/routes/sharing.ts(319,23): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(320,25): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(321,32): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(322,29): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(323,33): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(324,31): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(326,27): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(338,60): error TS2339: Property 'trail' does not exist on type '{ id: string; created_at: Date; is_active: boolean; trail_id: string; token: string; share_url: string; expires_at: Date; }'.
+apps/api/src/routes/sharing.ts(392,18): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type 'ShareLinkWhereInput'.
+apps/api/src/routes/sharing.ts(394,11): error TS2561: Object literal may only specify known properties, but 'trail' does not exist in type 'ShareLinkInclude<DefaultArgs>'. Did you mean to write 'trails'?
+apps/api/src/routes/sharing.ts(465,11): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type 'ShareLinkWhereInput'.
+apps/api/src/routes/sharing.ts(539,11): error TS2353: Object literal may only specify known properties, and 'user_id' does not exist in type 'ShareLinkWhereInput'.
+apps/api/src/routes/sharing.ts(559,11): error TS2561: Object literal may only specify known properties, but 'trail' does not exist in type 'ShareLinkInclude<DefaultArgs>'. Did you mean to write 'trails'?
+apps/api/src/routes/trails.ts(643,47): error TS2345: Argument of type '{ timestamp: Date; latitude: Decimal; longitude: Decimal; id: string; trail_id: string; elevation: Decimal; accuracy: Decimal; speed: Decimal; heading: Decimal; additional_data: JsonValue; }[]' is not assignable to parameter of type '{ latitude: number; longitude: number; timestamp: string | Date; altitude?: number; speed?: number; }[]'.
+  Type '{ timestamp: Date; latitude: Decimal; longitude: Decimal; id: string; trail_id: string; elevation: Decimal; accuracy: Decimal; speed: Decimal; heading: Decimal; additional_data: JsonValue; }' is not assignable to type '{ latitude: number; longitude: number; timestamp: string | Date; altitude?: number; speed?: number; }'.
+    Types of property 'latitude' are incompatible.
+      Type 'Decimal' is not assignable to type 'number'.
+apps/api/src/routes/users.ts(78,13): error TS2353: Object literal may only specify known properties, and 'preferences' does not exist in type 'UserSelect<DefaultArgs>'.
+apps/api/src/routes/users.ts(181,11): error TS2353: Object literal may only specify known properties, and 'preferences' does not exist in type 'UserSelect<DefaultArgs>'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(80,25): error TS2345: Argument of type '"web"' is not assignable to parameter of type 'Platform'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(108,5): error TS2739: Type 'BuildMetrics' is missing the following properties from type '{ buildTime: number; bundleSize: number; cacheHitRate: number; memoryUsage: number; optimizations: string[]; }': bundleSize, optimizations
+apps/mobile/src/__tests__/types/contract.test-d.ts(110,5): error TS2322: Type 'string' is not assignable to type 'number'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(114,24): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Platform'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(116,29): error TS2339: Property 'outputPath' does not exist on type 'BuildResult'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(118,28): error TS2345: Argument of type '{ buildTime: number; bundleSize: number; cacheHitRate: number; memoryUsage: number; optimizations: string[]; }' is not assignable to parameter of type 'BuildMetrics'.
+  Type '{ buildTime: number; bundleSize: number; cacheHitRate: number; memoryUsage: number; optimizations: string[]; }' is missing the following properties from type 'BuildMetrics': jsSize, assetsSize
+apps/mobile/src/__tests__/types/contract.test-d.ts(120,41): error TS2551: Property 'error' does not exist on type 'BuildResult'. Did you mean 'errors'?
+apps/mobile/src/__tests__/types/contract.test-d.ts(121,22): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(130,38): error TS2339: Property 'generateReport' does not exist on type 'MetroBuildPipeline'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(139,5): error TS2322: Type 'string' is not assignable to type 'number'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(143,30): error TS2339: Property 'operation' does not exist on type 'PipelineErrorContext'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(144,36): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Platform'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(146,22): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(147,56): error TS2345: Argument of type 'string' is not assignable to parameter of type '"development" | "production"'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(154,30): error TS2345: Argument of type '"severe"' is not assignable to parameter of type 'ErrorSeverity'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(160,43): error TS2339: Property 'severity' does not exist on type 'BuildStepError'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(162,48): error TS2339: Property 'recoveryHint' does not exist on type 'BuildStepError'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(165,66): error TS2345: Argument of type 'PipelineErrorContext' is not assignable to parameter of type 'string'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(167,71): error TS2345: Argument of type 'PipelineErrorContext' is not assignable to parameter of type 'string'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(202,5): error TS2353: Object literal may only specify known properties, and 'retryStrategy' does not exist in type 'ErrorHandlingConfig'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(208,43): error TS2339: Property 'retryStrategy' does not exist on type 'ErrorHandlingConfig'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(209,46): error TS2339: Property 'recoveryStrategy' does not exist on type 'ErrorHandlingConfig'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(210,65): error TS2339: Property 'logLevel' does not exist on type 'ErrorHandlingConfig'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(211,37): error TS2339: Property 'notificationEnabled' does not exist on type 'ErrorHandlingConfig'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(241,5): error TS2353: Object literal may only specify known properties, and 'projectPath' does not exist in type 'Partial<BuildPipelineConfig>'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(249,5): error TS2353: Object literal may only specify known properties, and 'projectPath' does not exist in type 'BuildPipelineConfig'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(275,36): error TS2345: Argument of type '{ projectPath: string; outputPath: string; platforms: Platform[]; enableOptimization: boolean; environment: "development"; maxBuildTime: number; concurrent: boolean; cacheEnabled: boolean; watchMode: boolean; }' is not assignable to parameter of type 'BuildPipelineConfig'.
+  Type '{ projectPath: string; outputPath: string; platforms: Platform[]; enableOptimization: boolean; environment: "development"; maxBuildTime: number; concurrent: boolean; cacheEnabled: boolean; watchMode: boolean; }' is missing the following properties from type 'BuildPipelineConfig': enabled, ci, performance, optimization, and 2 more.
+apps/mobile/src/__tests__/types/contract.test-d.ts(285,63): error TS2345: Argument of type 'PipelineErrorContext' is not assignable to parameter of type 'string'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(287,65): error TS2345: Argument of type 'PipelineErrorContext' is not assignable to parameter of type 'string'.
+apps/mobile/src/__tests__/types/contract.test-d.ts(291,35): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'PipelineErrors'.
+  Type 'Error' is missing the following properties from type 'NetworkError': context, toJSON, getDetailedMessage
+apps/mobile/src/components/common/__tests__/PhotoCapture.test.tsx(52,61): error TS2344: Type 'typeof PhotoService' does not satisfy the constraint 'Constructable'.
+  Cannot assign a 'private' constructor type to a 'public' constructor type.
+apps/mobile/src/components/common/PhotoCapture.tsx(151,81): error TS2554: Expected 1-2 arguments, but got 3.
+apps/mobile/src/components/common/PhotoCapture.tsx(230,42): error TS2322: Type '{ borderRadius: number; backfaceVisibility?: "visible" | "hidden" | undefined; backgroundColor?: ColorValue | undefined; borderBlockColor?: ColorValue | undefined; ... 123 more ...; translateY?: AnimatableNumericValue | undefined; }' is not assignable to type 'Falsy | ImageStyle | RegisteredStyle<ImageStyle> | RecursiveArray<Falsy | ImageStyle | RegisteredStyle<ImageStyle>> | readonly (Falsy | ... 1 more ... | RegisteredStyle<...>)[]'.
+  Type '{ borderRadius: number; backfaceVisibility?: "visible" | "hidden" | undefined; backgroundColor?: ColorValue | undefined; borderBlockColor?: ColorValue | undefined; ... 123 more ...; translateY?: AnimatableNumericValue | undefined; }' is not assignable to type 'ImageStyle'.
+    Types of property 'overflow' are incompatible.
+      Type '"scroll" | "hidden" | "visible"' is not assignable to type '"hidden" | "visible"'.
+        Type '"scroll"' is not assignable to type '"hidden" | "visible"'.
+apps/mobile/src/components/common/PhotoCaptureHelpers.tsx(78,36): error TS2322: Type 'ViewStyle' is not assignable to type 'Falsy | ImageStyle | RegisteredStyle<ImageStyle> | RecursiveArray<Falsy | ImageStyle | RegisteredStyle<ImageStyle>> | readonly (Falsy | ... 1 more ... | RegisteredStyle<...>)[]'.
+  Type 'ViewStyle' is not assignable to type 'ImageStyle'.
+    Types of property 'overflow' are incompatible.
+      Type '"scroll" | "hidden" | "visible"' is not assignable to type '"hidden" | "visible"'.
+        Type '"scroll"' is not assignable to type '"hidden" | "visible"'.
+apps/mobile/src/components/common/PhotoGallery.tsx(187,85): error TS2554: Expected 1-2 arguments, but got 3.
+apps/mobile/src/components/lazy/index.tsx(60,9): error TS2322: Type 'Promise<{ default: ComponentType<never>; } | { default: typeof PhotoService; }>' is not assignable to type 'Promise<{ default: ComponentType<object>; }>'.
+  Type '{ default: ComponentType<never>; } | { default: typeof PhotoService; }' is not assignable to type '{ default: ComponentType<object>; }'.
+    Type '{ default: typeof PhotoService; }' is not assignable to type '{ default: ComponentType<object>; }'.
+      Types of property 'default' are incompatible.
+        Type 'typeof PhotoService' is not assignable to type 'ComponentType<object>'.
+          Type 'typeof PhotoService' is not assignable to type 'ComponentClass<object, any>'.
+            Cannot assign a 'private' constructor type to a 'public' constructor type.
+apps/mobile/src/components/preferences/FloatingPreferencesPanel.tsx(70,34): error TS2339: Property '_value' does not exist on type 'Value'.
+apps/mobile/src/components/preferences/FloatingPreferencesPanel.tsx(71,34): error TS2339: Property '_value' does not exist on type 'Value'.
+apps/mobile/src/components/preferences/FloatingPreferencesPanel.tsx(84,86): error TS2339: Property '_value' does not exist on type 'Value'.
+apps/mobile/src/components/preferences/FloatingPreferencesPanel.tsx(144,16): error TS2304: Cannot find name 'MOOD_STATES'.
+apps/mobile/src/components/preferences/FloatingPreferencesPanel.tsx(256,25): error TS2304: Cannot find name 'updateInterest'.
+apps/mobile/src/components/preferences/FloatingPreferencesPanel.tsx(317,25): error TS2353: Object literal may only specify known properties, and 'preferredStoryLength' does not exist in type 'Partial<{ timeOfDay: "morning" | "afternoon" | "evening" | "night"; isAlone: boolean; activityLevel: "walking" | "stationary" | "traveling" | "exploring"; weatherInfluence: boolean; }>'.
+apps/mobile/src/components/preferences/InterestSlider.tsx(14,3): error TS2305: Module '"react-native"' has no exported member 'PanGestureHandler'.
+apps/mobile/src/components/preferences/InterestSlider.tsx(15,3): error TS2305: Module '"react-native"' has no exported member 'State'.
+apps/mobile/src/components/preferences/InterestSlider.tsx(18,3): error TS2724: '"react-native-reanimated"' has no exported member named 'useAnimatedGestureHandler'. Did you mean 'useAnimatedScrollHandler'?
+apps/mobile/src/components/preferences/PreferencesDemo.tsx(189,20): error TS2304: Cannot find name 'INTEREST_CATEGORIES'.
+apps/mobile/src/contexts/UserPreferencesContext.tsx(367,5): error TS2322: Type '() => { energy: number; curiosity: number; social: number; adventure: number; reflection: number; toneKeywords: readonly ["oppl├©ftende", "energisk", "positiv", "inspirerende"] | readonly ["rolig", "fredelig", "kontemplativ", "harmonisk"] | ... 5 more ... | readonly [...]; intensity: number; }' is not assignable to type '() => { energy: number; curiosity: number; social: number; adventure: number; reflection: number; toneKeywords: string[]; intensity: number; }'.
+  Call signature return types '{ energy: number; curiosity: number; social: number; adventure: number; reflection: number; toneKeywords: readonly ["oppl├©ftende", "energisk", "positiv", "inspirerende"] | readonly ["rolig", "fredelig", "kontemplativ", "harmonisk"] | ... 5 more ... | readonly [...]; intensity: number; }' and '{ energy: number; curiosity: number; social: number; adventure: number; reflection: number; toneKeywords: string[]; intensity: number; }' are incompatible.
+    The types of 'toneKeywords' are incompatible between these types.
+      Type 'readonly ["oppl├©ftende", "energisk", "positiv", "inspirerende"] | readonly ["rolig", "fredelig", "kontemplativ", "harmonisk"] | readonly ["utforskende", "l├ªrerik", "informativ", "oppdagende"] | ... 4 more ... | readonly [...]' is not assignable to type 'string[]'.
+        The type 'readonly ["oppl├©ftende", "energisk", "positiv", "inspirerende"]' is 'readonly' and cannot be assigned to the mutable type 'string[]'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(16,38): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(17,42): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(18,41): error TS2345: Argument of type '"{\"analysis\": \"data\"}"' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(19,37): error TS2345: Argument of type '{ size: number; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(30,46): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(31,45): error TS2345: Argument of type '{ entries: { total: number; }; size: { total: number; }; hitRate: number; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(44,57): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(45,55): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(107,67): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/buildSteps.test.ts(236,56): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/calculateSeverity.property.test.ts(64,12): error TS2554: Expected 4 arguments, but got 3.
+apps/mobile/src/core/automation/__tests__/calculateSeverity.property.test.ts(136,12): error TS2554: Expected 4 arguments, but got 3.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(49,47): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(115,47): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(171,47): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(225,45): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(226,45): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(227,43): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(239,45): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(240,45): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/ciTemplates.snapshot.test.ts(241,43): error TS2554: Expected 0 arguments, but got 1.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(19,38): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(20,42): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(21,41): error TS2345: Argument of type '"{\"key\": \"value\"}"' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(22,37): error TS2345: Argument of type '{ size: number; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(36,42): error TS2345: Argument of type '{ success: boolean; duration: number; output: string; metrics: { cacheEntries: number; hitRate: number; }; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(49,42): error TS2345: Argument of type '{ success: boolean; duration: number; output: string; artifacts: { bundle: string; }; metrics: { bundleSize: number; buildTime: number; }; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(63,42): error TS2345: Argument of type '{ success: boolean; duration: number; output: string; artifacts: { analysis: string; }; metrics: { analysisData: {}; }; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(77,42): error TS2345: Argument of type '{ success: boolean; duration: number; output: string; metrics: { benchmarks: undefined[]; }; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(226,46): error TS2345: Argument of type '{ success: boolean; duration: number; output: string; error: string; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(274,46): error TS2345: Argument of type '{ success: boolean; duration: number; output: string; artifacts: { bundle: string; }; metrics: { bundleSize: number; buildTime: number; }; }' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(317,46): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/MetroBuildPipeline.test.ts(341,46): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'never'.
+apps/mobile/src/core/automation/__tests__/PipelineErrorHandler.chaos.test.ts(95,7): error TS2741: Property 'rss' is missing in type 'Mock<any, any, any>' but required in type 'MemoryUsageFn'.
+apps/mobile/src/core/caching/MetroCacheManager.ts(500,5): error TS2322: Type 'number' is not assignable to type 'Timeout'.
+apps/mobile/src/core/monitoring/MetroPerformanceMonitor.ts(614,5): error TS2322: Type 'number' is not assignable to type 'Timeout'.
+apps/mobile/src/services/api/PostgRESTAuthAdapter.ts(401,7): error TS2322: Type 'number' is not assignable to type 'Timeout'.
+apps/mobile/src/services/media/__tests__/PhotoService.test.ts(222,61): error TS2345: Argument of type '{ canceled: true; assets: undefined[]; }' is not assignable to parameter of type 'ImagePickerResult | Promise<ImagePickerResult>'.
+  Types of property 'assets' are incompatible.
+    Type 'undefined[]' is not assignable to type 'null'.
+apps/mobile/src/services/media/__tests__/PhotoService.test.ts(273,61): error TS2345: Argument of type '{ canceled: true; assets: undefined[]; }' is not assignable to parameter of type 'ImagePickerResult | Promise<ImagePickerResult>'.
+  Types of property 'assets' are incompatible.
+    Type 'undefined[]' is not assignable to type 'null'.
+apps/mobile/src/services/media/__tests__/PhotoService.test.ts(406,61): error TS2345: Argument of type '{ canceled: true; assets: undefined[]; }' is not assignable to parameter of type 'ImagePickerResult | Promise<ImagePickerResult>'.
+  Types of property 'assets' are incompatible.
+    Type 'undefined[]' is not assignable to type 'null'.
+apps/mobile/src/services/media/PhotoService.ts(141,52): error TS2345: Argument of type 'PhotoOptions' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type 'PhotoOptions'.
+apps/mobile/src/services/media/PhotoService.ts(199,56): error TS2345: Argument of type 'PhotoOptions' is not assignable to parameter of type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type 'PhotoOptions'.
+apps/mobile/src/services/media/PhotoService.ts(412,11): error TS2322: Type '"video" | "image" | "livePhoto" | "pairedVideo"' is not assignable to type '"video" | "image"'.
+  Type '"livePhoto"' is not assignable to type '"video" | "image"'.
+src/components/analytics/AnalyticsDashboard.tsx(13,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/analytics/PerformanceWidget.tsx(11,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/maps/GoogleMapView.tsx(78,25): error TS2749: 'MapView' refers to a value, but is being used as a type here. Did you mean 'typeof MapView'?
+src/components/maps/OfflineMapManager.tsx(17,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/AdaptiveComponents.tsx(17,26): error TS2307: Cannot find module 'expo-haptics' or its corresponding type declarations.
+src/components/modern/AdaptiveComponents.tsx(18,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/Card.tsx(3,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/Card.tsx(10,26): error TS2307: Cannot find module 'expo-haptics' or its corresponding type declarations.
+src/components/modern/EnhancedComponents.tsx(13,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/EnhancedComponents.tsx(14,26): error TS2307: Cannot find module 'expo-blur' or its corresponding type declarations.
+src/components/modern/Input.tsx(23,26): error TS2307: Cannot find module 'expo-haptics' or its corresponding type declarations.
+src/components/modern/InterestCard.tsx(4,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/ModernButton.tsx(11,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/ModernButton.tsx(12,26): error TS2307: Cannot find module 'expo-haptics' or its corresponding type declarations.
+src/components/modern/ProgressIndicators.tsx(4,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/modern/VoiceCard.tsx(10,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/components/terrain/ElevationProfiler.tsx(12,8): error TS2307: Cannot find module 'react-native-svg' or its corresponding type declarations.
+src/components/trails/TrailCard.tsx(10,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/config/database.ts(1,28): error TS2307: Cannot find module 'knex' or its corresponding type declarations.
+src/i18n/index.ts(1,18): error TS2307: Cannot find module 'i18next' or its corresponding type declarations.
+src/i18n/index.ts(2,34): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/ActiveTrailScreen.tsx(15,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/screens/BetaOnboardingScreen.tsx(12,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/ConflictResolutionScreen.tsx(13,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/DiscoverScreen.tsx(14,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/screens/DiscoverScreen.tsx(18,25): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/screens/HomeScreen.tsx(3,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/HomeScreen.tsx(7,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/screens/MapScreen.tsx(3,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/MemoriesScreen.tsx(15,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/NewSettingsScreen.tsx(13,20): error TS2307: Cannot find module '@react-native-community/slider' or its corresponding type declarations.
+src/screens/NewSettingsScreen.tsx(14,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/NewSettingsScreen.tsx(20,25): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/screens/NotificationSettingsScreen.tsx(13,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/OfflineMapsScreen.tsx(14,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/SettingsScreen.tsx(13,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/TrailDetailsScreen.tsx(16,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/screens/TrailDetailsScreen.tsx(25,26): error TS2307: Cannot find module 'expo-blur' or its corresponding type declarations.
+src/screens/TrailsScreen.tsx(11,32): error TS2307: Cannot find module 'react-i18next' or its corresponding type declarations.
+src/screens/UpdatedHomeScreen.tsx(14,32): error TS2307: Cannot find module 'expo-linear-gradient' or its corresponding type declarations.
+src/security/SecurityManager.ts(3,38): error TS2307: Cannot find module 'expo-local-authentication' or its corresponding type declarations.
+src/services/AccessibilityManager.ts(2,26): error TS2307: Cannot find module 'expo-haptics' or its corresponding type declarations.
+src/services/AudioGuideService.ts(232,36): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/services/AudioGuideService.ts(281,36): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/services/AudioGuideService.ts(451,36): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/services/EchoTrailSoundService.ts(3,25): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/services/GPXService.ts(16,26): error TS2307: Cannot find module 'expo-sharing' or its corresponding type declarations.
+src/services/IntelligentAudioSystem.ts(2,25): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/services/IntelligentLocationService.ts(2,30): error TS2307: Cannot find module 'expo-task-manager' or its corresponding type declarations.
+src/services/OpenAITTSService.ts(643,35): error TS2307: Cannot find module 'expo-speech' or its corresponding type declarations.
+src/services/PermissionsManager.ts(2,25): error TS2307: Cannot find module 'expo-camera' or its corresponding type declarations.
+src/services/PermissionsManager.ts(7,30): error TS2307: Cannot find module 'expo-task-manager' or its corresponding type declarations.
+src/utils/sentry.ts(1,25): error TS2307: Cannot find module '@sentry/react-native' or its corresponding type declarations.
