@@ -217,7 +217,9 @@ const trailRoutes: FastifyPluginAsync = async (fastify) => {
 
       const trail = await prisma.trail.create({
         data: {
-          ...trailData,
+          name: trailData.name,
+          description: trailData.description,
+          is_public: trailData.is_public || false,
           user_id: request.userId,
           metadata: {}
         }
